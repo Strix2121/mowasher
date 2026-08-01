@@ -300,8 +300,8 @@
                 if (parts.length >= 3) {
                     result.push({
                         name: parts[0],
-                        change: parts[2], // العمود B: التغير
-                        price: parts[1]   // العمود C: السعر
+                        change: parts[1], // العمود B هو التغير
+                        price: parts[2]   // العمود C هو السعر الحقيقي
                     });
                 }
             }
@@ -311,12 +311,18 @@
         function getChangeTagHTML(changeStr) {
             if (!changeStr || changeStr === '0') {
                 return '<span class="change-tag neutral">ثابت ➖</span>';
-            } else if (changeStr.startsWith('+')) {
-                return `<span class="change-tag up">${changeStr} ▲</span>`;
-            } else if (changeStr.startsWith('-')) {
-                return `<span class="change-tag down">${changeStr} ▼</span>`;
+            }
+            const cleanStr = changeStr.toString().trim();
+            if (cleanStr.startsWith('+')) {
+                return `<span class="change-tag up">${cleanStr} ▲</span>`;
+            } else if (cleanStr.startsWith('-')) {
+                return `<span class="change-tag down">${cleanStr} ▼</span>`;
+            } else if (parseInt(cleanStr) > 0) {
+                return `<span class="change-tag up">+${cleanStr} ▲</span>`;
+            } else if (parseInt(cleanStr) < 0) {
+                return `<span class="change-tag down">${cleanStr} ▼</span>`;
             } else {
-                return `<span class="change-tag neutral">${changeStr}</span>`;
+                return `<span class="change-tag neutral">${cleanStr}</span>`;
             }
         }
 
@@ -333,6 +339,8 @@
 
                 items.forEach(item => {
                     const priceNum = parseFloat(item.price) || 0;
+                    
+                    // هنا التعديل الجوهري: إعطاء السعر الحقيقي النصيب الأكبر، والتغير للمربع الصغير
                     const rowHTML = `
                         <div class="price-row">
                             <div class="item-info">

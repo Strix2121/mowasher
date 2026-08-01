@@ -285,16 +285,21 @@
             gold21: 980000
         };
 
-        function parseCSV(text) {
+function parseCSV(text) {
             const lines = text.trim().split('\n');
             const result = [];
             for (let i = 1; i < lines.length; i++) {
                 const parts = lines[i].split(',').map(item => item.trim().replace(/^"|"$/g, ''));
-                if (parts.length >= 2) {
+                if (parts.length >= 3) {
                     result.push({
                         name: parts[0],
-                        price: parts[1],
-                        change: parts[2] || '0'
+                        change: parts[1], // العمود B هو التغير
+                        price: parts[2]   // العمود C هو السعر
+                    });
+                }
+            }
+            return result;
+        }
                     });
                 }
             }

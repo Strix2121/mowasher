@@ -36,7 +36,6 @@
             line-height: 1.5;
         }
 
-        /* Header */
         header {
             text-align: center;
             padding: 20px 0 15px;
@@ -93,7 +92,6 @@
             100% { opacity: 1; }
         }
 
-        /* Card Section */
         .section-title {
             font-size: 1.1rem;
             font-weight: 700;
@@ -173,7 +171,6 @@
             background: rgba(148, 163, 184, 0.1);
         }
 
-        /* Calculator Widget */
         .calc-box {
             display: flex;
             flex-direction: column;
@@ -216,7 +213,6 @@
             color: #60a5fa;
         }
 
-        /* Footer */
         footer {
             text-align: center;
             padding: 25px 0 15px;
@@ -246,72 +242,14 @@
 
     <!-- أسعار العملات -->
     <div class="section-title">💵 أسعار الصرف (السوق الموازي)</div>
-    <div class="card">
-        <div class="price-row">
-            <div class="item-info">
-                <span class="item-name">دولار دمشق</span>
-                <span class="item-sub">USD / SYP</span>
-            </div>
-            <div class="item-price-group">
-                <div class="item-price" id="usd-damascus">14,800 ل.س</div>
-                <span class="change-tag up">+50 ▲</span>
-            </div>
-        </div>
-        <div class="price-row">
-            <div class="item-info">
-                <span class="item-name">دولار حلب</span>
-                <span class="item-sub">USD / SYP</span>
-            </div>
-            <div class="item-price-group">
-                <div class="item-price" id="usd-aleppo">14,850 ل.س</div>
-                <span class="change-tag up">+50 ▲</span>
-            </div>
-        </div>
-        <div class="price-row">
-            <div class="item-info">
-                <span class="item-name">يورو دمشق</span>
-                <span class="item-sub">EUR / SYP</span>
-            </div>
-            <div class="item-price-group">
-                <div class="item-price" id="eur-damascus">16,100 ل.س</div>
-                <span class="change-tag down">-30 ▼</span>
-            </div>
-        </div>
+    <div class="card" id="currency-card">
+        <div style="text-align: center; color: var(--text-secondary);">جاري جلب الأسعار...</div>
     </div>
 
     <!-- أسعار الذهب -->
     <div class="section-title">🏆 أسعار الذهب (الأسواق المحلية)</div>
-    <div class="card">
-        <div class="price-row">
-            <div class="item-info">
-                <span class="item-name">غرام الذهب عيار 21</span>
-                <span class="item-sub">سعر الصاغة</span>
-            </div>
-            <div class="item-price-group">
-                <div class="item-price" id="gold-21">980,000 ل.س</div>
-                <span class="change-tag neutral">ثابت ➖</span>
-            </div>
-        </div>
-        <div class="price-row">
-            <div class="item-info">
-                <span class="item-name">غرام الذهب عيار 18</span>
-                <span class="item-sub">سعر الصاغة</span>
-            </div>
-            <div class="item-price-group">
-                <div class="item-price" id="gold-18">840,000 ل.س</div>
-                <span class="change-tag neutral">ثابت ➖</span>
-            </div>
-        </div>
-        <div class="price-row">
-            <div class="item-info">
-                <span class="item-name">الليرة الذهبية السورية</span>
-                <span class="item-sub">وزن 8 غرام عيار 21</span>
-            </div>
-            <div class="item-price-group">
-                <div class="item-price" id="gold-lira">8,100,000 ل.س</div>
-                <span class="change-tag up">+50,000 ▲</span>
-            </div>
-        </div>
+    <div class="card" id="gold-card">
+        <div style="text-align: center; color: var(--text-secondary);">جاري جلب الأسعار...</div>
     </div>
 
     <!-- حاسبة سريعة -->
@@ -330,7 +268,7 @@
             </select>
         </div>
         <div class="calc-result" id="calc-output">
-            1,480,000 ليرة سورية
+            جاري الحساب...
         </div>
     </div>
 
@@ -340,16 +278,90 @@
     </footer>
 
     <script>
-        // تحديث الوقت الحالي
-        function updateTime() {
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('ar-SY', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            document.getElementById('last-update').innerText = timeStr;
-        }
-        updateTime();
-        setInterval(updateTime, 1000);
+        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRPAv9djuSqXC3mwWdGS0kVRloxLY_xtmZ7s_RN_47G3ERC98LtP2isMvNtLqc5q_e_V0AJyKJcNZI-/pub?output=csv';
 
-        // حاسبة العملات والذهب
+        let currentPrices = {
+            usd: 14800,
+            gold21: 980000
+        };
+
+        function parseCSV(text) {
+            const lines = text.trim().split('\n');
+            const result = [];
+            for (let i = 1; i < lines.length; i++) {
+                const parts = lines[i].split(',').map(item => item.trim().replace(/^"|"$/g, ''));
+                if (parts.length >= 2) {
+                    result.push({
+                        name: parts[0],
+                        price: parts[1],
+                        change: parts[2] || '0'
+                    });
+                }
+            }
+            return result;
+        }
+
+        function getChangeTagHTML(changeStr) {
+            if (!changeStr || changeStr === '0') {
+                return '<span class="change-tag neutral">ثابت ➖</span>';
+            } else if (changeStr.startsWith('+')) {
+                return `<span class="change-tag up">${changeStr} ▲</span>`;
+            } else if (changeStr.startsWith('-')) {
+                return `<span class="change-tag down">${changeStr} ▼</span>`;
+            } else {
+                return `<span class="change-tag neutral">${changeStr}</span>`;
+            }
+        }
+
+        async function fetchLivePrices() {
+            try {
+                const response = await fetch(CSV_URL + '&t=' + new Date().getTime());
+                const csvData = await response.text();
+                const items = parseCSV(csvData);
+
+                let currencyHTML = '';
+                let goldHTML = '';
+
+                items.forEach(item => {
+                    const rowHTML = `
+                        <div class="price-row">
+                            <div class="item-info">
+                                <span class="item-name">${item.name}</span>
+                            </div>
+                            <div class="item-price-group">
+                                <div class="item-price">${parseInt(item.price || 0).toLocaleString('ar-SY')} ل.س</div>
+                                ${getChangeTagHTML(item.change)}
+                            </div>
+                        </div>
+                    `;
+
+                    if (item.name.includes('دولار') || item.name.includes('يورو')) {
+                        currencyHTML += rowHTML;
+                        if (item.name.includes('دولار دمشق')) {
+                            currentPrices.usd = parseFloat(item.price) || 14800;
+                        }
+                    } else if (item.name.includes('ذهب') || item.name.includes('ليرة ذهبية')) {
+                        goldHTML += rowHTML;
+                        if (item.name.includes('عيار 21')) {
+                            currentPrices.gold21 = parseFloat(item.price) || 980000;
+                        }
+                    } else {
+                        currencyHTML += rowHTML;
+                    }
+                });
+
+                if (currencyHTML) document.getElementById('currency-card').innerHTML = currencyHTML;
+                if (goldHTML) document.getElementById('gold-card').innerHTML = goldHTML;
+
+                const now = new Date();
+                document.getElementById('last-update').innerText = now.toLocaleTimeString('ar-SY', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                
+                calculate();
+            } catch (error) {
+                console.error("خطأ في جلب البيانات:", error);
+            }
+        }
+
         const amountInput = document.getElementById('amount');
         const calcType = document.getElementById('calc-type');
         const calcOutput = document.getElementById('calc-output');
@@ -357,8 +369,8 @@
         function calculate() {
             const val = parseFloat(amountInput.value) || 0;
             const type = calcType.value;
-            const usdRate = 14800;
-            const gold21Rate = 980000;
+            const usdRate = currentPrices.usd;
+            const gold21Rate = currentPrices.gold21;
 
             if (type === 'usd-to-syp') {
                 const total = (val * usdRate).toLocaleString('ar-SY');
@@ -374,6 +386,9 @@
 
         amountInput.addEventListener('input', calculate);
         calcType.addEventListener('change', calculate);
+
+        fetchLivePrices();
+        setInterval(fetchLivePrices, 10000); // تحديث تلقائي كل 10 ثوانٍ
     </script>
 </body>
 </html>

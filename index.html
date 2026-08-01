@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مُؤشّر | أسعار الصرف والذهب في سوريا لحظة بلحظة</title>
+    <title>مُؤشّر | أسعار الصرف، الذهب، والمواد الأساسية في سوريا</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -133,11 +133,6 @@
             font-size: 0.95rem;
         }
 
-        .item-sub {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-        }
-
         .item-price-group {
             text-align: left;
         }
@@ -233,7 +228,7 @@
 
     <header>
         <div class="logo">📈 مُؤشّر <span>سوري</span></div>
-        <div class="tagline">مؤشر الأسعار والعملات في سوريا لحظة بلحظة</div>
+        <div class="tagline">مؤشر الأسعار والعملات والمواد في سوريا لحظة بلحظة</div>
         <div class="status-bar">
             <div><span class="live-dot"></span> مباشر - التحديث الآلي</div>
             <div id="last-update">جاري التحميل...</div>
@@ -249,6 +244,18 @@
     <!-- أسعار الذهب -->
     <div class="section-title">🏆 أسعار الذهب (الأسواق المحلية)</div>
     <div class="card" id="gold-card">
+        <div style="text-align: center; color: var(--text-secondary);">جاري جلب الأسعار...</div>
+    </div>
+
+    <!-- أسعار المحروقات -->
+    <div class="section-title">⛽ المحروقات والطاقة</div>
+    <div class="card" id="fuel-card">
+        <div style="text-align: center; color: var(--text-secondary);">جاري جلب الأسعار...</div>
+    </div>
+
+    <!-- أسعار السلع الأساسية -->
+    <div class="section-title">🛒 السلع والغذائيات الأساسية</div>
+    <div class="card" id="goods-card">
         <div style="text-align: center; color: var(--text-secondary);">جاري جلب الأسعار...</div>
     </div>
 
@@ -285,7 +292,7 @@
             gold21: 980000
         };
 
-function parseCSV(text) {
+        function parseCSV(text) {
             const lines = text.trim().split('\n');
             const result = [];
             for (let i = 1; i < lines.length; i++) {
@@ -293,13 +300,8 @@ function parseCSV(text) {
                 if (parts.length >= 3) {
                     result.push({
                         name: parts[0],
-                        change: parts[1], // العمود B هو التغير
-                        price: parts[2]   // العمود C هو السعر
-                    });
-                }
-            }
-            return result;
-        }
+                        change: parts[1], // العمود B: التغير
+                        price: parts[2]   // العمود C: السعر
                     });
                 }
             }
@@ -326,37 +328,41 @@ function parseCSV(text) {
 
                 let currencyHTML = '';
                 let goldHTML = '';
+                let fuelHTML = '';
+                let goodsHTML = '';
 
                 items.forEach(item => {
+                    const priceNum = parseFloat(item.price) || 0;
                     const rowHTML = `
                         <div class="price-row">
                             <div class="item-info">
                                 <span class="item-name">${item.name}</span>
                             </div>
                             <div class="item-price-group">
-                                <div class="item-price">${parseInt(item.price || 0).toLocaleString('ar-SY')} ل.س</div>
+                                <div class="item-price">${priceNum.toLocaleString('ar-SY')} ل.س</div>
                                 ${getChangeTagHTML(item.change)}
                             </div>
                         </div>
                     `;
 
-                    if (item.name.includes('دولار') || item.name.includes('يورو')) {
+                    const name = item.name;
+                    if (name.includes('دولار') || name.includes('يورو')) {
                         currencyHTML += rowHTML;
-                        if (item.name.includes('دولار دمشق')) {
-                            currentPrices.usd = parseFloat(item.price) || 14800;
-                        }
-                    } else if (item.name.includes('ذهب') || item.name.includes('ليرة ذهبية')) {
+                        if (name.includes('دولار دمشق')) currentPrices.usd = priceNum || 14800;
+                    } else if (name.includes('ذهب') || name.includes('ليرة ذهبية')) {
                         goldHTML += rowHTML;
-                        if (item.name.includes('عيار 21')) {
-                            currentPrices.gold21 = parseFloat(item.price) || 980000;
-                        }
+                        if (name.includes('عيار 21')) currentPrices.gold21 = priceNum || 980000;
+                    } else if (name.includes('بنزين') || name.includes('مازوت') || name.includes('غاز') || name.includes('كهرباء') || name.includes('طاقة')) {
+                        fuelHTML += rowHTML;
                     } else {
-                        currencyHTML += rowHTML;
+                        goodsHTML += rowHTML;
                     }
                 });
 
                 if (currencyHTML) document.getElementById('currency-card').innerHTML = currencyHTML;
                 if (goldHTML) document.getElementById('gold-card').innerHTML = goldHTML;
+                if (fuelHTML) document.getElementById('fuel-card').innerHTML = fuelHTML;
+                if (goodsHTML) document.getElementById('goods-card').innerHTML = goodsHTML;
 
                 const now = new Date();
                 document.getElementById('last-update').innerText = now.toLocaleTimeString('ar-SY', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -393,7 +399,7 @@ function parseCSV(text) {
         calcType.addEventListener('change', calculate);
 
         fetchLivePrices();
-        setInterval(fetchLivePrices, 10000); // تحديث تلقائي كل 10 ثوانٍ
+        setInterval(fetchLivePrices, 10000);
     </script>
 </body>
 </html>

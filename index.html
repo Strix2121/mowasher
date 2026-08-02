@@ -76,7 +76,7 @@
         .list-item:last-child { border-bottom: none; }
         .btn-call { background-color: var(--accent-green); color: white; text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; }
 
-        /* عناصر لوحة التحكم */
+        /* لوحة التحكم */
         .admin-form { display: flex; flex-direction: column; gap: 10px; }
         .btn-action { background-color: var(--accent-blue); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .btn-danger { background-color: var(--accent-red); }
@@ -103,19 +103,19 @@
         </div>
     </header>
 
-    <!-- 1. صفحة الأسعار والحاسبة (الرئيسية) -->
+    <!-- 1. صفحة الأسعار والحاسبة -->
     <div id="page-prices" class="page-content active">
         <div class="section-title">💵 أسعار الصرف (السوق الموازي)</div>
-        <div class="card" id="currency-card"><div>لا توجد بيانات، أضف مواد من لوحة التحكم.</div></div>
+        <div class="card" id="currency-card"><div>جاري تحميل البيانات...</div></div>
 
         <div class="section-title">🧈 أسعار الذهب (المحلي)</div>
-        <div class="card" id="gold-card"><div>لا توجد بيانات، أضف مواد من لوحة التحكم.</div></div>
+        <div class="card" id="gold-card"><div>جاري تحميل البيانات...</div></div>
 
         <div class="section-title">⛽ المحروقات والخدمات</div>
-        <div class="card" id="fuel-card"><div>لا توجد بيانات، أضف مواد من لوحة التحكم.</div></div>
+        <div class="card" id="fuel-card"><div>جاري تحميل البيانات...</div></div>
 
         <div class="section-title">🛒 السلع والغذائيات</div>
-        <div class="card" id="goods-card"><div>لا توجد بيانات، أضف مواد من لوحة التحكم.</div></div>
+        <div class="card" id="goods-card"><div>جاري تحميل البيانات...</div></div>
 
         <div class="section-title">🧮 حاسبة التحويل المباشر</div>
         <div class="card calc-box">
@@ -141,60 +141,30 @@
     <!-- 2. صفحة الصيدليات المناوبة -->
     <div id="page-pharmacies" class="page-content">
         <div class="section-title">🏥 الصيدليات المناوبة اليوم</div>
-        <div class="card">
-            <div class="list-item">
-                <div><b>صيدلية الأمل</b><div style="font-size:0.75rem; color:var(--text-secondary);">دمشق - الميدان</div></div>
-                <a href="tel:0110000000" class="btn-call">اتصال 📞</a>
-            </div>
-            <div class="list-item">
-                <div><b>صيدلية الشفاء</b><div style="font-size:0.75rem; color:var(--text-secondary);">دمشق - الشعلان</div></div>
-                <a href="tel:0110000000" class="btn-call">اتصال 📞</a>
-            </div>
-        </div>
+        <div class="card" id="pharmacies-card"><div>جاري جلب قائمة الصيدليات...</div></div>
     </div>
 
     <!-- 3. صفحة دليل المحلات والخدمات -->
     <div id="page-shops" class="page-content">
         <div class="section-title">🏪 دليل المحلات والخدمات</div>
-        <div class="card">
-            <div class="list-item">
-                <div><b>مكتب الفؤاد للصرافة</b><div style="font-size:0.75rem; color:var(--text-secondary);">حوالات وصرافة - دمشق</div></div>
-                <span class="change-tag neutral">معتمد</span>
-            </div>
-        </div>
+        <div class="card" id="shops-card"><div>جاري جلب الدليل...</div></div>
     </div>
 
     <!-- 4. صفحة المعاملات والأوراق الرسمية -->
     <div id="page-docs" class="page-content">
         <div class="section-title">📖 دليل الأوراق والمعاملات الحكومية</div>
-        <div class="card">
-            <div class="price-row">
-                <div><b>📄 جواز السفر الإلكتروني</b><div style="font-size:0.75rem; color:var(--text-secondary);">الأوراق: الهوية، الصور الشخصية، التسجيل عبر المنصة.</div></div>
-            </div>
-            <div class="price-row">
-                <div><b>🏡 تنظيم عقد الإيجار</b><div style="font-size:0.75rem; color:var(--text-secondary);">الأوراق: سند الملكية، الهويات، سند إقامة.</div></div>
-            </div>
-        </div>
+        <div class="card" id="docs-card"><div>جاري جلب قائمة المعاملات...</div></div>
     </div>
 
     <!-- 5. صفحة خدمات التقنين والطوارئ -->
     <div id="page-services" class="page-content">
         <div class="section-title">⚡ التقنين وأرقام الطوارئ</div>
-        <div class="card">
-            <div class="list-item">
-                <div><b>الإسعاف السريع</b></div>
-                <a href="tel:110" class="btn-call" style="background:#ef4444;">110 🚑</a>
-            </div>
-            <div class="list-item">
-                <div><b>الإطفاء</b></div>
-                <a href="tel:113" class="btn-call" style="background:#ef4444;">113 🚒</a>
-            </div>
-        </div>
+        <div class="card" id="services-card"><div>جاري جلب أرقام الخدمات...</div></div>
     </div>
 
-    <!-- 6. لوحة تحكم الإدارة الشاملة (#admin) -->
+    <!-- 6. لوحة تحكم الإدارة الشاملة لكل الفئات (#admin) -->
     <div id="page-admin" class="page-content">
-        <div class="section-title">🔒 لوحة تحكم الإدارة (إضافة - تعديل - حذف)</div>
+        <div class="section-title">🔒 لوحة التحكم الشاملة لكل الأقسام</div>
         
         <!-- تسجيل الدخول -->
         <div class="card" id="login-box">
@@ -207,32 +177,46 @@
                     <label>كلمة السر:</label>
                     <input type="password" id="adminPass" placeholder="••••••••">
                 </div>
-                <button class="btn-action" onclick="loginAdmin()">تسجيل الدخول الآمن 🔑</button>
+                <button class="btn-action" onclick="loginAdmin()">تسجيل الدخول 🔑</button>
             </div>
         </div>
 
-        <!-- لوحة التحكم بالمواد -->
+        <!-- لوحة التحكم -->
         <div id="admin-panel" style="display: none;">
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                    <h3 style="color: var(--accent-gold); margin:0;">➕ إضافة / تعديل مادة</h3>
+                    <h3 style="color: var(--accent-gold); margin:0;">➕ إضافة / تعديل عنصر</h3>
                     <button class="btn-action btn-danger" style="padding:4px 10px; font-size:0.75rem;" onclick="logoutAdmin()">خروج 🚪</button>
                 </div>
                 <div class="admin-form">
                     <div class="input-group">
-                        <label>اسم المادة/العملة:</label>
-                        <input type="text" id="itemName" placeholder="مثال: دولار دمشق">
+                        <label>القسم المخصص:</label>
+                        <select id="itemSection" onchange="toggleFormFields()">
+                            <option value="prices">📈 قسم الأسعار والعملات</option>
+                            <option value="pharmacies">🏥 قسم الصيدليات المناوبة</option>
+                            <option value="shops">🏪 قسم دليل المحلات والخدمات</option>
+                            <option value="docs">📖 قسم المعاملات والأوراق</option>
+                            <option value="services">⚡ قسم أرقام الطوارئ والخدمات</option>
+                        </select>
                     </div>
+
                     <div class="input-group">
-                        <label>السعر (ل.س):</label>
-                        <input type="number" id="itemPrice" placeholder="مثال: 13800">
+                        <label id="lblTitle">اسم العنصر/العملة/الصيدلية:</label>
+                        <input type="text" id="itemTitle" placeholder="مثال: دولار دمشق / صيدلية الأمل">
                     </div>
-                    <div class="input-group">
-                        <label>التغير (مثال: +50 أو -20):</label>
-                        <input type="text" id="itemChange" placeholder="0">
+
+                    <div class="input-group" id="groupSubtitle">
+                        <label id="lblSubtitle">التفاصيل/العنوان/الأوراق:</label>
+                        <input type="text" id="itemSubtitle" placeholder="مثال: دمشق - الميدان">
                     </div>
-                    <div class="input-group">
-                        <label>القسم:</label>
+
+                    <div class="input-group" id="groupVal">
+                        <label id="lblVal">السعر أو رقم الهاتف:</label>
+                        <input type="text" id="itemVal" placeholder="مثال: 13800 أو 0930000000">
+                    </div>
+
+                    <div class="input-group" id="groupCategory">
+                        <label>فئة السعر:</label>
                         <select id="itemCategory">
                             <option value="currency">عملات وصرف</option>
                             <option value="gold">ذهب ومجوهرات</option>
@@ -240,15 +224,14 @@
                             <option value="goods">سلع وغذائيات</option>
                         </select>
                     </div>
-                    <button class="btn-action" onclick="saveItemToFirebase()">حفظ / تحديث المادة 🚀</button>
+
+                    <button class="btn-action" onclick="saveToFirebase()">حفظ العنصر فوراً 🚀</button>
                 </div>
             </div>
 
-            <!-- قائمة العناصر للتحكم بها بالكامل -->
-            <div class="section-title">🗑️ إدارة العناصر الحالية (تعديل / حذف)</div>
-            <div class="card" id="admin-items-list">
-                <div>جاري تحميل القائمة...</div>
-            </div>
+            <!-- قائمة العناصر للتحكم المباشر للحذف والتعديل -->
+            <div class="section-title">🗑️ العناصر الحالية بالقسم المختار (تعديل / حذف)</div>
+            <div class="card" id="admin-items-list"><div>جاري تحميل القائمة...</div></div>
         </div>
     </div>
 
@@ -290,7 +273,7 @@
             if (user) {
                 document.getElementById('login-box').style.display = 'none';
                 document.getElementById('admin-panel').style.display = 'block';
-                loadAdminItemsList();
+                toggleFormFields();
             } else {
                 document.getElementById('login-box').style.display = 'block';
                 document.getElementById('admin-panel').style.display = 'none';
@@ -312,127 +295,141 @@
             const pass = document.getElementById('adminPass').value;
             auth.signInWithEmailAndPassword(email, pass)
                 .then(() => alert("تم تسجيل الدخول بنجاح!"))
-                .catch(error => alert("خطأ في تسجيل الدخول: " + error.message));
+                .catch(error => alert("خطأ في بيانات الدخول: " + error.message));
         }
 
         function logoutAdmin() {
             auth.signOut().then(() => alert("تم تسجيل الخروج."));
         }
 
-        function saveItemToFirebase() {
-            const name = document.getElementById('itemName').value.trim();
-            const price = parseFloat(document.getElementById('itemPrice').value) || 0;
-            const change = document.getElementById('itemChange').value || "0";
+        function toggleFormFields() {
+            const sec = document.getElementById('itemSection').value;
+            const grpCat = document.getElementById('groupCategory');
+            
+            if (sec === 'prices') grpCat.style.display = 'flex';
+            else grpCat.style.display = 'none';
+
+            loadAdminSectionList(sec);
+        }
+
+        // حفظ لأي قسم اخترته
+        function saveToFirebase() {
+            const sec = document.getElementById('itemSection').value;
+            const title = document.getElementById('itemTitle').value.trim();
+            const subtitle = document.getElementById('itemSubtitle').value.trim();
+            const val = document.getElementById('itemVal').value.trim();
             const category = document.getElementById('itemCategory').value;
 
-            if (!name || price <= 0) {
-                alert("يرجى إدخال اسم وسعر صحيحين!");
-                return;
-            }
+            if (!title) { alert("يرجى كتابة عنوان العنصر!"); return; }
 
-            db.collection("prices").doc(name).set({
-                name: name,
-                price: price,
-                change: change,
+            db.collection(sec).doc(title).set({
+                title: title,
+                subtitle: subtitle,
+                val: val,
                 category: category,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
-                alert("تم حفظ وتحديث المادة بنجاح!");
-                document.getElementById('itemName').value = '';
-                document.getElementById('itemPrice').value = '';
-                document.getElementById('itemChange').value = '';
-            }).catch(error => alert("خطأ في الحفظ: " + error.message));
+                alert("تم الحفظ بنجاح!");
+                document.getElementById('itemTitle').value = '';
+                document.getElementById('itemSubtitle').value = '';
+                document.getElementById('itemVal').value = '';
+            }).catch(e => alert("خطأ للحفظ: " + e.message));
         }
 
-        function deleteItem(docId) {
-            if (confirm(`هل أنت تأكد من إزالة المادة: "${docId}" نهائياً؟`)) {
-                db.collection("prices").doc(docId).delete().then(() => {
-                    alert("تم حذف المادة بنجاح!");
-                }).catch(error => alert("خطأ في الحذف: " + error.message));
+        function deleteItem(sec, docId) {
+            if (confirm(`هل أنت تأكد من الحذف؟`)) {
+                db.collection(sec).doc(docId).delete().then(() => alert("تم الحذف بنجاح!"));
             }
         }
 
-        function editItem(name, price, change, category) {
-            document.getElementById('itemName').value = name;
-            document.getElementById('itemPrice').value = price;
-            document.getElementById('itemChange').value = change;
-            document.getElementById('itemCategory').value = category;
-            window.scrollTo(0, 0);
-        }
-
-        function loadAdminItemsList() {
-            db.collection("prices").onSnapshot((snapshot) => {
+        function loadAdminSectionList(sec) {
+            db.collection(sec).onSnapshot((snapshot) => {
                 let html = '';
                 snapshot.forEach((doc) => {
-                    const item = doc.data();
+                    const d = doc.data();
                     html += `
                         <div class="list-item">
                             <div>
-                                <b>${item.name}</b>
-                                <div style="font-size:0.75rem; color:var(--text-secondary);">${item.price.toLocaleString('ar-SY')} ل.س | ${item.change}</div>
+                                <b>${d.title}</b>
+                                <div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle || ''} ${d.val ? '| ' + d.val : ''}</div>
                             </div>
-                            <div style="display:flex; gap:6px;">
-                                <button class="btn-edit" onclick="editItem('${item.name}', ${item.price}, '${item.change}', '${item.category}')">تعديل ✏️</button>
-                                <button class="btn-del" onclick="deleteItem('${doc.id}')">حذف 🗑️</button>
-                            </div>
+                            <button class="btn-del" onclick="deleteItem('${sec}', '${doc.id}')">حذف 🗑️</button>
                         </div>
                     `;
                 });
-                document.getElementById('admin-items-list').innerHTML = html || 'لا توجد مواد مضافة حتى الآن.';
+                document.getElementById('admin-items-list').innerHTML = html || 'لا توجد عناصر مضافة بهذا القسم.';
             });
         }
 
-        function listenToLivePrices() {
+        // الاستماع المباشر لجميع الأقسام الخمسة بالموقع
+        function listenAllSections() {
+            // 1. الأسعار
             db.collection("prices").onSnapshot((snapshot) => {
                 let currencyHTML = '', goldHTML = '', fuelHTML = '', goodsHTML = '';
-
                 snapshot.forEach((doc) => {
                     const item = doc.data();
+                    const priceNum = parseFloat(item.val) || 0;
                     const rowHTML = `
                         <div class="price-row">
-                            <div class="item-info">
-                                <span>${getItemIcon(item.name)}</span>
-                                <span class="item-name">${item.name}</span>
-                            </div>
-                            <div style="text-align:left;">
-                                <div class="item-price">${item.price.toLocaleString('ar-SY')} ل.س</div>
-                                <span class="change-tag ${item.change.includes('+') ? 'up' : item.change.includes('-') ? 'down' : 'neutral'}">${item.change}</span>
-                            </div>
-                        </div>
-                    `;
-
-                    if (item.category === 'currency') {
-                        currencyHTML += rowHTML;
-                        if (item.name.includes('دولار')) currentPrices.usd = item.price;
-                        if (item.name.includes('يورو')) currentPrices.eur = item.price;
-                        if (item.name.includes('تركية')) currentPrices.tryLira = item.price;
-                    } else if (item.category === 'gold') {
-                        goldHTML += rowHTML;
-                        if (item.name.includes('عيار 21')) currentPrices.gold21 = item.price;
-                    } else if (item.category === 'fuel') {
-                        fuelHTML += rowHTML;
-                    } else if (item.category === 'goods') {
-                        goodsHTML += rowHTML;
-                    }
+                            <div class="item-info"><span>${getItemIcon(item.title)}</span><b>${item.title}</b></div>
+                            <div style="text-align:left;"><div class="item-price">${priceNum.toLocaleString('ar-SY')} ل.س</div><span class="change-tag neutral">${item.subtitle || '0'}</span></div>
+                        </div>`;
+                    if (item.category === 'currency') { currencyHTML += rowHTML; if (item.title.includes('دولار')) currentPrices.usd = priceNum; }
+                    else if (item.category === 'gold') { goldHTML += rowHTML; if (item.title.includes('21')) currentPrices.gold21 = priceNum; }
+                    else if (item.category === 'fuel') fuelHTML += rowHTML;
+                    else goodsHTML += rowHTML;
                 });
+                document.getElementById('currency-card').innerHTML = currencyHTML || 'لا توجد بيانات.';
+                document.getElementById('gold-card').innerHTML = goldHTML || 'لا توجد بيانات.';
+                document.getElementById('fuel-card').innerHTML = fuelHTML || 'لا توجد بيانات.';
+                document.getElementById('goods-card').innerHTML = goodsHTML || 'لا توجد بيانات.';
+            });
 
-                document.getElementById('currency-card').innerHTML = currencyHTML || 'لا توجد عناصر مضافة بعد.';
-                document.getElementById('gold-card').innerHTML = goldHTML || 'لا توجد عناصر مضافة بعد.';
-                document.getElementById('fuel-card').innerHTML = fuelHTML || 'لا توجد عناصر مضافة بعد.';
-                document.getElementById('goods-card').innerHTML = goodsHTML || 'لا توجد عناصر مضافة بعد.';
+            // 2. الصيدليات
+            db.collection("pharmacies").onSnapshot((snapshot) => {
+                let html = '';
+                snapshot.forEach((doc) => {
+                    const d = doc.data();
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><a href="tel:${d.val}" class="btn-call">اتصال 📞</a></div>`;
+                });
+                document.getElementById('pharmacies-card').innerHTML = html || 'لا توجد صيدليات مضافة.';
+            });
 
-                const now = new Date();
-                document.getElementById('last-update').innerText = now.toLocaleTimeString('ar-SY', { hour: '2-digit', minute: '2-digit' });
-                calculate();
+            // 3. المحلات والدليل
+            db.collection("shops").onSnapshot((snapshot) => {
+                let html = '';
+                snapshot.forEach((doc) => {
+                    const d = doc.data();
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><span class="change-tag neutral">${d.val || 'معتمد'}</span></div>`;
+                });
+                document.getElementById('shops-card').innerHTML = html || 'لا توجد محلات مضافة.';
+            });
+
+            // 4. المعاملات
+            db.collection("docs").onSnapshot((snapshot) => {
+                let html = '';
+                snapshot.forEach((doc) => {
+                    const d = doc.data();
+                    html += `<div class="price-row"><div><b>📄 ${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div></div>`;
+                });
+                document.getElementById('docs-card').innerHTML = html || 'لا توجد معاملات مضافة.';
+            });
+
+            // 5. الطوارئ والخدمات
+            db.collection("services").onSnapshot((snapshot) => {
+                let html = '';
+                snapshot.forEach((doc) => {
+                    const d = doc.data();
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle || ''}</div></div><a href="tel:${d.val}" class="btn-call" style="background:#ef4444;">${d.val} 🚑</a></div>`;
+                });
+                document.getElementById('services-card').innerHTML = html || 'لا توجد أرقام مضافة.';
             });
         }
 
         function getItemIcon(name) {
             if (name.includes('دولار')) return '💵';
             if (name.includes('يورو')) return '💶';
-            if (name.includes('تركية')) return '🇹🇷';
             if (name.includes('ذهب')) return '🧈';
-            if (name.includes('بنزين') || name.includes('مازوت')) return '⛽';
             return '🛒';
         }
 
@@ -445,9 +442,6 @@
             const type = calcType.value;
             if (type === 'usd-to-syp') calcOutput.innerText = `${(val * currentPrices.usd).toLocaleString('ar-SY')} ليرة سورية`;
             else if (type === 'syp-to-usd') calcOutput.innerText = `$ ${(val / currentPrices.usd).toFixed(2)} دولار`;
-            else if (type === 'eur-to-syp') calcOutput.innerText = `${(val * currentPrices.eur).toLocaleString('ar-SY')} ليرة سورية`;
-            else if (type === 'syp-to-eur') calcOutput.innerText = `€ ${(val / currentPrices.eur).toFixed(2)} يورو`;
-            else if (type === 'try-to-syp') calcOutput.innerText = `${(val * currentPrices.tryLira).toLocaleString('ar-SY')} ليرة سورية`;
             else if (type === 'gold-21') calcOutput.innerText = `${(val * currentPrices.gold21).toLocaleString('ar-SY')} ليرة سورية`;
         }
 
@@ -455,7 +449,7 @@
         calcType.addEventListener('change', calculate);
 
         checkSecretRoute();
-        listenToLivePrices();
+        listenAllSections();
     </script>
 </body>
 </html>

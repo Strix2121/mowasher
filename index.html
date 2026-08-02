@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مُؤشّر | أسعار العملات والذهب</title>
+    <title>مُؤشّر | أسعار العملات والذهب والسلع</title>
     <link rel="manifest" href="manifest.json">
-    <!-- مكتبة الرسوم البيانية Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
@@ -26,13 +25,12 @@
             color: var(--text-color);
         }
 
-        /* 1. الشريط العلوي للأسعار السريعة */
         .top-ticker {
             background-color: var(--top-bar-bg);
             color: #fff;
             display: flex;
             overflow-x: auto;
-            padding: 10px 15px;
+            padding: 12px 15px;
             gap: 20px;
             white-space: nowrap;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
@@ -47,9 +45,8 @@
         }
 
         .ticker-title { color: #8d99ae; font-weight: bold; }
-        .ticker-value { font-size: 15px; font-weight: bold; margin-top: 2px; }
+        .ticker-value { font-size: 15px; font-weight: bold; margin-top: 2px; color: #2ec4b6; }
 
-        /* 2. الحاوية الرئيسية */
         .main-container {
             max-width: 1200px;
             margin: 20px auto;
@@ -71,7 +68,6 @@
             margin-bottom: 20px;
         }
 
-        /* 3. قسم الرسم البياني */
         .chart-header {
             display: flex;
             justify-content: space-between;
@@ -84,10 +80,9 @@
         .price-badge {
             font-size: 24px;
             font-weight: bold;
-            color: var(--primary-color);
+            color: #2ec4b6;
         }
 
-        /* 4. حاسبة التحويل */
         .converter-box input, .converter-box select {
             width: 100%;
             padding: 10px;
@@ -108,49 +103,83 @@
             margin-top: 10px;
             color: var(--primary-color);
         }
+
+        /* جدول السلع والمواد */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th, td {
+            padding: 10px 12px;
+            text-align: right;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            color: #6c757d;
+        }
     </style>
 </head>
 <body>
 
-    <!-- الشريط العلوي الشبيه بـ Doviz -->
-    <div class="top-ticker" id="topTicker">
+    <!-- الشريط العلوي -->
+    <div class="top-ticker">
         <div class="ticker-item">
-            <span class="ticker-title">الدولار / ليرة</span>
-            <span class="ticker-value" id="tickUsd">جاري التحميل...</span>
+            <span class="ticker-title">دولار دمشق</span>
+            <span class="ticker-value" id="tickUsdDam">جاري التحميل...</span>
         </div>
         <div class="ticker-item">
-            <span class="ticker-title">اليورو / ليرة</span>
+            <span class="ticker-title">دولار حلب</span>
+            <span class="ticker-value" id="tickUsdAlep">جاري التحميل...</span>
+        </div>
+        <div class="ticker-item">
+            <span class="ticker-title">يورو دمشق</span>
             <span class="ticker-value" id="tickEur">جاري التحميل...</span>
         </div>
         <div class="ticker-item">
-            <span class="ticker-title">غرام الذهب (21)</span>
-            <span class="ticker-value" id="tickGold">جاري التحميل...</span>
-        </div>
-        <div class="ticker-item">
-            <span class="ticker-title">التركية / ليرة</span>
-            <span class="ticker-value" id="tickTry">جاري التحميل...</span>
+            <span class="ticker-title">ذهب عيار 21</span>
+            <span class="ticker-value" id="tickGold21">جاري التحميل...</span>
         </div>
     </div>
 
     <!-- المحتوى الرئيسي -->
     <div class="main-container">
         
-        <!-- القسم الأيسر: الرسم البياني وتفاصيل السعر -->
+        <!-- اليسار: الرسم البياني وجدول السلع -->
         <div class="content-left">
             <div class="card">
                 <div class="chart-header">
                     <div>
-                        <h2 style="margin:0;">الدولار الأمريكي (USD)</h2>
+                        <h2 style="margin:0;">دولار دمشق (USD)</h2>
                         <small style="color: gray;">التحديث المباشر للأسعار</small>
                     </div>
-                    <div class="price-badge" id="chartPriceDisplay">-- L.S</div>
+                    <div class="price-badge" id="chartPriceDisplay">-- ل.س</div>
                 </div>
-                <!-- الرسم البياني -->
-                <canvas id="priceChart" height="150"></canvas>
+                <canvas id="priceChart" height="130"></canvas>
+            </div>
+
+            <!-- جدول كافة المواد والسلع -->
+            <div class="card">
+                <h3 style="margin-top:0;">📊 جدول الأسعار والسلع الكامل</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>السلعة / المادة</th>
+                            <th>السعر (ل.س)</th>
+                            <th>التغير</th>
+                        </tr>
+                    </thead>
+                    <tbody id="fullItemsTable">
+                        <tr><td colspan="3">جاري جلب البيانات من الشيت...</td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- القسم الأيمن: حاسبة تحويل العملات -->
+        <!-- اليمين: الحاسبة -->
         <div class="content-right">
             <div class="card converter-box">
                 <h3 style="margin-top:0;">🔄 حاسبة التحويل السريعة</h3>
@@ -162,7 +191,6 @@
                 <select id="convertFrom" onchange="calculateExchange()">
                     <option value="USD">دولار أمريكي ($)</option>
                     <option value="EUR">يورو (€)</option>
-                    <option value="TRY">ليرة تركية (TL)</option>
                     <option value="SYP">ليرة سورية (L.S)</option>
                 </select>
 
@@ -171,7 +199,6 @@
                     <option value="SYP">ليرة سورية (L.S)</option>
                     <option value="USD">دولار أمريكي ($)</option>
                     <option value="EUR">يورو (€)</option>
-                    <option value="TRY">ليرة تركية (TL)</option>
                 </select>
 
                 <div class="result-box" id="convertResult">
@@ -183,17 +210,12 @@
     </div>
 
     <script>
-        // رابط نشر جوجل شيت الخاص بك صيغة CSV
+        // رابط نشر جدول بيانات جوجل بصيغة CSV الخاص بك
         const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT9-T_A5Nf_E6e1G8C2mOaGfD54OaU4gG1e5z6N8v_3W9wB8R4W_rL/pub?output=csv';
 
-        // قيم أولية للأسعار
-        let rates = {
-            USD: 15000,
-            EUR: 16200,
-            TRY: 450
-        };
+        let usdPrice = 13800;
+        let eurPrice = 16100;
 
-        // رسم بياني تفاعلي باستخدام Chart.js
         const ctx = document.getElementById('priceChart').getContext('2d');
         const priceChart = new Chart(ctx, {
             type: 'line',
@@ -201,7 +223,7 @@
                 labels: ['09:00', '11:00', '13:00', '15:00', '17:00', 'الآن'],
                 datasets: [{
                     label: 'حركة سعر الدولار',
-                    data: [14800, 14850, 14900, 14950, 14920, 15000],
+                    data: [13700, 13750, 13780, 13800, 13790, 13800],
                     borderColor: '#2ec4b6',
                     backgroundColor: 'rgba(46, 196, 182, 0.1)',
                     fill: true,
@@ -214,27 +236,21 @@
             }
         });
 
-        // حاسبة التحويل المتقدمة
         function calculateExchange() {
             const amount = parseFloat(document.getElementById('convertAmount').value) || 0;
             const from = document.getElementById('convertFrom').value;
             const to = document.getElementById('convertTo').value;
             let result = 0;
 
-            // تحويل المبلغ أولاً إلى الليرة السورية
-            let amountInSyp = 0;
-            if (from === 'SYP') amountInSyp = amount;
-            else if (from === 'USD') amountInSyp = amount * rates.USD;
-            else if (from === 'EUR') amountInSyp = amount * rates.EUR;
-            else if (from === 'TRY') amountInSyp = amount * rates.TRY;
+            let inSyp = 0;
+            if (from === 'SYP') inSyp = amount;
+            else if (from === 'USD') inSyp = amount * usdPrice;
+            else if (from === 'EUR') inSyp = amount * eurPrice;
 
-            // تحويل من الليرة السورية إلى العملة المطلوبة
-            if (to === 'SYP') result = amountInSyp;
-            else if (to === 'USD') result = amountInSyp / rates.USD;
-            else if (to === 'EUR') result = amountInSyp / rates.EUR;
-            else if (to === 'TRY') result = amountInSyp / rates.TRY;
+            if (to === 'SYP') result = inSyp;
+            else if (to === 'USD') result = inSyp / usdPrice;
+            else if (to === 'EUR') result = inSyp / eurPrice;
 
-            // عرض النتيجة
             if (to === 'SYP') {
                 document.getElementById('convertResult').innerText = Math.round(result).toLocaleString() + ' L.S';
             } else {
@@ -242,52 +258,66 @@
             }
         }
 
-        // تنظيف النصوص وتحويلها إلى أرقام
-        function parsePrice(val) {
-            if (!val) return 0;
-            return parseFloat(val.replace(/[^0-9.]/g, '')) || 0;
-        }
-
-        // جلب البيانات من جدول بيانات جوجل
         async function fetchPrices() {
             try {
-                const response = await fetch(sheetURL + '&t=' + new Date().getTime()); // إلغاء التخزين المؤقت
+                const response = await fetch(sheetURL + '&cache=' + new Date().getTime());
                 const data = await response.text();
+                
+                // تفكيك السطور والأعمدة
                 const rows = data.split('\n').map(row => row.split(','));
 
-                // أخذ الأسعار من الأسطر (العمود الثاني)
-                const usdStr = rows[1]?.[1]?.trim() || "0";
-                const eurStr = rows[2]?.[1]?.trim() || "0";
-                const goldStr = rows[3]?.[1]?.trim() || "0";
-                const tryStr = rows[4]?.[1]?.trim() || "0";
+                // أخذ القيم بالترتيب من الشيت الخاص بك:
+                const usdDam = rows[1]?.[1]?.trim() || "0"; // السطر 2: دولار دمشق
+                const usdAlep = rows[2]?.[1]?.trim() || "0"; // السطر 3: دولار حلب
+                const eurDam = rows[3]?.[1]?.trim() || "0";  // السطر 4: يورو دمشق
+                const gold21 = rows[4]?.[1]?.trim() || "0";  // السطر 5: ذهب عيار 21
 
-                // تحديث قيم المتغيرات للحاسبة
-                if (parsePrice(usdStr) > 0) rates.USD = parsePrice(usdStr);
-                if (parsePrice(eurStr) > 0) rates.EUR = parsePrice(eurStr);
-                if (parsePrice(tryStr) > 0) rates.TRY = parsePrice(tryStr);
+                // تحديث القيم للحاسبة
+                usdPrice = parseFloat(usdDam) || 13800;
+                eurPrice = parseFloat(eurDam) || 16100;
 
-                // تحديث واجهة الشريط العلوي
-                document.getElementById('tickUsd').innerText = usdStr + ' ل.س';
-                document.getElementById('tickEur').innerText = eurStr + ' ل.س';
-                document.getElementById('tickGold').innerText = goldStr + ' ل.س';
-                document.getElementById('tickTry').innerText = tryStr + ' ل.س';
+                // تحديث الشريط العلوي
+                document.getElementById('tickUsdDam').innerText = usdDam + ' ل.س';
+                document.getElementById('tickUsdAlep').innerText = usdAlep + ' ل.س';
+                document.getElementById('tickEur').innerText = eurDam + ' ل.س';
+                document.getElementById('tickGold21').innerText = gold21 + ' ل.س';
 
-                // تحديث الشاشة الرئيسية والحاسبة
-                document.getElementById('chartPriceDisplay').innerText = usdStr + ' L.S';
-                
-                // تحديث آخر نقطة في الرسم البياني بسعر الدولار الحالي
-                priceChart.data.datasets[0].data[5] = rates.USD;
+                document.getElementById('chartPriceDisplay').innerText = usdDam + ' ل.س';
+                priceChart.data.datasets[0].data[5] = usdPrice;
                 priceChart.update();
+
+                // بناء جدول السلع والمواد تلقائياً من باقي السطور
+                let tableHtml = '';
+                for (let i = 1; i < rows.length; i++) {
+                    const itemName = rows[i]?.[0]?.trim();
+                    const itemPrice = rows[i]?.[1]?.trim();
+                    const itemChange = rows[i]?.[2]?.trim() || '0';
+
+                    if (itemName && itemPrice) {
+                        let changeColor = '#333';
+                        if (parseFloat(itemChange) > 0) changeColor = '#2ec4b6';
+                        else if (parseFloat(itemChange) < 0) changeColor = '#e63946';
+
+                        tableHtml += `
+                            <tr>
+                                <td><b>${itemName}</b></td>
+                                <td>${itemPrice}</td>
+                                <td style="color: ${changeColor}; font-weight:bold;">${itemChange}</td>
+                            </tr>
+                        `;
+                    }
+                }
+                document.getElementById('fullItemsTable').innerHTML = tableHtml;
 
                 calculateExchange();
 
             } catch (error) {
-                console.log('جاري تحديث الأسعار...');
+                console.log('جاري المزامنة...');
             }
         }
 
         fetchPrices();
-        setInterval(fetchPrices, 15000); // تحديث القراءة كل 15 ثانية
+        setInterval(fetchPrices, 15000);
     </script>
 </body>
 </html>

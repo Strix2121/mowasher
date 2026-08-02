@@ -140,9 +140,7 @@
             transition: transform 0.2s ease, border-color 0.2s ease;
         }
 
-        .card:hover {
-            border-color: rgba(59, 130, 246, 0.3);
-        }
+        .card:hover { border-color: rgba(59, 130, 246, 0.3); }
 
         .price-row {
             display: flex;
@@ -257,7 +255,7 @@
         .btn-danger { background: linear-gradient(135deg, #f43f5e, #e11d48); box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3); }
         .btn-del { background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
 
-        /* الشريط السفلي العائم (Floating Bottom Nav) */
+        /* الشريط السفلي العائم */
         .bottom-nav {
             position: fixed;
             bottom: 12px;
@@ -328,23 +326,37 @@
         <div class="section-title">🛒 السلع والغذائيات</div>
         <div class="card" id="goods-card"><div>جاري تحميل البيانات...</div></div>
 
-        <div class="section-title">🧮 حاسبة التحويل المباشر</div>
+        <div class="section-title">🧮 حاسبة التحويل المباشر والذكي</div>
         <div class="card calc-box">
             <div class="input-group">
                 <label>المبلغ المراد تحويله:</label>
                 <input type="number" id="amount" value="100" placeholder="أدخل المبلغ...">
             </div>
-            <div class="input-group">
-                <label>نوع التحويل:</label>
-                <select id="calc-type">
-                    <option value="usd-to-syp">دولار ($) ➔ ليرة سورية (L.S)</option>
-                    <option value="syp-to-usd">ليرة سورية (L.S) ➔ دولار ($)</option>
-                    <option value="eur-to-syp">يورو (€) ➔ ليرة سورية (L.S)</option>
-                    <option value="syp-to-eur">ليرة سورية (L.S) ➔ يورو (€)</option>
-                    <option value="try-to-syp">ليرة تركية (TL) ➔ ليرة سورية (L.S)</option>
-                    <option value="gold-21">سعر غرام الذهب عيار 21</option>
-                </select>
+            
+            <div style="display: flex; gap: 10px;">
+                <div class="input-group" style="flex: 1;">
+                    <label>من (العملة الأولى):</label>
+                    <select id="from-currency">
+                        <option value="USD">دولار أمريكي ($)</option>
+                        <option value="EUR">يورو (€)</option>
+                        <option value="TRY">ليرة تركية (TL 🇹🇷)</option>
+                        <option value="SYP" selected>ليرة سورية (L.S)</option>
+                        <option value="GOLD21">جرام ذهب عيار 21 🧈</option>
+                    </select>
+                </div>
+
+                <div class="input-group" style="flex: 1;">
+                    <label>إلى (العملة الثانية):</label>
+                    <select id="to-currency">
+                        <option value="SYP" selected>ليرة سورية (L.S)</option>
+                        <option value="USD">دولار أمريكي ($)</option>
+                        <option value="EUR">يورو (€)</option>
+                        <option value="TRY">ليرة تركية (TL 🇹🇷)</option>
+                        <option value="GOLD21">جرام ذهب عيار 21 🧈</option>
+                    </select>
+                </div>
             </div>
+
             <div class="calc-result" id="calc-output">جاري الحساب...</div>
         </div>
     </div>
@@ -580,8 +592,16 @@
                             <div class="item-info"><span>${getItemIcon(item.title)}</span><b>${item.title}</b></div>
                             <div style="text-align:left;"><div class="item-price">${priceNum.toLocaleString('ar-SY')} ل.س</div><span class="change-tag neutral">${item.subtitle || '0'}</span></div>
                         </div>`;
-                    if (item.category === 'currency') { currencyHTML += rowHTML; if (item.title.includes('دولار')) currentPrices.usd = priceNum; }
-                    else if (item.category === 'gold') { goldHTML += rowHTML; if (item.title.includes('21')) currentPrices.gold21 = priceNum; }
+                    if (item.category === 'currency') { 
+                        currencyHTML += rowHTML; 
+                        if (item.title.includes('دولار')) currentPrices.usd = priceNum;
+                        if (item.title.includes('يورو')) currentPrices.eur = priceNum;
+                        if (item.title.includes('تركية') || item.title.includes('تركيا') || item.title.includes('TL')) currentPrices.tryLira = priceNum;
+                    }
+                    else if (item.category === 'gold') { 
+                        goldHTML += rowHTML; 
+                        if (item.title.includes('21')) currentPrices.gold21 = priceNum; 
+                    }
                     else if (item.category === 'fuel') fuelHTML += rowHTML;
                     else goodsHTML += rowHTML;
                 });
@@ -589,6 +609,7 @@
                 document.getElementById('gold-card').innerHTML = goldHTML || 'لا توجد بيانات.';
                 document.getElementById('fuel-card').innerHTML = fuelHTML || 'لا توجد بيانات.';
                 document.getElementById('goods-card').innerHTML = goodsHTML || 'لا توجد بيانات.';
+                calculate();
             });
 
             db.collection("pharmacies").onSnapshot((snapshot) => {
@@ -628,7 +649,7 @@
             });
         }
 
-function getItemIcon(name) {
+        function getItemIcon(name) {
             if (!name) return '📊';
             if (name.includes('دولار')) return '💵';
             if (name.includes('يورو')) return '💶';
@@ -641,20 +662,57 @@ function getItemIcon(name) {
             return '🛒';
         }
 
+        // عناصر الحاسبة الذكية
         const amountInput = document.getElementById('amount');
-        const calcType = document.getElementById('calc-type');
+        const fromCurrency = document.getElementById('from-currency');
+        const toCurrency = document.getElementById('to-currency');
         const calcOutput = document.getElementById('calc-output');
 
         function calculate() {
-            const val = parseFloat(amountInput.value) || 0;
-            const type = calcType.value;
-            if (type === 'usd-to-syp') calcOutput.innerText = `${(val * currentPrices.usd).toLocaleString('ar-SY')} ليرة سورية`;
-            else if (type === 'syp-to-usd') calcOutput.innerText = `$ ${(val / currentPrices.usd).toFixed(2)} دولار`;
-            else if (type === 'gold-21') calcOutput.innerText = `${(val * currentPrices.gold21).toLocaleString('ar-SY')} ليرة سورية`;
+            const amount = parseFloat(amountInput.value) || 0;
+            const from = fromCurrency.value;
+            const to = toCurrency.value;
+
+            if (amount <= 0) {
+                calcOutput.innerText = "0";
+                return;
+            }
+
+            const ratesInSYP = {
+                'SYP': 1,
+                'USD': currentPrices.usd || 13800,
+                'EUR': currentPrices.eur || 16100,
+                'TRY': currentPrices.tryLira || 420,
+                'GOLD21': currentPrices.gold21 || 980000
+            };
+
+            const amountInSYP = amount * ratesInSYP[from];
+            const finalResult = amountInSYP / ratesInSYP[to];
+
+            let formattedResult = "";
+            if (to === 'SYP' || to === 'GOLD21') {
+                formattedResult = `${Math.round(finalResult).toLocaleString('ar-SY')} ${getCurrencySymbol(to)}`;
+            } else {
+                formattedResult = `${finalResult.toFixed(2)} ${getCurrencySymbol(to)}`;
+            }
+
+            calcOutput.innerText = formattedResult;
+        }
+
+        function getCurrencySymbol(code) {
+            switch(code) {
+                case 'USD': return '$';
+                case 'EUR': return '€';
+                case 'TRY': return 'TL 🇹🇷';
+                case 'SYP': return 'ل.س';
+                case 'GOLD21': return 'غرام ذهب';
+                default: return '';
+            }
         }
 
         amountInput.addEventListener('input', calculate);
-        calcType.addEventListener('change', calculate);
+        fromCurrency.addEventListener('change', calculate);
+        toCurrency.addEventListener('change', calculate);
 
         checkSecretRoute();
         listenAllSections();

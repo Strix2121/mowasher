@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مُؤشّر | منصة الأسعار والخدمات الشاملة</title>
+    <title>مُؤشّر | منصة الأسعار والخدمات المباشرة</title>
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#0f172a">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -76,9 +76,9 @@
         .btn-action { background-color: var(--accent-blue); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .btn-danger { background-color: var(--accent-red); }
 
-        /* الشريط السفلي */
+        /* الشريط السفلي العادي (لا يحتوي على أيقونة الإدارة) */
         .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: #1e293b; border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; max-width: 600px; margin: 0 auto; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-secondary); text-decoration: none; font-size: 0.7rem; cursor: pointer; transition: 0.2s; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-secondary); text-decoration: none; font-size: 0.75rem; cursor: pointer; transition: 0.2s; }
         .nav-item .icon { font-size: 1.2rem; }
         .nav-item.active { color: var(--accent-blue); font-weight: bold; }
     </style>
@@ -87,7 +87,7 @@
 
     <header>
         <div class="logo">📈 مُؤشّر <span>سوري</span></div>
-        <div class="tagline">منصة الأسعار والخدمات المباشرة من Firebase</div>
+        <div class="tagline">منصة الأسعار والخدمات المباشرة</div>
         <div class="status-bar">
             <div><span class="live-dot"></span> متصل مباشرة بالخادم</div>
             <div id="last-update">جاري التحميل...</div>
@@ -124,11 +124,11 @@
         </div>
     </div>
 
-    <!-- 2. صفحة لوحة التحكم (Admin Panel الآمنة) -->
+    <!-- 2. صفحة لوحة التحكم السرية والمخفية (تفتح فقط بالرابط السري) -->
     <div id="page-admin" class="page-content">
-        <div class="section-title">🔒 لوحة التحكم الآمنة للإدارة</div>
+        <div class="section-title">🔒 لوحة تحكم الإدارة (السرية)</div>
         
-        <!-- تسجيل الدخول بالبريد وكلمة السر -->
+        <!-- تسجيل الدخول -->
         <div class="card" id="login-box">
             <div class="admin-form">
                 <div class="input-group">
@@ -139,11 +139,11 @@
                     <label>كلمة السر:</label>
                     <input type="password" id="adminPass" placeholder="••••••••">
                 </div>
-                <button class="btn-action" onclick="loginAdmin()">تسجيل الدخول الآمن 🔑</button>
+                <button class="btn-action" onclick="loginAdmin()">تسجيل الدخول 🔑</button>
             </div>
         </div>
 
-        <!-- لوحة التعديل (تظهر فقط بعد تسجيل الدخول الناجح) -->
+        <!-- لوحة التعديل -->
         <div class="card" id="admin-panel" style="display: none;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                 <h3 style="color: var(--accent-gold); margin:0;">تحديث الأسعار في قاعدة البيانات</h3>
@@ -176,15 +176,11 @@
         </div>
     </div>
 
-    <!-- الشريط السفلي -->
+    <!-- الشريط السفلي للعملاء العاديين فقط -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="showPage('prices', this)">
             <span class="icon">📈</span>
             <span>الأسعار</span>
-        </div>
-        <div class="nav-item" onclick="showPage('admin', this)">
-            <span class="icon">🔒</span>
-            <span>التحكم</span>
         </div>
     </div>
 
@@ -204,7 +200,16 @@
 
         let currentPrices = { usd: 13800, eur: 16100, gold21: 980000 };
 
-        // متابعة حالة تسجيل الدخول
+        // فحص الرابط السري عند فتح الموقع تلقائياً
+        function checkSecretRoute() {
+            if (window.location.hash === '#admin') {
+                showPage('admin');
+            }
+        }
+
+        // الاستماع لتغير الرابط بالمتصفح
+        window.addEventListener('hashchange', checkSecretRoute);
+
         auth.onAuthStateChanged((user) => {
             if (user) {
                 document.getElementById('login-box').style.display = 'none';
@@ -217,25 +222,26 @@
 
         function showPage(pageId, element) {
             document.querySelectorAll('.page-content').forEach(page => page.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            if(element) {
+                document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                element.classList.add('active');
+            }
             
             document.getElementById('page-' + pageId).classList.add('active');
-            element.classList.add('active');
             window.scrollTo(0, 0);
         }
 
-        // تسجيل الدخول الحقيقي عبر Firebase
         function loginAdmin() {
             const email = document.getElementById('adminEmail').value;
             const pass = document.getElementById('adminPass').value;
 
             auth.signInWithEmailAndPassword(email, pass)
-                .then(() => alert("تم تسجيل الدخول الآمن بنجاح!"))
-                .catch(error => alert("خطأ في تسجيل الدخول: " + error.message));
+                .then(() => alert("تم تسجيل الدخول بنجاح!"))
+                .catch(error => alert("خطأ في بيانات الدخول: " + error.message));
         }
 
         function logoutAdmin() {
-            auth.signOut().then(() => alert("تم تسجيل الخروج بنجاح."));
+            auth.signOut().then(() => alert("تم تسجيل الخروج."));
         }
 
         function saveItemToFirebase() {
@@ -259,7 +265,7 @@
                 alert("تم تحديث السعر بنجاح!");
                 document.getElementById('itemName').value = '';
                 document.getElementById('itemPrice').value = '';
-            }).catch(error => alert("غير مصرح لك بالتعديل: " + error.message));
+            }).catch(error => alert("خطأ في الحفظ: " + error.message));
         }
 
         function listenToLivePrices() {
@@ -326,6 +332,7 @@
         amountInput.addEventListener('input', calculate);
         calcType.addEventListener('change', calculate);
 
+        checkSecretRoute();
         listenToLivePrices();
     </script>
 </body>

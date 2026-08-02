@@ -116,19 +116,19 @@
     <div class="top-ticker" id="topTicker">
         <div class="ticker-item">
             <span class="ticker-title">الدولار / ليرة</span>
-            <span class="ticker-value" id="tickUsd">---</span>
+            <span class="ticker-value" id="tickUsd">جاري التحميل...</span>
         </div>
         <div class="ticker-item">
             <span class="ticker-title">اليورو / ليرة</span>
-            <span class="ticker-value" id="tickEur">---</span>
+            <span class="ticker-value" id="tickEur">جاري التحميل...</span>
         </div>
         <div class="ticker-item">
             <span class="ticker-title">غرام الذهب (21)</span>
-            <span class="ticker-value" id="tickGold">---</span>
+            <span class="ticker-value" id="tickGold">جاري التحميل...</span>
         </div>
         <div class="ticker-item">
             <span class="ticker-title">التركية / ليرة</span>
-            <span class="ticker-value" id="tickTry">---</span>
+            <span class="ticker-value" id="tickTry">جاري التحميل...</span>
         </div>
     </div>
 
@@ -143,7 +143,7 @@
                         <h2 style="margin:0;">الدولار الأمريكي (USD)</h2>
                         <small style="color: gray;">التحديث المباشر للأسعار</small>
                     </div>
-                    <div class="price-badge" id="chartPriceDisplay">0 L.S</div>
+                    <div class="price-badge" id="chartPriceDisplay">-- L.S</div>
                 </div>
                 <!-- الرسم البياني -->
                 <canvas id="priceChart" height="150"></canvas>
@@ -161,6 +161,8 @@
                 <label>من:</label>
                 <select id="convertFrom" onchange="calculateExchange()">
                     <option value="USD">دولار أمريكي ($)</option>
+                    <option value="EUR">يورو (€)</option>
+                    <option value="TRY">ليرة تركية (TL)</option>
                     <option value="SYP">ليرة سورية (L.S)</option>
                 </select>
 
@@ -168,6 +170,8 @@
                 <select id="convertTo" onchange="calculateExchange()">
                     <option value="SYP">ليرة سورية (L.S)</option>
                     <option value="USD">دولار أمريكي ($)</option>
+                    <option value="EUR">يورو (€)</option>
+                    <option value="TRY">ليرة تركية (TL)</option>
                 </select>
 
                 <div class="result-box" id="convertResult">
@@ -179,10 +183,15 @@
     </div>
 
     <script>
-        // رابط جوجل شيت المباشر الخاص بك
+        // رابط نشر جوجل شيت الخاص بك صيغة CSV
         const sheetURL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT9-T_A5Nf_E6e1G8C2mOaGfD54OaU4gG1e5z6N8v_3W9wB8R4W_rL/pub?output=csv';
 
-        let currentUsdPrice = 15000; // قيمة افتراضية حتى التحميل
+        // قيم أولية للأسعار
+        let rates = {
+            USD: 15000,
+            EUR: 16200,
+            TRY: 450
+        };
 
         // رسم بياني تفاعلي باستخدام Chart.js
         const ctx = document.getElementById('priceChart').getContext('2d');
@@ -205,56 +214,80 @@
             }
         });
 
-        // حاسبة التحويل
+        // حاسبة التحويل المتقدمة
         function calculateExchange() {
             const amount = parseFloat(document.getElementById('convertAmount').value) || 0;
             const from = document.getElementById('convertFrom').value;
             const to = document.getElementById('convertTo').value;
             let result = 0;
 
-            if (from === 'USD' && to === 'SYP') {
-                result = amount * currentUsdPrice;
-                document.getElementById('convertResult').innerText = result.toLocaleString() + ' L.S';
-            } else if (from === 'SYP' && to === 'USD') {
-                result = amount / currentUsdPrice;
-                document.getElementById('convertResult').innerText = result.toFixed(2) + ' $';
+            // تحويل المبلغ أولاً إلى الليرة السورية
+            let amountInSyp = 0;
+            if (from === 'SYP') amountInSyp = amount;
+            else if (from === 'USD') amountInSyp = amount * rates.USD;
+            else if (from === 'EUR') amountInSyp = amount * rates.EUR;
+            else if (from === 'TRY') amountInSyp = amount * rates.TRY;
+
+            // تحويل من الليرة السورية إلى العملة المطلوبة
+            if (to === 'SYP') result = amountInSyp;
+            else if (to === 'USD') result = amountInSyp / rates.USD;
+            else if (to === 'EUR') result = amountInSyp / rates.EUR;
+            else if (to === 'TRY') result = amountInSyp / rates.TRY;
+
+            // عرض النتيجة
+            if (to === 'SYP') {
+                document.getElementById('convertResult').innerText = Math.round(result).toLocaleString() + ' L.S';
             } else {
-                document.getElementById('convertResult').innerText = amount.toLocaleString();
+                document.getElementById('convertResult').innerText = result.toFixed(2) + ' ' + to;
             }
         }
 
-        // جلب البيانات وتحديث الصفحة
+        // تنظيف النصوص وتحويلها إلى أرقام
+        function parsePrice(val) {
+            if (!val) return 0;
+            return parseFloat(val.replace(/[^0-9.]/g, '')) || 0;
+        }
+
+        // جلب البيانات من جدول بيانات جوجل
         async function fetchPrices() {
             try {
-                const response = await fetch(sheetURL);
+                const response = await fetch(sheetURL + '&t=' + new Date().getTime()); // إلغاء التخزين المؤقت
                 const data = await response.text();
                 const rows = data.split('\n').map(row => row.split(','));
 
-                // افترضنا ترتيب الأسطر في شيت جوجل (يمكن تعديل الأرقام حسب ملفك)
-                const usd = rows[1]?.[1] || "15000";
-                const eur = rows[2]?.[1] || "16200";
-                const gold = rows[3]?.[1] || "950000";
-                const tryLira = rows[4]?.[1] || "450";
+                // أخذ الأسعار من الأسطر (العمود الثاني)
+                const usdStr = rows[1]?.[1]?.trim() || "0";
+                const eurStr = rows[2]?.[1]?.trim() || "0";
+                const goldStr = rows[3]?.[1]?.trim() || "0";
+                const tryStr = rows[4]?.[1]?.trim() || "0";
 
-                currentUsdPrice = parseFloat(usd.replace(/[^0-9.]/g, '')) || 15000;
+                // تحديث قيم المتغيرات للحاسبة
+                if (parsePrice(usdStr) > 0) rates.USD = parsePrice(usdStr);
+                if (parsePrice(eurStr) > 0) rates.EUR = parsePrice(eurStr);
+                if (parsePrice(tryStr) > 0) rates.TRY = parsePrice(tryStr);
 
-                // تحديث الشريط العلوي
-                document.getElementById('tickUsd').innerText = usd + ' ل.س';
-                document.getElementById('tickEur').innerText = eur + ' ل.س';
-                document.getElementById('tickGold').innerText = gold + ' ل.س';
-                document.getElementById('tickTry').innerText = tryLira + ' ل.س';
+                // تحديث واجهة الشريط العلوي
+                document.getElementById('tickUsd').innerText = usdStr + ' ل.س';
+                document.getElementById('tickEur').innerText = eurStr + ' ل.س';
+                document.getElementById('tickGold').innerText = goldStr + ' ل.س';
+                document.getElementById('tickTry').innerText = tryStr + ' ل.س';
 
-                // تحديث الشاشة والحاسبة
-                document.getElementById('chartPriceDisplay').innerText = usd + ' L.S';
+                // تحديث الشاشة الرئيسية والحاسبة
+                document.getElementById('chartPriceDisplay').innerText = usdStr + ' L.S';
+                
+                // تحديث آخر نقطة في الرسم البياني بسعر الدولار الحالي
+                priceChart.data.datasets[0].data[5] = rates.USD;
+                priceChart.update();
+
                 calculateExchange();
 
-            </div> catch (error) {
-                console.log('جاري التحديث...');
+            } catch (error) {
+                console.log('جاري تحديث الأسعار...');
             }
         }
 
         fetchPrices();
-        setInterval(fetchPrices, 30000); // تحديث كل 30 ثانية تلقائياً
+        setInterval(fetchPrices, 15000); // تحديث القراءة كل 15 ثانية
     </script>
 </body>
 </html>

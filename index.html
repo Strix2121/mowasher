@@ -127,7 +127,12 @@
 
         .item-info {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .item-icon {
+            font-size: 1.2rem;
         }
 
         .item-name {
@@ -243,8 +248,8 @@
         <div style="text-align: center; color: var(--text-secondary);">جاري جلب الأسعار...</div>
     </div>
 
-    <!-- أسعار الذهب -->
-    <div class="section-title">🏆 أسعار الذهب (الأسواق المحلية)</div>
+    <!-- أسعار الذهب (تم التغيير إلى أيقونة سبيكة الذهب 🧈) -->
+    <div class="section-title">🧈 أسعار الذهب (الأسواق المحلية)</div>
     <div class="card" id="gold-card">
         <div style="text-align: center; color: var(--text-secondary);">جاري جلب الأسعار...</div>
     </div>
@@ -261,7 +266,7 @@
         <div style="text-align: center; color: var(--text-secondary);">جاري جلب الأسعار...</div>
     </div>
 
-    <!-- حاسبة سريعة -->
+    <!-- حاسبة سريعة متطورة للتحويل المباشر -->
     <div class="section-title">🧮 حاسبة التحويل السريع</div>
     <div class="card calc-box">
         <div class="input-group">
@@ -271,8 +276,13 @@
         <div class="input-group">
             <label for="calc-type">نوع التحويل:</label>
             <select id="calc-type">
-                <option value="usd-to-syp">دولار إلى ليرة سورية</option>
-                <option value="syp-to-usd">ليرة سورية إلى دولار</option>
+                <option value="usd-to-syp">دولار ($) ➔ ليرة سورية (L.S)</option>
+                <option value="syp-to-usd">ليرة سورية (L.S) ➔ دولار ($)</option>
+                <option value="eur-to-syp">يورو (€) ➔ ليرة سورية (L.S)</option>
+                <option value="syp-to-eur">ليرة سورية (L.S) ➔ يورو (€)</option>
+                <option value="eur-to-usd">يورو (€) ➔ دولار ($)</option>
+                <option value="usd-to-eur">دولار ($) ➔ يورو (€)</option>
+                <option value="try-to-syp">ليرة تركية (TL) ➔ ليرة سورية (L.S)</option>
                 <option value="gold-21">حساب سعر غرام الذهب عيار 21</option>
             </select>
         </div>
@@ -290,7 +300,9 @@
         const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRPAv9djuSqXC3mwWdGS0kVRloxLY_xtmZ7s_RN_47G3ERC98LtP2isMvNtLqc5q_e_V0AJyKJcNZI-/pub?output=csv';
 
         let currentPrices = {
-            usd: 14800,
+            usd: 13800,
+            eur: 16100,
+            tryLira: 420,
             gold21: 980000
         };
 
@@ -302,8 +314,8 @@
                 if (parts.length >= 3) {
                     result.push({
                         name: parts[0],
-                        price: parts[1],  // العمود B هو السعر الحقيقي
-                        change: parts[2]  // العمود C هو التغير
+                        price: parts[1],
+                        change: parts[2]
                     });
                 }
             }
@@ -328,6 +340,17 @@
             }
         }
 
+        function getItemIcon(name) {
+            if (name.includes('دولار')) return '💵';
+            if (name.includes('يورو')) return '💶';
+            if (name.includes('تركية')) return '🇹🇷';
+            if (name.includes('ذهب') || name.includes('ليرة ذهبية')) return '🧈'; // سبيكة ذهب
+            if (name.includes('بنزين') || name.includes('مازوت')) return '⛽';
+            if (name.includes('غاز')) return '🔥';
+            if (name.includes('أنبير') || name.includes('كهرباء')) return '⚡';
+            return '🛒';
+        }
+
         async function fetchLivePrices() {
             try {
                 const response = await fetch(CSV_URL + '&t=' + new Date().getTime());
@@ -340,11 +363,12 @@
                 let goodsHTML = '';
 
                 items.forEach(item => {
-                    const priceNum = parseFloat(item.price) || 0;
+                    const priceNum = parseFloat(item.price.replace(/[^0-9.]/g, '')) || 0;
                     
                     const rowHTML = `
                         <div class="price-row">
                             <div class="item-info">
+                                <span class="item-icon">${getItemIcon(item.name)}</span>
                                 <span class="item-name">${item.name}</span>
                             </div>
                             <div class="item-price-group">
@@ -355,13 +379,15 @@
                     `;
 
                     const name = item.name;
-                    if (name.includes('دولار') || name.includes('يورو')) {
+                    if (name.includes('دولار') || name.includes('يورو') || name.includes('تركية')) {
                         currencyHTML += rowHTML;
-                        if (name.includes('دولار دمشق')) currentPrices.usd = priceNum || 14800;
+                        if (name.includes('دولار دمشق') || name.includes('دولار')) currentPrices.usd = priceNum || currentPrices.usd;
+                        if (name.includes('يورو')) currentPrices.eur = priceNum || currentPrices.eur;
+                        if (name.includes('تركية')) currentPrices.tryLira = priceNum || currentPrices.tryLira;
                     } else if (name.includes('ذهب') || name.includes('ليرة ذهبية')) {
                         goldHTML += rowHTML;
-                        if (name.includes('عيار 21')) currentPrices.gold21 = priceNum || 980000;
-                    } else if (name.includes('بنزين') || name.includes('مازوت') || name.includes('غاز') || name.includes('كهرباء') || name.includes('طاقة')) {
+                        if (name.includes('عيار 21')) currentPrices.gold21 = priceNum || currentPrices.gold21;
+                    } else if (name.includes('بنزين') || name.includes('مازوت') || name.includes('غاز') || name.includes('كهرباء') || name.includes('أنبير')) {
                         fuelHTML += rowHTML;
                     } else {
                         goodsHTML += rowHTML;
@@ -389,18 +415,30 @@
         function calculate() {
             const val = parseFloat(amountInput.value) || 0;
             const type = calcType.value;
+
             const usdRate = currentPrices.usd;
+            const eurRate = currentPrices.eur;
+            const tryRate = currentPrices.tryLira;
             const gold21Rate = currentPrices.gold21;
 
             if (type === 'usd-to-syp') {
-                const total = (val * usdRate).toLocaleString('ar-SY');
-                calcOutput.innerText = `${total} ليرة سورية`;
+                calcOutput.innerText = `${(val * usdRate).toLocaleString('ar-SY')} ليرة سورية`;
             } else if (type === 'syp-to-usd') {
-                const total = (val / usdRate).toFixed(2);
-                calcOutput.innerText = `$ ${total} دولار`;
+                calcOutput.innerText = `$ ${(val / usdRate).toFixed(2)} دولار`;
+            } else if (type === 'eur-to-syp') {
+                calcOutput.innerText = `${(val * eurRate).toLocaleString('ar-SY')} ليرة سورية`;
+            } else if (type === 'syp-to-eur') {
+                calcOutput.innerText = `€ ${(val / eurRate).toFixed(2)} يورو`;
+            } else if (type === 'eur-to-usd') {
+                const inUsd = (val * eurRate) / usdRate;
+                calcOutput.innerText = `$ ${inUsd.toFixed(2)} دولار`;
+            } else if (type === 'usd-to-eur') {
+                const inEur = (val * usdRate) / eurRate;
+                calcOutput.innerText = `€ ${inEur.toFixed(2)} يورو`;
+            } else if (type === 'try-to-syp') {
+                calcOutput.innerText = `${(val * tryRate).toLocaleString('ar-SY')} ليرة سورية`;
             } else if (type === 'gold-21') {
-                const total = (val * gold21Rate).toLocaleString('ar-SY');
-                calcOutput.innerText = `${total} ليرة سورية`;
+                calcOutput.innerText = `${(val * gold21Rate).toLocaleString('ar-SY')} ليرة سورية`;
             }
         }
 

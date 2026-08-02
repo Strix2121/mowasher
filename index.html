@@ -51,7 +51,7 @@
         .page-content { display: none; }
         .page-content.active { display: block; }
 
-        .section-title { font-size: 1rem; font-weight: 700; margin: 15px 0 10px; display: flex; align-items: center; gap: 8px; }
+        .section-title { font-size: 1rem; font-weight: 700; margin: 15px 0 10px; display: flex; align-items: center; gap: 8px; color: var(--text-primary); }
         .card { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
 
         .price-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed var(--card-border); }
@@ -71,12 +71,12 @@
         .input-group input, .input-group select { background-color: var(--bg-color); border: 1px solid var(--card-border); color: var(--text-primary); padding: 9px; border-radius: 8px; font-size: 0.95rem; outline: none; }
         .calc-result { background: rgba(59, 130, 246, 0.15); border: 1px solid var(--accent-blue); border-radius: 8px; padding: 10px; text-align: center; font-weight: 700; font-size: 1.1rem; color: #60a5fa; }
 
-        /* دليل الصيدليات والمحلات */
+        /* الدليل والخدمات */
         .list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--card-border); }
         .list-item:last-child { border-bottom: none; }
         .btn-call { background-color: var(--accent-green); color: white; text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; }
 
-        /* عناصر التحكم بالحذف والتعديل */
+        /* عناصر لوحة التحكم */
         .admin-form { display: flex; flex-direction: column; gap: 10px; }
         .btn-action { background-color: var(--accent-blue); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .btn-danger { background-color: var(--accent-red); }
@@ -106,16 +106,16 @@
     <!-- 1. صفحة الأسعار والحاسبة (الرئيسية) -->
     <div id="page-prices" class="page-content active">
         <div class="section-title">💵 أسعار الصرف (السوق الموازي)</div>
-        <div class="card" id="currency-card"><div>جاري الجلب...</div></div>
+        <div class="card" id="currency-card"><div>لا توجد بيانات، أضف مواد من لوحة التحكم.</div></div>
 
         <div class="section-title">🧈 أسعار الذهب (المحلي)</div>
-        <div class="card" id="gold-card"><div>جاري الجلب...</div></div>
+        <div class="card" id="gold-card"><div>لا توجد بيانات، أضف مواد من لوحة التحكم.</div></div>
 
         <div class="section-title">⛽ المحروقات والخدمات</div>
-        <div class="card" id="fuel-card"><div>جاري الجلب...</div></div>
+        <div class="card" id="fuel-card"><div>لا توجد بيانات، أضف مواد من لوحة التحكم.</div></div>
 
         <div class="section-title">🛒 السلع والغذائيات</div>
-        <div class="card" id="goods-card"><div>جاري الجلب...</div></div>
+        <div class="card" id="goods-card"><div>لا توجد بيانات، أضف مواد من لوحة التحكم.</div></div>
 
         <div class="section-title">🧮 حاسبة التحويل المباشر</div>
         <div class="card calc-box">
@@ -171,6 +171,9 @@
             <div class="price-row">
                 <div><b>📄 جواز السفر الإلكتروني</b><div style="font-size:0.75rem; color:var(--text-secondary);">الأوراق: الهوية، الصور الشخصية، التسجيل عبر المنصة.</div></div>
             </div>
+            <div class="price-row">
+                <div><b>🏡 تنظيم عقد الإيجار</b><div style="font-size:0.75rem; color:var(--text-secondary);">الأوراق: سند الملكية، الهويات، سند إقامة.</div></div>
+            </div>
         </div>
     </div>
 
@@ -182,10 +185,14 @@
                 <div><b>الإسعاف السريع</b></div>
                 <a href="tel:110" class="btn-call" style="background:#ef4444;">110 🚑</a>
             </div>
+            <div class="list-item">
+                <div><b>الإطفاء</b></div>
+                <a href="tel:113" class="btn-call" style="background:#ef4444;">113 🚒</a>
+            </div>
         </div>
     </div>
 
-    <!-- 6. لوحة تحكم الإدارة (التي تحتوي على Add, Update, Delete) -->
+    <!-- 6. لوحة تحكم الإدارة الشاملة (#admin) -->
     <div id="page-admin" class="page-content">
         <div class="section-title">🔒 لوحة تحكم الإدارة (إضافة - تعديل - حذف)</div>
         
@@ -204,7 +211,7 @@
             </div>
         </div>
 
-        <!-- لوحة الإدارة بعد الدخول -->
+        <!-- لوحة التحكم بالمواد -->
         <div id="admin-panel" style="display: none;">
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -237,10 +244,10 @@
                 </div>
             </div>
 
-            <!-- قائمة العناصر مع أزرار التعديل والحذف -->
-            <div class="section-title">🗑️ إدارة العناصر الحالية (حذف / تعديل)</div>
+            <!-- قائمة العناصر للتحكم بها بالكامل -->
+            <div class="section-title">🗑️ إدارة العناصر الحالية (تعديل / حذف)</div>
             <div class="card" id="admin-items-list">
-                <div>جاري تحميل المواد...</div>
+                <div>جاري تحميل القائمة...</div>
             </div>
         </div>
     </div>
@@ -312,7 +319,6 @@
             auth.signOut().then(() => alert("تم تسجيل الخروج."));
         }
 
-        // إضافة وتعديل عنصر (Add / Update)
         function saveItemToFirebase() {
             const name = document.getElementById('itemName').value.trim();
             const price = parseFloat(document.getElementById('itemPrice').value) || 0;
@@ -331,14 +337,13 @@
                 category: category,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
-                alert("تم حفظ المادة بنجاح!");
+                alert("تم حفظ وتحديث المادة بنجاح!");
                 document.getElementById('itemName').value = '';
                 document.getElementById('itemPrice').value = '';
                 document.getElementById('itemChange').value = '';
             }).catch(error => alert("خطأ في الحفظ: " + error.message));
         }
 
-        // حذف عنصر من قاعدة البيانات (Delete)
         function deleteItem(docId) {
             if (confirm(`هل أنت تأكد من إزالة المادة: "${docId}" نهائياً؟`)) {
                 db.collection("prices").doc(docId).delete().then(() => {
@@ -347,7 +352,6 @@
             }
         }
 
-        // إعداد عنصر للتعديل (Edit)
         function editItem(name, price, change, category) {
             document.getElementById('itemName').value = name;
             document.getElementById('itemPrice').value = price;
@@ -356,7 +360,6 @@
             window.scrollTo(0, 0);
         }
 
-        // تحميل قائمة الإدارة مع أزرار الحذف والتعديل
         function loadAdminItemsList() {
             db.collection("prices").onSnapshot((snapshot) => {
                 let html = '';
@@ -379,7 +382,6 @@
             });
         }
 
-        // جلب واستماع الأسعار للمستخدمين
         function listenToLivePrices() {
             db.collection("prices").onSnapshot((snapshot) => {
                 let currencyHTML = '', goldHTML = '', fuelHTML = '', goodsHTML = '';
@@ -402,6 +404,8 @@
                     if (item.category === 'currency') {
                         currencyHTML += rowHTML;
                         if (item.name.includes('دولار')) currentPrices.usd = item.price;
+                        if (item.name.includes('يورو')) currentPrices.eur = item.price;
+                        if (item.name.includes('تركية')) currentPrices.tryLira = item.price;
                     } else if (item.category === 'gold') {
                         goldHTML += rowHTML;
                         if (item.name.includes('عيار 21')) currentPrices.gold21 = item.price;
@@ -412,10 +416,10 @@
                     }
                 });
 
-                if (currencyHTML) document.getElementById('currency-card').innerHTML = currencyHTML;
-                if (goldHTML) document.getElementById('gold-card').innerHTML = goldHTML;
-                if (fuelHTML) document.getElementById('fuel-card').innerHTML = fuelHTML;
-                if (goodsHTML) document.getElementById('goods-card').innerHTML = goodsHTML;
+                document.getElementById('currency-card').innerHTML = currencyHTML || 'لا توجد عناصر مضافة بعد.';
+                document.getElementById('gold-card').innerHTML = goldHTML || 'لا توجد عناصر مضافة بعد.';
+                document.getElementById('fuel-card').innerHTML = fuelHTML || 'لا توجد عناصر مضافة بعد.';
+                document.getElementById('goods-card').innerHTML = goodsHTML || 'لا توجد عناصر مضافة بعد.';
 
                 const now = new Date();
                 document.getElementById('last-update').innerText = now.toLocaleTimeString('ar-SY', { hour: '2-digit', minute: '2-digit' });
@@ -441,6 +445,9 @@
             const type = calcType.value;
             if (type === 'usd-to-syp') calcOutput.innerText = `${(val * currentPrices.usd).toLocaleString('ar-SY')} ليرة سورية`;
             else if (type === 'syp-to-usd') calcOutput.innerText = `$ ${(val / currentPrices.usd).toFixed(2)} دولار`;
+            else if (type === 'eur-to-syp') calcOutput.innerText = `${(val * currentPrices.eur).toLocaleString('ar-SY')} ليرة سورية`;
+            else if (type === 'syp-to-eur') calcOutput.innerText = `€ ${(val / currentPrices.eur).toFixed(2)} يورو`;
+            else if (type === 'try-to-syp') calcOutput.innerText = `${(val * currentPrices.tryLira).toLocaleString('ar-SY')} ليرة سورية`;
             else if (type === 'gold-21') calcOutput.innerText = `${(val * currentPrices.gold21).toLocaleString('ar-SY')} ليرة سورية`;
         }
 

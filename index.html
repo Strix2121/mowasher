@@ -628,10 +628,16 @@
             });
         }
 
-        function getItemIcon(name) {
+function getItemIcon(name) {
+            if (!name) return '📊';
             if (name.includes('دولار')) return '💵';
             if (name.includes('يورو')) return '💶';
-            if (name.includes('ذهب')) return '🧈';
+            if (name.includes('تركية') || name.includes('تركيا') || name.includes('TL')) return '🇹🇷';
+            if (name.includes('دينار') || name.includes('ريال') || name.includes('درهم')) return '💰';
+            if (name.includes('ليرة')) return '💱';
+            if (name.includes('ذهب') || name.includes('عيار') || name.includes('أونصة')) return '🧈';
+            if (name.includes('بنزين') || name.includes('مازوت') || name.includes('غاز')) return '⛽';
+            if (name.includes('كهرباء') || name.includes('أنبير')) return '⚡';
             return '🛒';
         }
 

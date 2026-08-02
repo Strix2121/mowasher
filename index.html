@@ -28,218 +28,68 @@
             --accent-blue: #3b82f6;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Cairo', sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            padding: 15px 15px 80px 15px; /* مسافة للشريط السفلي */
-            max-width: 600px;
-            margin: 0 auto;
-            line-height: 1.5;
-        }
-
-        header {
-            text-align: center;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--card-border);
-            margin-bottom: 15px;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--accent-blue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-primary); padding: 15px 15px 80px 15px; max-width: 600px; margin: 0 auto; line-height: 1.5; }
+        
+        header { text-align: center; padding: 15px 0; border-bottom: 1px solid var(--card-border); margin-bottom: 15px; }
+        .logo { font-size: 1.8rem; font-weight: 800; color: var(--accent-blue); display: flex; align-items: center; justify-content: center; gap: 8px; }
         .logo span { color: var(--accent-gold); }
-
-        .tagline {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-top: 2px;
-        }
+        .tagline { font-size: 0.8rem; color: var(--text-secondary); margin-top: 2px; }
 
         .status-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            padding: 6px 12px;
-            border-radius: 10px;
-            margin-top: 10px;
-            font-size: 0.75rem;
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2);
+            padding: 6px 12px; border-radius: 10px; margin-top: 10px; font-size: 0.75rem;
         }
-
         .live-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--accent-green);
-            border-radius: 50%;
-            display: inline-block;
-            margin-left: 6px;
-            box-shadow: 0 0 8px var(--accent-green);
+            width: 8px; height: 8px; background-color: var(--accent-green); border-radius: 50%;
+            display: inline-block; margin-left: 6px; box-shadow: 0 0 8px var(--accent-green);
             animation: pulse 1.5s infinite;
         }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
 
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.4; }
-            100% { opacity: 1; }
-        }
-
-        /* التحكم بالصفحات */
         .page-content { display: none; }
         .page-content.active { display: block; }
 
-        .section-title {
-            font-size: 1rem;
-            font-weight: 700;
-            margin: 15px 0 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-primary);
-        }
+        .section-title { font-size: 1rem; font-weight: 700; margin: 15px 0 10px; display: flex; align-items: center; gap: 8px; }
+        .card { background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 14px; padding: 14px; margin-bottom: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); }
 
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 14px;
-            padding: 14px;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-
-        .price-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px dashed var(--card-border);
-        }
-
+        .price-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed var(--card-border); }
         .price-row:last-child { border-bottom: none; }
+        .item-info { display: flex; align-items: center; gap: 8px; }
+        .item-price { font-weight: 700; font-size: 1rem; }
 
-        .item-info {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .item-price {
-            font-weight: 700;
-            font-size: 1rem;
-        }
-
-        .change-tag {
-            font-size: 0.7rem;
-            font-weight: 600;
-            padding: 2px 6px;
-            border-radius: 4px;
-            display: inline-block;
-        }
-
+        .change-tag { font-size: 0.7rem; font-weight: 600; padding: 2px 6px; border-radius: 4px; display: inline-block; }
         .up { color: var(--accent-green); background: rgba(16, 185, 129, 0.1); }
         .down { color: var(--accent-red); background: rgba(239, 68, 68, 0.1); }
         .neutral { color: var(--text-secondary); background: rgba(148, 163, 184, 0.1); }
 
-        /* حاسبة التحويل */
+        /* الحاسبة */
         .calc-box { display: flex; flex-direction: column; gap: 10px; }
         .input-group { display: flex; flex-direction: column; gap: 4px; }
         .input-group label { font-size: 0.75rem; color: var(--text-secondary); }
-        .input-group input, .input-group select {
-            background-color: var(--bg-color);
-            border: 1px solid var(--card-border);
-            color: var(--text-primary);
-            padding: 9px;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            outline: none;
-        }
+        .input-group input, .input-group select { background-color: var(--bg-color); border: 1px solid var(--card-border); color: var(--text-primary); padding: 9px; border-radius: 8px; font-size: 0.95rem; outline: none; }
+        .calc-result { background: rgba(59, 130, 246, 0.15); border: 1px solid var(--accent-blue); border-radius: 8px; padding: 10px; text-align: center; font-weight: 700; font-size: 1.1rem; color: #60a5fa; }
 
-        .calc-result {
-            background: rgba(59, 130, 246, 0.15);
-            border: 1px solid var(--accent-blue);
-            border-radius: 8px;
-            padding: 10px;
-            text-align: center;
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: #60a5fa;
-        }
-
-        /* قائمة الصيدليات والدليل */
-        .list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--card-border);
-        }
+        /* دليل الصيدليات والمحلات */
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--card-border); }
         .list-item:last-child { border-bottom: none; }
-        .btn-call {
-            background-color: var(--accent-green);
-            color: white;
-            text-decoration: none;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
+        .btn-call { background-color: var(--accent-green); color: white; text-decoration: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: bold; }
 
-        /* لوحة التحكم */
+        /* عناصر التحكم بالحذف والتعديل */
         .admin-form { display: flex; flex-direction: column; gap: 10px; }
         .btn-action { background-color: var(--accent-blue); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; }
         .btn-danger { background-color: var(--accent-red); }
+        .btn-edit { background-color: var(--accent-gold); color: #000; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; border: none; cursor: pointer; }
+        .btn-del { background-color: var(--accent-red); color: white; padding: 4px 8px; border-radius: 6px; font-size: 0.75rem; border: none; cursor: pointer; }
 
-        /* شريط التنقل السفلي */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: #1e293b;
-            border-top: 1px solid var(--card-border);
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0;
-            z-index: 1000;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.7rem;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
+        /* الشريط السفلي */
+        .bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; background-color: #1e293b; border-top: 1px solid var(--card-border); display: flex; justify-content: space-around; padding: 8px 0; z-index: 1000; max-width: 600px; margin: 0 auto; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-secondary); text-decoration: none; font-size: 0.7rem; cursor: pointer; transition: 0.2s; }
         .nav-item .icon { font-size: 1.2rem; }
         .nav-item.active { color: var(--accent-blue); font-weight: bold; }
 
-        footer {
-            text-align: center;
-            padding: 15px 0;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-top: 20px;
-        }
+        footer { text-align: center; padding: 15px 0; font-size: 0.75rem; color: var(--text-secondary); margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -293,25 +143,12 @@
         <div class="section-title">🏥 الصيدليات المناوبة اليوم</div>
         <div class="card">
             <div class="list-item">
-                <div>
-                    <b>صيدلية الأمل</b>
-                    <div style="font-size:0.75rem; color:var(--text-secondary);">دمشق - الميدان</div>
-                </div>
+                <div><b>صيدلية الأمل</b><div style="font-size:0.75rem; color:var(--text-secondary);">دمشق - الميدان</div></div>
                 <a href="tel:0110000000" class="btn-call">اتصال 📞</a>
             </div>
             <div class="list-item">
-                <div>
-                    <b>صيدلية الشفاء</b>
-                    <div style="font-size:0.75rem; color:var(--text-secondary);">دمشق - الشعلان</div>
-                </div>
+                <div><b>صيدلية الشفاء</b><div style="font-size:0.75rem; color:var(--text-secondary);">دمشق - الشعلان</div></div>
                 <a href="tel:0110000000" class="btn-call">اتصال 📞</a>
-            </div>
-            <div class="list-item">
-                <div>
-                    <b>صيدلية النور</b>
-                    <div style="font-size:0.75rem; color:var(--text-secondary);">حلب - الجميلية</div>
-                </div>
-                <a href="tel:0210000000" class="btn-call">اتصال 📞</a>
             </div>
         </div>
     </div>
@@ -321,25 +158,8 @@
         <div class="section-title">🏪 دليل المحلات والخدمات</div>
         <div class="card">
             <div class="list-item">
-                <div>
-                    <b>مكتب الفؤاد للصرافة</b>
-                    <div style="font-size:0.75rem; color:var(--text-secondary);">حوالات وصرافة - دمشق</div>
-                </div>
+                <div><b>مكتب الفؤاد للصرافة</b><div style="font-size:0.75rem; color:var(--text-secondary);">حوالات وصرافة - دمشق</div></div>
                 <span class="change-tag neutral">معتمد</span>
-            </div>
-            <div class="list-item">
-                <div>
-                    <b>مجوهرات البركة</b>
-                    <div style="font-size:0.75rem; color:var(--text-secondary);">بيع وشراء الذهب - حلب</div>
-                </div>
-                <span class="change-tag neutral">معتمد</span>
-            </div>
-            <div class="list-item">
-                <div>
-                    <b>مركز الشمس للطاقة</b>
-                    <div style="font-size:0.75rem; color:var(--text-secondary);">صيانة وإنشاء شبكات طاقة</div>
-                </div>
-                <span class="change-tag neutral">خدمات</span>
             </div>
         </div>
     </div>
@@ -349,22 +169,7 @@
         <div class="section-title">📖 دليل الأوراق والمعاملات الحكومية</div>
         <div class="card">
             <div class="price-row">
-                <div>
-                    <b>📄 جواز السفر الإلكتروني</b>
-                    <div style="font-size:0.75rem; color:var(--text-secondary);">الأوراق: الهوية، الصور الشخصية، التسجيل عبر المنصة.</div>
-                </div>
-            </div>
-            <div class="price-row">
-                <div>
-                    <b>🏡 تنظيم عقد الإيجار</b>
-                    <div style="font-size:0.75rem; color:var(--text-secondary);">الأوراق: سند الملكية، الهويات، سند إقامة.</div>
-                </div>
-            </div>
-            <div class="price-row">
-                <div>
-                    <b>🪪 لا حكم عليه (الفيش)</b>
-                    <div style="font-size:0.75rem; color:var(--text-secondary);">الأوراق: البطاقة الشخصية، رسم طابع.</div>
-                </div>
+                <div><b>📄 جواز السفر الإلكتروني</b><div style="font-size:0.75rem; color:var(--text-secondary);">الأوراق: الهوية، الصور الشخصية، التسجيل عبر المنصة.</div></div>
             </div>
         </div>
     </div>
@@ -377,20 +182,12 @@
                 <div><b>الإسعاف السريع</b></div>
                 <a href="tel:110" class="btn-call" style="background:#ef4444;">110 🚑</a>
             </div>
-            <div class="list-item">
-                <div><b>الإطفاء</b></div>
-                <a href="tel:113" class="btn-call" style="background:#ef4444;">113 🚒</a>
-            </div>
-            <div class="list-item">
-                <div><b>طوارئ الكهرباء</b></div>
-                <a href="tel:117" class="btn-call">117 ⚡</a>
-            </div>
         </div>
     </div>
 
-    <!-- 6. لوحة تحكم الإدارة السرية (مخفية لا تظهر إلا بالرابط السري #admin) -->
+    <!-- 6. لوحة تحكم الإدارة (التي تحتوي على Add, Update, Delete) -->
     <div id="page-admin" class="page-content">
-        <div class="section-title">🔒 لوحة تحكم الإدارة السرية</div>
+        <div class="section-title">🔒 لوحة تحكم الإدارة (إضافة - تعديل - حذف)</div>
         
         <!-- تسجيل الدخول -->
         <div class="card" id="login-box">
@@ -407,35 +204,43 @@
             </div>
         </div>
 
-        <!-- لوحة التعديل والتحكم -->
-        <div class="card" id="admin-panel" style="display: none;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                <h3 style="color: var(--accent-gold); margin:0;">تحديث البيانات في Firebase</h3>
-                <button class="btn-action btn-danger" style="padding:4px 8px; font-size:0.75rem;" onclick="logoutAdmin()">خروج 🚪</button>
+        <!-- لوحة الإدارة بعد الدخول -->
+        <div id="admin-panel" style="display: none;">
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <h3 style="color: var(--accent-gold); margin:0;">➕ إضافة / تعديل مادة</h3>
+                    <button class="btn-action btn-danger" style="padding:4px 10px; font-size:0.75rem;" onclick="logoutAdmin()">خروج 🚪</button>
+                </div>
+                <div class="admin-form">
+                    <div class="input-group">
+                        <label>اسم المادة/العملة:</label>
+                        <input type="text" id="itemName" placeholder="مثال: دولار دمشق">
+                    </div>
+                    <div class="input-group">
+                        <label>السعر (ل.س):</label>
+                        <input type="number" id="itemPrice" placeholder="مثال: 13800">
+                    </div>
+                    <div class="input-group">
+                        <label>التغير (مثال: +50 أو -20):</label>
+                        <input type="text" id="itemChange" placeholder="0">
+                    </div>
+                    <div class="input-group">
+                        <label>القسم:</label>
+                        <select id="itemCategory">
+                            <option value="currency">عملات وصرف</option>
+                            <option value="gold">ذهب ومجوهرات</option>
+                            <option value="fuel">محروقات وطاقة</option>
+                            <option value="goods">سلع وغذائيات</option>
+                        </select>
+                    </div>
+                    <button class="btn-action" onclick="saveItemToFirebase()">حفظ / تحديث المادة 🚀</button>
+                </div>
             </div>
-            
-            <div class="admin-form">
-                <div class="input-group">
-                    <label>اسم المادة/العملة:</label>
-                    <input type="text" id="itemName" placeholder="مثال: دولار دمشق">
-                </div>
-                <div class="input-group">
-                    <label>السعر (ل.س):</label>
-                    <input type="number" id="itemPrice" placeholder="مثال: 13800">
-                </div>
-                <div class="input-group">
-                    <label>التغير (مثال: +50 أو -20):</label>
-                    <input type="text" id="itemChange" placeholder="0">
-                </div>
-                <div class="input-group">
-                    <label>القسم:</label>
-                    <select id="itemCategory">
-                        <option value="currency">عملات وصرف</option>
-                        <option value="gold">ذهب ومجوهرات</option>
-                        <option value="fuel">محروقات وطاقة</option>
-                    </select>
-                </div>
-                <button class="btn-action" onclick="saveItemToFirebase()">حفظ التحديث فوراً 🚀</button>
+
+            <!-- قائمة العناصر مع أزرار التعديل والحذف -->
+            <div class="section-title">🗑️ إدارة العناصر الحالية (حذف / تعديل)</div>
+            <div class="card" id="admin-items-list">
+                <div>جاري تحميل المواد...</div>
             </div>
         </div>
     </div>
@@ -444,28 +249,13 @@
         <div>جميع الحقوق محفوظة © 2026 - منصة <strong>مُؤشّر</strong></div>
     </footer>
 
-    <!-- شريط التنقل السفلي (المخصص للزوار فقط) -->
+    <!-- شريط التنقل السفلي -->
     <div class="bottom-nav">
-        <div class="nav-item active" onclick="showPage('prices', this)">
-            <span class="icon">📈</span>
-            <span>الأسعار</span>
-        </div>
-        <div class="nav-item" onclick="showPage('pharmacies', this)">
-            <span class="icon">🏥</span>
-            <span>الصيدليات</span>
-        </div>
-        <div class="nav-item" onclick="showPage('shops', this)">
-            <span class="icon">🏪</span>
-            <span>الدليل</span>
-        </div>
-        <div class="nav-item" onclick="showPage('docs', this)">
-            <span class="icon">📖</span>
-            <span>المعاملات</span>
-        </div>
-        <div class="nav-item" onclick="showPage('services', this)">
-            <span class="icon">⚡</span>
-            <span>الخدمات</span>
-        </div>
+        <div class="nav-item active" onclick="showPage('prices', this)"><span class="icon">📈</span><span>الأسعار</span></div>
+        <div class="nav-item" onclick="showPage('pharmacies', this)"><span class="icon">🏥</span><span>الصيدليات</span></div>
+        <div class="nav-item" onclick="showPage('shops', this)"><span class="icon">🏪</span><span>الدليل</span></div>
+        <div class="nav-item" onclick="showPage('docs', this)"><span class="icon">📖</span><span>المعاملات</span></div>
+        <div class="nav-item" onclick="showPage('services', this)"><span class="icon">⚡</span><span>الخدمات</span></div>
     </div>
 
     <script>
@@ -482,38 +272,30 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRPAv9djuSqXC3mwWdGS0kVRloxLY_xtmZ7s_RN_47G3ERC98LtP2isMvNtLqc5q_e_V0AJyKJcNZI-/pub?output=csv';
-
         let currentPrices = { usd: 13800, eur: 16100, tryLira: 420, gold21: 980000 };
 
-        // فحص الرابط السري للإدارة
         function checkSecretRoute() {
-            if (window.location.hash === '#admin') {
-                showPage('admin');
-            }
+            if (window.location.hash === '#admin') showPage('admin');
         }
-
         window.addEventListener('hashchange', checkSecretRoute);
 
-        // مراقبة حالة تسجيل دخول الأدمن
         auth.onAuthStateChanged((user) => {
             if (user) {
                 document.getElementById('login-box').style.display = 'none';
                 document.getElementById('admin-panel').style.display = 'block';
+                loadAdminItemsList();
             } else {
                 document.getElementById('login-box').style.display = 'block';
                 document.getElementById('admin-panel').style.display = 'none';
             }
         });
 
-        // التنقل بين الصفحات
         function showPage(pageId, element) {
             document.querySelectorAll('.page-content').forEach(page => page.classList.remove('active'));
             if(element) {
                 document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
                 element.classList.add('active');
             }
-            
             document.getElementById('page-' + pageId).classList.add('active');
             window.scrollTo(0, 0);
         }
@@ -521,18 +303,18 @@
         function loginAdmin() {
             const email = document.getElementById('adminEmail').value;
             const pass = document.getElementById('adminPass').value;
-
             auth.signInWithEmailAndPassword(email, pass)
-                .then(() => alert("تم تسجيل الدخول الآمن بنجاح!"))
-                .catch(error => alert("خطأ في بيانات الدخول: " + error.message));
+                .then(() => alert("تم تسجيل الدخول بنجاح!"))
+                .catch(error => alert("خطأ في تسجيل الدخول: " + error.message));
         }
 
         function logoutAdmin() {
-            auth.signOut().then(() => alert("تم تسجيل الخروج بنجاح."));
+            auth.signOut().then(() => alert("تم تسجيل الخروج."));
         }
 
+        // إضافة وتعديل عنصر (Add / Update)
         function saveItemToFirebase() {
-            const name = document.getElementById('itemName').value;
+            const name = document.getElementById('itemName').value.trim();
             const price = parseFloat(document.getElementById('itemPrice').value) || 0;
             const change = document.getElementById('itemChange').value || "0";
             const category = document.getElementById('itemCategory').value;
@@ -549,55 +331,61 @@
                 category: category,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
-                alert("تم تحديث السعر بنجاح في قاعدة البيانات!");
+                alert("تم حفظ المادة بنجاح!");
                 document.getElementById('itemName').value = '';
                 document.getElementById('itemPrice').value = '';
-            }).catch(error => alert("غير مصرح لك بالتعديل: " + error.message));
+                document.getElementById('itemChange').value = '';
+            }).catch(error => alert("خطأ في الحفظ: " + error.message));
         }
 
-        function parseCSV(text) {
-            const lines = text.trim().split('\n');
-            const result = [];
-            for (let i = 1; i < lines.length; i++) {
-                const parts = lines[i].split(',').map(item => item.trim().replace(/^"|"$/g, ''));
-                if (parts.length >= 3) {
-                    result.push({ name: parts[0], price: parts[1], change: parts[2] });
-                }
+        // حذف عنصر من قاعدة البيانات (Delete)
+        function deleteItem(docId) {
+            if (confirm(`هل أنت تأكد من إزالة المادة: "${docId}" نهائياً؟`)) {
+                db.collection("prices").doc(docId).delete().then(() => {
+                    alert("تم حذف المادة بنجاح!");
+                }).catch(error => alert("خطأ في الحذف: " + error.message));
             }
-            return result;
         }
 
-        function getChangeTagHTML(changeStr) {
-            if (!changeStr || changeStr === '0') return '<span class="change-tag neutral">ثابت ➖</span>';
-            const cleanStr = changeStr.toString().trim();
-            if (cleanStr.startsWith('+')) return `<span class="change-tag up">${cleanStr} ▲</span>`;
-            if (cleanStr.startsWith('-')) return `<span class="change-tag down">${cleanStr} ▼</span>`;
-            if (parseFloat(cleanStr) > 0) return `<span class="change-tag up">+${cleanStr} ▲</span>`;
-            if (parseFloat(cleanStr) < 0) return `<span class="change-tag down">${cleanStr} ▼</span>`;
-            return `<span class="change-tag neutral">${cleanStr}</span>`;
+        // إعداد عنصر للتعديل (Edit)
+        function editItem(name, price, change, category) {
+            document.getElementById('itemName').value = name;
+            document.getElementById('itemPrice').value = price;
+            document.getElementById('itemChange').value = change;
+            document.getElementById('itemCategory').value = category;
+            window.scrollTo(0, 0);
         }
 
-        function getItemIcon(name) {
-            if (name.includes('دولار')) return '💵';
-            if (name.includes('يورو')) return '💶';
-            if (name.includes('تركية')) return '🇹🇷';
-            if (name.includes('ذهب') || name.includes('ليرة ذهبية')) return '🧈';
-            if (name.includes('بنزين') || name.includes('مازوت')) return '⛽';
-            if (name.includes('غاز')) return '🔥';
-            if (name.includes('أنبير') || name.includes('كهرباء')) return '⚡';
-            return '🛒';
+        // تحميل قائمة الإدارة مع أزرار الحذف والتعديل
+        function loadAdminItemsList() {
+            db.collection("prices").onSnapshot((snapshot) => {
+                let html = '';
+                snapshot.forEach((doc) => {
+                    const item = doc.data();
+                    html += `
+                        <div class="list-item">
+                            <div>
+                                <b>${item.name}</b>
+                                <div style="font-size:0.75rem; color:var(--text-secondary);">${item.price.toLocaleString('ar-SY')} ل.س | ${item.change}</div>
+                            </div>
+                            <div style="display:flex; gap:6px;">
+                                <button class="btn-edit" onclick="editItem('${item.name}', ${item.price}, '${item.change}', '${item.category}')">تعديل ✏️</button>
+                                <button class="btn-del" onclick="deleteItem('${doc.id}')">حذف 🗑️</button>
+                            </div>
+                        </div>
+                    `;
+                });
+                document.getElementById('admin-items-list').innerHTML = html || 'لا توجد مواد مضافة حتى الآن.';
+            });
         }
 
-        async function fetchLivePrices() {
-            try {
-                const response = await fetch(CSV_URL + '&t=' + new Date().getTime());
-                const csvData = await response.text();
-                const items = parseCSV(csvData);
-
+        // جلب واستماع الأسعار للمستخدمين
+        function listenToLivePrices() {
+            db.collection("prices").onSnapshot((snapshot) => {
                 let currencyHTML = '', goldHTML = '', fuelHTML = '', goodsHTML = '';
 
-                items.forEach(item => {
-                    const priceNum = parseFloat(item.price.replace(/[^0-9.]/g, '')) || 0;
+                snapshot.forEach((doc) => {
+                    const item = doc.data();
                     const rowHTML = `
                         <div class="price-row">
                             <div class="item-info">
@@ -605,24 +393,21 @@
                                 <span class="item-name">${item.name}</span>
                             </div>
                             <div style="text-align:left;">
-                                <div class="item-price">${priceNum.toLocaleString('ar-SY')} ل.س</div>
-                                ${getChangeTagHTML(item.change)}
+                                <div class="item-price">${item.price.toLocaleString('ar-SY')} ل.س</div>
+                                <span class="change-tag ${item.change.includes('+') ? 'up' : item.change.includes('-') ? 'down' : 'neutral'}">${item.change}</span>
                             </div>
                         </div>
                     `;
 
-                    const name = item.name;
-                    if (name.includes('دولار') || name.includes('يورو') || name.includes('تركية')) {
+                    if (item.category === 'currency') {
                         currencyHTML += rowHTML;
-                        if (name.includes('دولار دمشق') || name.includes('دولار')) currentPrices.usd = priceNum || currentPrices.usd;
-                        if (name.includes('يورو')) currentPrices.eur = priceNum || currentPrices.eur;
-                        if (name.includes('تركية')) currentPrices.tryLira = priceNum || currentPrices.tryLira;
-                    } else if (name.includes('ذهب') || name.includes('ليرة ذهبية')) {
+                        if (item.name.includes('دولار')) currentPrices.usd = item.price;
+                    } else if (item.category === 'gold') {
                         goldHTML += rowHTML;
-                        if (name.includes('عيار 21')) currentPrices.gold21 = priceNum || currentPrices.gold21;
-                    } else if (name.includes('بنزين') || name.includes('مازوت') || name.includes('غاز') || name.includes('كهرباء')) {
+                        if (item.name.includes('عيار 21')) currentPrices.gold21 = item.price;
+                    } else if (item.category === 'fuel') {
                         fuelHTML += rowHTML;
-                    } else {
+                    } else if (item.category === 'goods') {
                         goodsHTML += rowHTML;
                     }
                 });
@@ -635,9 +420,16 @@
                 const now = new Date();
                 document.getElementById('last-update').innerText = now.toLocaleTimeString('ar-SY', { hour: '2-digit', minute: '2-digit' });
                 calculate();
-            } catch (error) {
-                console.error("خطأ جلب البيانات:", error);
-            }
+            });
+        }
+
+        function getItemIcon(name) {
+            if (name.includes('دولار')) return '💵';
+            if (name.includes('يورو')) return '💶';
+            if (name.includes('تركية')) return '🇹🇷';
+            if (name.includes('ذهب')) return '🧈';
+            if (name.includes('بنزين') || name.includes('مازوت')) return '⛽';
+            return '🛒';
         }
 
         const amountInput = document.getElementById('amount');
@@ -647,22 +439,16 @@
         function calculate() {
             const val = parseFloat(amountInput.value) || 0;
             const type = calcType.value;
-            const usdRate = currentPrices.usd, eurRate = currentPrices.eur, tryRate = currentPrices.tryLira, gold21Rate = currentPrices.gold21;
-
-            if (type === 'usd-to-syp') calcOutput.innerText = `${(val * usdRate).toLocaleString('ar-SY')} ليرة سورية`;
-            else if (type === 'syp-to-usd') calcOutput.innerText = `$ ${(val / usdRate).toFixed(2)} دولار`;
-            else if (type === 'eur-to-syp') calcOutput.innerText = `${(val * eurRate).toLocaleString('ar-SY')} ليرة سورية`;
-            else if (type === 'syp-to-eur') calcOutput.innerText = `€ ${(val / eurRate).toFixed(2)} يورو`;
-            else if (type === 'try-to-syp') calcOutput.innerText = `${(val * tryRate).toLocaleString('ar-SY')} ليرة سورية`;
-            else if (type === 'gold-21') calcOutput.innerText = `${(val * gold21Rate).toLocaleString('ar-SY')} ليرة سورية`;
+            if (type === 'usd-to-syp') calcOutput.innerText = `${(val * currentPrices.usd).toLocaleString('ar-SY')} ليرة سورية`;
+            else if (type === 'syp-to-usd') calcOutput.innerText = `$ ${(val / currentPrices.usd).toFixed(2)} دولار`;
+            else if (type === 'gold-21') calcOutput.innerText = `${(val * currentPrices.gold21).toLocaleString('ar-SY')} ليرة سورية`;
         }
 
         amountInput.addEventListener('input', calculate);
         calcType.addEventListener('change', calculate);
 
         checkSecretRoute();
-        fetchLivePrices();
-        setInterval(fetchLivePrices, 10000);
+        listenToLivePrices();
     </script>
 </body>
 </html>

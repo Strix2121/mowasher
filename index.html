@@ -13,6 +13,7 @@
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 
     <style>
         :root {
@@ -123,30 +124,32 @@
         </div>
     </div>
 
-    <!-- 2. صفحة الصيدليات -->
-    <div id="page-pharmacies" class="page-content">
-        <div class="section-title">🏥 الصيدليات المناوبة</div>
-        <div class="card" id="pharmacies-card">
-            <div>لا توجد صيدليات مضافة حالياً.</div>
-        </div>
-    </div>
-
-    <!-- 3. صفحة لوحة التحكم (Admin Panel) -->
+    <!-- 2. صفحة لوحة التحكم (Admin Panel الآمنة) -->
     <div id="page-admin" class="page-content">
-        <div class="section-title">⚙️ لوحة التحكم للإدارة</div>
+        <div class="section-title">🔒 لوحة التحكم الآمنة للإدارة</div>
         
-        <!-- تسجيل الدخول -->
+        <!-- تسجيل الدخول بالبريد وكلمة السر -->
         <div class="card" id="login-box">
             <div class="admin-form">
-                <label>كلمة السر للإدارة:</label>
-                <input type="password" id="adminPass" placeholder="أدخل كلمة السر...">
-                <button class="btn-action" onclick="loginAdmin()">تسجيل الدخول</button>
+                <div class="input-group">
+                    <label>البريد الإلكتروني للأدمن:</label>
+                    <input type="email" id="adminEmail" placeholder="admin@example.com">
+                </div>
+                <div class="input-group">
+                    <label>كلمة السر:</label>
+                    <input type="password" id="adminPass" placeholder="••••••••">
+                </div>
+                <button class="btn-action" onclick="loginAdmin()">تسجيل الدخول الآمن 🔑</button>
             </div>
         </div>
 
-        <!-- أزرار الإدارة (تظهر بعد تسجيل الدخول) -->
+        <!-- لوحة التعديل (تظهر فقط بعد تسجيل الدخول الناجح) -->
         <div class="card" id="admin-panel" style="display: none;">
-            <h3 style="margin-bottom: 10px; color: var(--accent-gold);">تحديث الأسعار في قاعدة البيانات</h3>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                <h3 style="color: var(--accent-gold); margin:0;">تحديث الأسعار في قاعدة البيانات</h3>
+                <button class="btn-action btn-danger" style="padding:4px 8px; font-size:0.75rem;" onclick="logoutAdmin()">خروج 🚪</button>
+            </div>
+            
             <div class="admin-form">
                 <div class="input-group">
                     <label>اسم المادة/العملة:</label>
@@ -179,18 +182,13 @@
             <span class="icon">📈</span>
             <span>الأسعار</span>
         </div>
-        <div class="nav-item" onclick="showPage('pharmacies', this)">
-            <span class="icon">🏥</span>
-            <span>الصيدليات</span>
-        </div>
         <div class="nav-item" onclick="showPage('admin', this)">
-            <span class="icon">⚙️</span>
+            <span class="icon">🔒</span>
             <span>التحكم</span>
         </div>
     </div>
 
     <script>
-        // إعدادات مفاتيح Firebase الخاصة بك
         const firebaseConfig = {
             apiKey: "AIzaSyBWtgA7ryByfKY4WSNvq6sk2n9FAOToHXA",
             authDomain: "mowasher-b36d8.firebaseapp.com",
@@ -200,13 +198,23 @@
             appId: "1:999462795870:web:df6cd1b71628de3f1e12cf"
         };
 
-        // تهيئة الـ Firebase
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
+        const auth = firebase.auth();
 
         let currentPrices = { usd: 13800, eur: 16100, gold21: 980000 };
 
-        // التنقل بين الصفحات
+        // متابعة حالة تسجيل الدخول
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                document.getElementById('login-box').style.display = 'none';
+                document.getElementById('admin-panel').style.display = 'block';
+            } else {
+                document.getElementById('login-box').style.display = 'block';
+                document.getElementById('admin-panel').style.display = 'none';
+            }
+        });
+
         function showPage(pageId, element) {
             document.querySelectorAll('.page-content').forEach(page => page.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
@@ -216,19 +224,20 @@
             window.scrollTo(0, 0);
         }
 
-        // تسجيل الدخول للإدارة
+        // تسجيل الدخول الحقيقي عبر Firebase
         function loginAdmin() {
+            const email = document.getElementById('adminEmail').value;
             const pass = document.getElementById('adminPass').value;
-            if (pass === "admin123") {
-                document.getElementById('login-box').style.display = 'none';
-                document.getElementById('admin-panel').style.display = 'block';
-                alert("تم تسجيل الدخول بنجاح كأدمن!");
-            } else {
-                alert("كلمة السر غير صحيحة!");
-            }
+
+            auth.signInWithEmailAndPassword(email, pass)
+                .then(() => alert("تم تسجيل الدخول الآمن بنجاح!"))
+                .catch(error => alert("خطأ في تسجيل الدخول: " + error.message));
         }
 
-        // حفظ البيانات في قاعدة بيانات Firebase
+        function logoutAdmin() {
+            auth.signOut().then(() => alert("تم تسجيل الخروج بنجاح."));
+        }
+
         function saveItemToFirebase() {
             const name = document.getElementById('itemName').value;
             const price = parseFloat(document.getElementById('itemPrice').value) || 0;
@@ -247,15 +256,12 @@
                 category: category,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
-                alert("تم حفظ وتحديث السعر بنجاح في الموقع!");
+                alert("تم تحديث السعر بنجاح!");
                 document.getElementById('itemName').value = '';
                 document.getElementById('itemPrice').value = '';
-            }).catch(error => {
-                alert("حدث خطأ في الحفظ: " + error.message);
-            });
+            }).catch(error => alert("غير مصرح لك بالتعديل: " + error.message));
         }
 
-        // الاستماع المباشر للأسعار من Firebase المحدثة لحظياً
         function listenToLivePrices() {
             db.collection("prices").onSnapshot((snapshot) => {
                 let currencyHTML = '', goldHTML = '', fuelHTML = '';
@@ -304,7 +310,6 @@
             return '📊';
         }
 
-        // الحاسبة
         const amountInput = document.getElementById('amount');
         const calcType = document.getElementById('calc-type');
         const calcOutput = document.getElementById('calc-output');

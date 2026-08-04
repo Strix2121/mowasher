@@ -107,7 +107,7 @@
         .btn-del { background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
         .btn-approve { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-left: 5px; }
 
-        /* الشريط السفلي العائم */
+        /* الشريط السفلي العائم (تمت ازالة زر الأدمن منه تماماً ليصبح خاصاً بالزوار) */
         .bottom-nav {
             position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
             width: calc(100% - 24px); max-width: 576px; background: rgba(15, 23, 42, 0.85);
@@ -178,7 +178,7 @@
         </div>
     </div>
 
-    <!-- 2. صفحة السوق والعقارات (مع إضافة إرفاق الصور) -->
+    <!-- 2. صفحة السوق والعقارات -->
     <div id="page-market" class="page-content">
         <div class="section-title">🏪 سوق العقارات والبيع والشراء في بانياس</div>
         <div class="card" id="market-card"><div>جاري جلب الإعلانات النشطة...</div></div>
@@ -242,7 +242,7 @@
         <div class="card" id="services-card"><div>جاري جلب الخدمات...</div></div>
     </div>
 
-    <!-- 7. لوحة تحكم الإدارة الشاملة (#admin) -->
+    <!-- 7. لوحة تحكم الإدارة السرية (#admin) -->
     <div id="page-admin" class="page-content">
         <div class="section-title">🔒 لوحة التحكم وإدارة الإعلانات الواردة</div>
         
@@ -314,7 +314,7 @@
         <div>جميع الحقوق محفوظة © 2026 - منصة <strong>رادار بانياس</strong></div>
     </footer>
 
-    <!-- شريط التنقل السفلي -->
+    <!-- شريط التنقل السفلي للزوار (مخفي منه زر الأدمن تماماً) -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="showPage('prices', this)"><span class="icon">📈</span><span>الأسعار</span></div>
         <div class="nav-item" onclick="showPage('market', this)"><span class="icon">🏪</span><span>السوق</span></div>
@@ -322,7 +322,6 @@
         <div class="nav-item" onclick="showPage('shops', this)"><span class="icon">📁</span><span>الدليل</span></div>
         <div class="nav-item" onclick="showPage('docs', this)"><span class="icon">📖</span><span>المعاملات</span></div>
         <div class="nav-item" onclick="showPage('services', this)"><span class="icon">⚡</span><span>الخدمات</span></div>
-        <div class="nav-item" onclick="showPage('admin', this)" style="color: var(--accent-gold);"><span class="icon">🔒</span><span>الأدمن</span></div>
     </div>
 
     <script>
@@ -343,7 +342,7 @@
 
         function checkSecretRoute() {
             if (window.location.hash === '#admin') {
-                showPage('admin', document.querySelector('.bottom-nav .nav-item:last-child'));
+                showPage('admin', null);
             }
         }
         window.addEventListener('hashchange', checkSecretRoute);
@@ -366,7 +365,10 @@
                 document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
                 element.classList.add('active');
             }
-            document.getElementById('page-' + pageId).classList.add('active');
+            const targetPage = document.getElementById('page-' + pageId);
+            if(targetPage) {
+                targetPage.classList.add('active');
+            }
             window.scrollTo(0, 0);
         }
 
@@ -416,7 +418,6 @@
             }
         }
 
-        // إرسال الإعلان مع تحويل الصورة المرفوعة إلى Base64 لتعرض بسلاسة دون الحاجة لـ Storage مدفوع
         function submitUserAdWithImage() {
             const title = document.getElementById('adTitle').value.trim();
             const category = document.getElementById('adCategory').value;

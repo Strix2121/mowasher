@@ -67,7 +67,7 @@
         .change-tag { font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; display: inline-block; }
         .neutral { color: var(--text-secondary); background: rgba(148, 163, 184, 0.12); }
 
-        /* إعلانات السوق العامة (نظيفة للزوار) */
+        /* إعلانات السوق العامة */
         .market-ad-card { display: flex; flex-direction: column; gap: 10px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
         .market-ad-card:last-child { border-bottom: none; }
         .ad-image { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; border: 1px solid var(--card-border); margin-top: 6px; }
@@ -105,6 +105,7 @@
         }
         .btn-danger { background: linear-gradient(135deg, #f43f5e, #e11d48); }
         .btn-del { background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
+        .btn-edit { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-left: 5px; }
         .btn-approve { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-left: 5px; }
 
         /* الشريط السفلي العائم للزوار */
@@ -242,7 +243,7 @@
         <div class="card" id="services-card"><div>جاري جلب الخدمات...</div></div>
     </div>
 
-    <!-- 7. لوحة تحكم الإدارة السريّة (#admin) منظمة حسب الأقسام -->
+    <!-- 7. لوحة تحكم الإدارة السريّة (#admin) -->
     <div id="page-admin" class="page-content">
         <div class="section-title">🔒 لوحة التحكم وإدارة الموقع والإعلانات</div>
         
@@ -261,13 +262,14 @@
         </div>
 
         <div id="admin-panel" style="display: none;">
-            <!-- نموذج الإضافة العام -->
+            <!-- نموذج الإضافة والتعديل العام -->
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-                    <h3 style="color: var(--accent-gold); margin:0; font-size:1.05rem;">➕ إضافة عناصر أساسية بالموقع</h3>
+                    <h3 id="form-mode-title" style="color: var(--accent-gold); margin:0; font-size:1.05rem;">➕ إضافة عناصر أساسية بالموقع</h3>
                     <button class="btn-action btn-danger" style="padding:6px 12px; font-size:0.75rem;" onclick="logoutAdmin()">خروج 🚪</button>
                 </div>
                 <div class="admin-form">
+                    <input type="hidden" id="editDocId" value="">
                     <div class="input-group">
                         <label>القسم المستهدف:</label>
                         <select id="itemSection" onchange="toggleFormFields()">
@@ -299,35 +301,32 @@
                             <option value="goods">سلع وغذائيات</option>
                         </select>
                     </div>
-                    <button class="btn-action" onclick="saveToFirebase()">حفظ مباشر 🚀</button>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn-action" style="flex: 2;" onclick="saveToFirebase()">حفظ أو تحديث العنصر 🚀</button>
+                        <button class="btn-action btn-danger" style="flex: 1; display:none;" id="cancelEditBtn" onclick="cancelEditMode()">إلغاء ❌</button>
+                    </div>
                 </div>
             </div>
 
-            <!-- 1. قسم إدارة إعلانات السوق المنشورة -->
+            <!-- أقسام الإدارة المستقلة -->
             <div class="section-title">🏪 إدارة وحذف إعلانات السوق</div>
             <div class="card" id="admin-market-list"><div>جاري تحميل إعلانات السوق...</div></div>
 
-            <!-- 2. قسم إدارة إعلانات الزوار المعلقة -->
             <div class="section-title">📥 إعلانات الزوار بانتظار الاعتماد</div>
             <div class="card" id="pending-ads-list"><div>جاري التحقق من الإعلانات الجديدة...</div></div>
 
-            <!-- 3. قسم إدارة الصيدليات -->
             <div class="section-title">🏥 إدارة الصيدليات المناوبة</div>
             <div class="card" id="admin-pharmacies-list"><div>جاري التحميل...</div></div>
 
-            <!-- 4. قسم إدارة الدليل -->
             <div class="section-title">🏪 إدارة دليل المحلات والخدمات</div>
             <div class="card" id="admin-shops-list"><div>جاري التحميل...</div></div>
 
-            <!-- 5. قسم إدارة المعاملات -->
             <div class="section-title">📖 إدارة المعاملات والأوراق</div>
             <div class="card" id="admin-docs-list"><div>جاري التحميل...</div></div>
 
-            <!-- 6. قسم إدارة الطوارئ والخدمات -->
             <div class="section-title">⚡ إدارة أرقام الطوارئ والتقنين</div>
             <div class="card" id="admin-services-list"><div>جاري التحميل...</div></div>
 
-            <!-- 7. قسم إدارة الأسعار والعملات -->
             <div class="section-title">📈 إدارة الأسعار والصرف والذهب</div>
             <div class="card" id="admin-prices-list"><div>جاري التحميل...</div></div>
         </div>
@@ -425,8 +424,34 @@
             else grpCat.style.display = 'none';
         }
 
+        // دالة التعديل: تجلب البيانات إلى نموذج الإضافة بالأعلى لكي يتم تعديلها وحفظها
+        function prepareEditItem(secName, docId, title, subtitle, val, category) {
+            document.getElementById('itemSection').value = secName;
+            toggleFormFields();
+            document.getElementById('editDocId').value = docId;
+            document.getElementById('itemTitle').value = title || '';
+            document.getElementById('itemSubtitle').value = subtitle || '';
+            document.getElementById('itemVal').value = val || '';
+            if(category && document.getElementById('itemCategory')) {
+                document.getElementById('itemCategory').value = category;
+            }
+            document.getElementById('form-mode-title').innerText = "✏️ تعديل العنصر المحدد";
+            document.getElementById('cancelEditBtn').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function cancelEditMode() {
+            document.getElementById('editDocId').value = '';
+            document.getElementById('itemTitle').value = '';
+            document.getElementById('itemSubtitle').value = '';
+            document.getElementById('itemVal').value = '';
+            document.getElementById('form-mode-title').innerText = "➕ إضافة عناصر أساسية بالموقع";
+            document.getElementById('cancelEditBtn').style.display = 'none';
+        }
+
         function saveToFirebase() {
             const sec = document.getElementById('itemSection').value;
+            const editId = document.getElementById('editDocId').value.trim();
             const title = document.getElementById('itemTitle').value.trim();
             const subtitle = document.getElementById('itemSubtitle').value.trim();
             const val = document.getElementById('itemVal').value.trim();
@@ -434,14 +459,20 @@
 
             if (!title) { alert("يرجى كتابة العنوان!"); return; }
 
-            db.collection(sec).doc(title).set({
+            // إذا كان هناك معرف قديم للتعديل وتم تغيير العنوان، نحذف القديم وننشئ الجديد لتفادي تكرار المستندات
+            const docRef = db.collection(sec).doc(title);
+            
+            const dataToSave = {
                 title: title, subtitle: subtitle, val: val, category: category,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                alert("تم الحفظ بنجاح!");
-                document.getElementById('itemTitle').value = '';
-                document.getElementById('itemSubtitle').value = '';
-                document.getElementById('itemVal').value = '';
+            };
+
+            docRef.set(dataToSave).then(() => {
+                if (editId && editId !== title) {
+                    db.collection(sec).doc(editId).delete();
+                }
+                alert("تم الحفظ وتحديث البيانات بنجاح! 🚀");
+                cancelEditMode();
             }).catch(e => alert("خطأ: " + e.message));
         }
 
@@ -537,21 +568,23 @@
                                 <b>[${d.category}] ${d.title}</b>
                                 <div style="font-size:0.75rem; color:var(--text-secondary);">${d.price || ''} | ${d.phone}</div>
                             </div>
-                            <button class="btn-del" onclick="deleteAnyItem('market_ads', '${doc.id}')">حذف 🗑️</button>
+                            <div>
+                                <button class="btn-del" onclick="deleteAnyItem('market_ads', '${doc.id}')">حذف 🗑️</button>
+                            </div>
                         </div>`;
                 });
                 document.getElementById('admin-market-list').innerHTML = html || 'لا توجد إعلانات منشورة في السوق حالياً.';
             });
         }
 
-        // تحميل أقسام الداش بورد المستقلة لكل قسم
+        // تحميل أقسام الداش بورد مع أزرار التعديل والحذف
         function loadAdminSectionLists() {
             // الصيدليات
             db.collection("pharmacies").onSnapshot((snapshot) => {
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
-                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><button class="btn-del" onclick="deleteAnyItem('pharmacies', '${doc.id}')">حذف 🗑️</button></div>`;
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><div><button class="btn-edit" onclick="prepareEditItem('pharmacies', '${doc.id}', '${d.title}', '${d.subtitle}', '${d.val}', '')">تعديل ✏️</button><button class="btn-del" onclick="deleteAnyItem('pharmacies', '${doc.id}')">حذف 🗑️</button></div></div>`;
                 });
                 document.getElementById('admin-pharmacies-list').innerHTML = html || 'لا توجد صيدليات مضافة.';
             });
@@ -561,7 +594,7 @@
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
-                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><button class="btn-del" onclick="deleteAnyItem('shops', '${doc.id}')">حذف 🗑️</button></div>`;
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><div><button class="btn-edit" onclick="prepareEditItem('shops', '${doc.id}', '${d.title}', '${d.subtitle}', '${d.val}', '')">تعديل ✏️</button><button class="btn-del" onclick="deleteAnyItem('shops', '${doc.id}')">حذف 🗑️</button></div></div>`;
                 });
                 document.getElementById('admin-shops-list').innerHTML = html || 'لا توجد محلات مضافة.';
             });
@@ -571,7 +604,7 @@
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
-                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><button class="btn-del" onclick="deleteAnyItem('docs', '${doc.id}')">حذف 🗑️</button></div>`;
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><div><button class="btn-edit" onclick="prepareEditItem('docs', '${doc.id}', '${d.title}', '${d.subtitle}', '${d.val}', '')">تعديل ✏️</button><button class="btn-del" onclick="deleteAnyItem('docs', '${doc.id}')">حذف 🗑️</button></div></div>`;
                 });
                 document.getElementById('admin-docs-list').innerHTML = html || 'لا توجد معاملات مضافة.';
             });
@@ -581,9 +614,9 @@
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
-                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.val}</div></div><button class="btn-del" onclick="deleteAnyItem('services', '${doc.id}')">حذف 🗑️</button></div>`;
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.val}</div></div><div><button class="btn-edit" onclick="prepareEditItem('services', '${doc.id}', '${d.title}', '', '${d.val}', '')">تعديل ✏️</button><button class="btn-del" onclick="deleteAnyItem('services', '${doc.id}')">حذف 🗑️</button></div></div>`;
                 });
-                document.getElementById('admin-services-list').innerHTML = html || 'لا توجد أخدمات مضافة.';
+                document.getElementById('admin-services-list').innerHTML = html || 'لا توجد خدمات مضافة.';
             });
 
             // الأسعار
@@ -591,7 +624,7 @@
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
-                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.val} ل.س</div></div><button class="btn-del" onclick="deleteAnyItem('prices', '${doc.id}')">حذف 🗑️</button></div>`;
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.val} ل.س</div></div><div><button class="btn-edit" onclick="prepareEditItem('prices', '${doc.id}', '${d.title}', '${d.subtitle}', '${d.val}', '${d.category}')">تعديل ✏️</button><button class="btn-del" onclick="deleteAnyItem('prices', '${doc.id}')">حذف 🗑️</button></div></div>`;
                 });
                 document.getElementById('admin-prices-list').innerHTML = html || 'لا توجد أسعار مضافة.';
             });

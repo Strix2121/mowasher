@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موجة بانياس | منصة البحر والساحل الشاملة</title>
+    <title>رادار بانياس | المنصة الساحلية الشاملة</title>
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#0369a1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,7 +41,34 @@
             min-height: 100vh;
             line-height: 1.6;
         }
-        
+
+        /* شاشة التحميل (رادار لودينغ) */
+        #splash-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #082f49; background-image: var(--bg-gradient);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 9999; transition: opacity 0.5s ease;
+        }
+        .radar-loader {
+            width: 120px; height: 120px; border-radius: 50%; border: 2px solid rgba(56, 189, 248, 0.3);
+            position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 30px rgba(56, 189, 248, 0.2);
+        }
+        .radar-loader::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: conic-gradient(from 0deg at 50% 50%, rgba(56, 189, 248, 0) 0deg, rgba(56, 189, 248, 0.8) 360deg);
+            animation: spin 1.5s linear infinite; border-radius: 50%;
+        }
+        .radar-center {
+            width: 12px; height: 12px; background: #38bdf8; border-radius: 50%;
+            box-shadow: 0 0 10px #38bdf8; z-index: 2;
+        }
+        .radar-ring {
+            position: absolute; width: 80px; height: 80px; border: 1px dashed rgba(56, 189, 248, 0.5); border-radius: 50%;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .splash-text { margin-top: 20px; font-size: 1.1rem; font-weight: 800; color: #38bdf8; letter-spacing: 1px; }
+
         header { text-align: center; padding: 25px 0 15px; margin-bottom: 10px; position: relative; }
         .logo { font-size: 2.2rem; font-weight: 900; color: #ffffff; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: -0.5px; text-shadow: 0 2px 10px rgba(56, 189, 248, 0.3); }
         .logo span { background: linear-gradient(135deg, #38bdf8, #2dd4bf); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -66,7 +93,7 @@
         .change-tag { font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; display: inline-block; }
         .neutral { color: var(--text-secondary); background: rgba(56, 189, 248, 0.1); }
 
-        /* فلاتر السوق البحري */
+        /* فلاتر السوق الساحلي */
         .market-filters { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; scrollbar-width: none; }
         .market-filters::-webkit-scrollbar { display: none; }
         .filter-chip {
@@ -93,7 +120,7 @@
             max-height: 90vh; overflow-y: auto; padding: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.6);
         }
 
-        /* معرض الصور متعدد الصور وسلايدر البحر */
+        /* معرض الصور متعدد الصور وسلايدر رادار */
         .market-ad-card { display: flex; flex-direction: column; gap: 10px; padding: 14px 0; border-bottom: 1px solid rgba(56, 189, 248, 0.15); }
         .market-ad-card:last-child { border-bottom: none; }
         
@@ -168,13 +195,22 @@
 </head>
 <body>
 
+    <!-- شاشة التحميل (رادار سبلاش) -->
+    <div id="splash-screen">
+        <div class="radar-loader">
+            <div class="radar-ring"></div>
+            <div class="radar-center"></div>
+        </div>
+        <div class="splash-text">📡 جاري مسح وتحميل رادار بانياس...</div>
+    </div>
+
     <header>
-        <div class="logo">🌊 موجة <span>بانياس</span></div>
+        <div class="logo">📡 رادار <span>بانياس</span></div>
         <div class="tagline">نبض الساحل السوري | الأسعار، السوق، والدليل اللحظي</div>
     </header>
 
     <!-- 1. صفحة الأسعار والحاسبة -->
-    <div id="page-prices" class="page-content active">
+    <div id="page-prices" class="page-content">
         <div class="section-title">💵 أسعار الصرف (السوق الموازي)</div>
         <div class="card" id="currency-card"><div>جاري تحميل البيانات...</div></div>
 
@@ -187,7 +223,7 @@
         <div class="section-title">🛒 السلع والغذائيات</div>
         <div class="card" id="goods-card"><div>جاري تحميل البيانات...</div></div>
 
-        <div class="section-title">🧮 حاسبة الأمواج والتحويل المباشر</div>
+        <div class="section-title">🧮 حاسبة الرادار والتحويل المباشر</div>
         <div class="card calc-box">
             <div class="input-group">
                 <label>المبلغ المراد تحويله:</label>
@@ -221,7 +257,7 @@
 
     <!-- 2. صفحة السوق والعقارات البحرية -->
     <div id="page-market" class="page-content">
-        <button class="btn-open-modal" onclick="openAdModal()">⚓ أضف إعلانك أو عقارك الساحلي</button>
+        <button class="btn-open-modal" onclick="openAdModal()">📡 أضف إعلانك أو عقارك الساحلي</button>
         
         <div class="market-filters">
             <div class="filter-chip active" onclick="filterMarket('الكل', this)">الكل 🌟</div>
@@ -389,7 +425,7 @@
     </div>
 
     <footer>
-        <div>جميع الحقوق محفوظة © 2026 - منصة <strong>موجة بانياس الساحلية</strong></div>
+        <div>جميع الحقوق محفوظة © 2026 - منصة <strong>رادار بانياس الساحلية</strong></div>
     </footer>
 
     <!-- شريط التنقل السفلي -->
@@ -419,6 +455,15 @@
         let currentPrices = { usd: 13800, eur: 16100, tryLira: 420, gold21: 980000 };
         let currentFilter = 'الكل';
         let allMarketAds = [];
+
+        // إخفاء شاشة التحميل بعد ثوانٍ قليلة بانسيابية
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                splash.style.opacity = '0';
+                setTimeout(() => splash.style.display = 'none', 500);
+            }, 800);
+        });
 
         function openAdModal() { document.getElementById('adModal').style.display = 'flex'; }
         function closeAdModal() { document.getElementById('adModal').style.display = 'none'; }

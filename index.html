@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>رادار بانياس | المنصة الساحلية الشاملة</title>
+    <title>رادار | منصة بانياس الشاملة للأسعار والسوق</title>
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#0369a1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,7 +42,7 @@
             line-height: 1.6;
         }
 
-        /* شاشة التحميل (رادار لودينغ) */
+        /* شاشة التحميل (رادار سبلاش) */
         #splash-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #082f49; background-image: var(--bg-gradient);
@@ -70,9 +70,9 @@
         .splash-text { margin-top: 20px; font-size: 1.1rem; font-weight: 800; color: #38bdf8; letter-spacing: 1px; }
 
         header { text-align: center; padding: 25px 0 15px; margin-bottom: 10px; position: relative; }
-        .logo { font-size: 2.2rem; font-weight: 900; color: #ffffff; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: -0.5px; text-shadow: 0 2px 10px rgba(56, 189, 248, 0.3); }
+        .logo { font-size: 2.1rem; font-weight: 900; color: #ffffff; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: -0.5px; text-shadow: 0 2px 10px rgba(56, 189, 248, 0.3); }
         .logo span { background: linear-gradient(135deg, #38bdf8, #2dd4bf); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .tagline { font-size: 0.82rem; color: var(--text-secondary); margin-top: 6px; font-weight: 600; letter-spacing: 0.5px; }
+        .tagline { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; font-weight: 600; }
 
         .page-content { display: none; opacity: 0; transform: translateY(8px); transition: opacity 0.35s ease, transform 0.35s ease; }
         .page-content.active { display: block; opacity: 1; transform: translateY(0); }
@@ -93,7 +93,7 @@
         .change-tag { font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; display: inline-block; }
         .neutral { color: var(--text-secondary); background: rgba(56, 189, 248, 0.1); }
 
-        /* فلاتر السوق الساحلي */
+        /* فلاتر السوق */
         .market-filters { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; scrollbar-width: none; }
         .market-filters::-webkit-scrollbar { display: none; }
         .filter-chip {
@@ -120,7 +120,7 @@
             max-height: 90vh; overflow-y: auto; padding: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.6);
         }
 
-        /* معرض الصور متعدد الصور وسلايدر رادار */
+        /* معرض الصور متعدد الصور وسلايدر */
         .market-ad-card { display: flex; flex-direction: column; gap: 10px; padding: 14px 0; border-bottom: 1px solid rgba(56, 189, 248, 0.15); }
         .market-ad-card:last-child { border-bottom: none; }
         
@@ -175,7 +175,7 @@
         .btn-edit { background: rgba(2, 132, 199, 0.2); color: #7dd3fc; border: 1px solid rgba(2, 132, 199, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-left: 5px; }
         .btn-approve { background: rgba(45, 212, 191, 0.2); color: #5eead4; border: 1px solid rgba(45, 212, 191, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-left: 5px; }
 
-        /* الشريط السفلي العصري */
+        /* الشريط السفلي */
         .bottom-nav {
             position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
             width: calc(100% - 24px); max-width: 576px; background: rgba(8, 47, 73, 0.9);
@@ -201,12 +201,12 @@
             <div class="radar-ring"></div>
             <div class="radar-center"></div>
         </div>
-        <div class="splash-text">📡 جاري مسح وتحميل رادار بانياس...</div>
+        <div class="splash-text">📡 جاري تشغيل رادار بانياس...</div>
     </div>
 
     <header>
         <div class="logo">📡 رادار <span>بانياس</span></div>
-        <div class="tagline">نبض الساحل السوري | الأسعار، السوق، والدليل اللحظي</div>
+        <div class="tagline">دليل الأسعار والخدمات وسوق المدينة اللحظي</div>
     </header>
 
     <!-- 1. صفحة الأسعار والحاسبة -->
@@ -223,7 +223,7 @@
         <div class="section-title">🛒 السلع والغذائيات</div>
         <div class="card" id="goods-card"><div>جاري تحميل البيانات...</div></div>
 
-        <div class="section-title">🧮 حاسبة الرادار والتحويل المباشر</div>
+        <div class="section-title">🧮 حاسبة التحويل المباشر والذكي</div>
         <div class="card calc-box">
             <div class="input-group">
                 <label>المبلغ المراد تحويله:</label>
@@ -255,9 +255,10 @@
         </div>
     </div>
 
-    <!-- 2. صفحة السوق والعقارات البحرية -->
+    <!-- 2. صفحة السوق والعقارات -->
     <div id="page-market" class="page-content">
-        <button class="btn-open-modal" onclick="openAdModal()">📡 أضف إعلانك أو عقارك الساحلي</button>
+        <div class="section-title">🏪 سوق العقارات والبيع والشراء في بانياس</div>
+        <button class="btn-open-modal" onclick="openAdModal()">📢 أضف إعلانك أو عقارك مع صورة مرفقة</button>
         
         <div class="market-filters">
             <div class="filter-chip active" onclick="filterMarket('الكل', this)">الكل 🌟</div>
@@ -267,7 +268,6 @@
             <div class="filter-chip" onclick="filterMarket('أخرى', this)">📦 سلع أخرى</div>
         </div>
 
-        <div class="section-title">🏪 أحدث إعلانات سوق بانياس الساحلي</div>
         <div class="card" id="market-card"><div>جاري جلب الإعلانات النشطة...</div></div>
     </div>
 
@@ -275,12 +275,12 @@
     <div id="adModal" class="modal-overlay">
         <div class="modal-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                <h3 style="color: #38bdf8; font-size:1.1rem;">📢 إضافة إعلان جديد للمتجر</h3>
+                <h3 style="color: #38bdf8; font-size:1.1rem;">📢 إضافة إعلان جديد</h3>
                 <button onclick="closeAdModal()" style="background:none; border:none; color:var(--text-secondary); font-size:1.2rem; cursor:pointer;">✕</button>
             </div>
             <div class="admin-form">
                 <div class="input-group">
-                    <label>عنوان الإعلان (مثال: شقة إطلالة بحرية في بانياس):</label>
+                    <label>عنوان الإعلان (مثال: شقة للبيع في كورنيش بانياس):</label>
                     <input type="text" id="adTitle" placeholder="اكتب عنواناً واضحاً...">
                 </div>
                 <div class="input-group">
@@ -289,7 +289,7 @@
                         <option value="عقارات">🏡 عقارات وشقق</option>
                         <option value="سيارات">🚗 سيارات ومخالفات</option>
                         <option value="أجهزة">💻 أجهزة وإلكترونيات</option>
-                        <option value="أخرى">📦 سلع أخرى</option>
+                        <option value="أخرى">📦 أوعية وسلع أخرى</option>
                     </select>
                 </div>
                 <div class="input-group">
@@ -425,7 +425,7 @@
     </div>
 
     <footer>
-        <div>جميع الحقوق محفوظة © 2026 - منصة <strong>رادار بانياس الساحلية</strong></div>
+        <div>جميع الحقوق محفوظة © 2026 - منصة <strong>رادار بانياس</strong></div>
     </footer>
 
     <!-- شريط التنقل السفلي -->
@@ -456,7 +456,6 @@
         let currentFilter = 'الكل';
         let allMarketAds = [];
 
-        // إخفاء شاشة التحميل بعد ثوانٍ قليلة بانسيابية
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const splash = document.getElementById('splash-screen');

@@ -102,18 +102,34 @@
         }
         .filter-chip.active { background: linear-gradient(135deg, #0284c7, #0ea5e9); color: white; border-color: #38bdf8; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4); }
 
+        /* زر إضافة إعلان معدل بضمانات تفاعل الكمبيوتر والموبايل */
         .btn-open-modal {
-            background: linear-gradient(135deg, #38bdf8, #0ea5e9); color: #082f49; border: none; width: 100%;
-            padding: 14px; border-radius: 14px; font-weight: 900; font-size: 1rem; cursor: pointer;
-            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.3); display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px;
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9); 
+            color: #082f49; 
+            border: none; 
+            width: 100%;
+            padding: 14px; 
+            border-radius: 14px; 
+            font-weight: 900; 
+            font-size: 1rem; 
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.3); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+            margin-bottom: 15px;
             transition: transform 0.2s;
+            position: relative;
+            z-index: 50;
         }
+        .btn-open-modal:hover { opacity: 0.95; transform: translateY(-1px); }
         .btn-open-modal:active { transform: scale(0.98); }
 
-        /* نافذة إضافة إعلان منبثقة */
+        /* نافذة إضافة إعلان منبثقة محسنة */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 47, 73, 0.85);
-            backdrop-filter: blur(12px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 15px;
+            backdrop-filter: blur(12px); z-index: 99999; display: none; align-items: center; justify-content: center; padding: 15px;
         }
         .modal-card {
             background: #0c4a6e; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; width: 100%; max-width: 500px;
@@ -258,7 +274,7 @@
     <!-- 2. صفحة السوق والعقارات -->
     <div id="page-market" class="page-content">
         <div class="section-title">🏪 سوق العقارات والبيع والشراء في بانياس</div>
-        <button class="btn-open-modal" onclick="openAdModal()">📢 أضف إعلانك أو عقارك مع صورة مرفقة</button>
+        <button type="button" class="btn-open-modal" id="openAdModalBtn">📢 أضف إعلانك أو عقارك مع صورة مرفقة</button>
         
         <div class="market-filters">
             <div class="filter-chip active" onclick="filterMarket('الكل', this)">الكل 🌟</div>
@@ -276,7 +292,7 @@
         <div class="modal-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                 <h3 style="color: #38bdf8; font-size:1.1rem;">📢 إضافة إعلان جديد</h3>
-                <button onclick="closeAdModal()" style="background:none; border:none; color:var(--text-secondary); font-size:1.2rem; cursor:pointer;">✕</button>
+                <button type="button" id="closeAdModalBtn" style="background:none; border:none; color:var(--text-secondary); font-size:1.2rem; cursor:pointer;">✕</button>
             </div>
             <div class="admin-form">
                 <div class="input-group">
@@ -308,7 +324,7 @@
                     <label>تفاصيل إضافية:</label>
                     <textarea id="adDesc" rows="3" placeholder="مواصفات السلعة أو العقار..."></textarea>
                 </div>
-                <button class="btn-action" onclick="submitUserAdWithImages()">إرسال الإعلان للمراجعة 🚀</button>
+                <button type="button" class="btn-action" onclick="submitUserAdWithImages()">إرسال الإعلان للمراجعة 🚀</button>
             </div>
         </div>
     </div>
@@ -351,7 +367,7 @@
                     <label>كلمة السر:</label>
                     <input type="password" id="adminPass" placeholder="••••••••">
                 </div>
-                <button class="btn-action" onclick="loginAdmin()">تسجيل الدخول 🔑</button>
+                <button type="button" class="btn-action" onclick="loginAdmin()">تسجيل الدخول 🔑</button>
             </div>
         </div>
 
@@ -359,7 +375,7 @@
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
                     <h3 id="form-mode-title" style="color: #38bdf8; margin:0; font-size:1.05rem;">➕ إضافة عناصر أساسية بالموقع</h3>
-                    <button class="btn-action btn-danger" style="padding:6px 12px; font-size:0.75rem;" onclick="logoutAdmin()">خروج 🚪</button>
+                    <button type="button" class="btn-action btn-danger" style="padding:6px 12px; font-size:0.75rem;" onclick="logoutAdmin()">خروج 🚪</button>
                 </div>
                 <div class="admin-form">
                     <input type="hidden" id="editDocId" value="">
@@ -395,8 +411,8 @@
                         </select>
                     </div>
                     <div style="display: flex; gap: 8px;">
-                        <button class="btn-action" style="flex: 2;" onclick="saveToFirebase()">حفظ أو تحديث العنصر 🚀</button>
-                        <button class="btn-action btn-danger" style="flex: 1; display:none;" id="cancelEditBtn" onclick="cancelEditMode()">إلغاء ❌</button>
+                        <button type="button" class="btn-action" style="flex: 2;" onclick="saveToFirebase()">حفظ أو تحديث العنصر 🚀</button>
+                        <button type="button" class="btn-action btn-danger" style="flex: 1; display:none;" id="cancelEditBtn" onclick="cancelEditMode()">إلغاء ❌</button>
                     </div>
                 </div>
             </div>
@@ -464,8 +480,16 @@
             }, 800);
         });
 
-        function openAdModal() { document.getElementById('adModal').style.display = 'flex'; }
-        function closeAdModal() { document.getElementById('adModal').style.display = 'none'; }
+        // ربط مستمعات الأحداث لضمان عمل الزر على الماوس واللمس بالكمبيوتر والموبايل
+        document.getElementById('openAdModalBtn').addEventListener('click', openAdModal);
+        document.getElementById('closeAdModalBtn').addEventListener('click', closeAdModal);
+
+        function openAdModal() { 
+            document.getElementById('adModal').style.display = 'flex'; 
+        }
+        function closeAdModal() { 
+            document.getElementById('adModal').style.display = 'none'; 
+        }
 
         function filterMarket(category, element) {
             currentFilter = category;
@@ -637,7 +661,7 @@
                 document.getElementById('adDesc').value = '';
                 document.getElementById('adImagesFile').value = '';
                 closeAdModal();
-            }).catch(e => alert("حدث خطأ: " + e.message));
+            }).catch(e => alert("خطأ في إرسال الإعلان: " + e.message));
         }
 
         function approveAd(docId, data) {
@@ -667,8 +691,8 @@
                                 ${imgPreview}
                             </div>
                             <div style="display:flex; gap:6px; align-self:flex-end;">
-                                <button class="btn-approve" onclick='approveAd("${doc.id}", ${escapedData})'>نشر ✅</button>
-                                <button class="btn-del" onclick="rejectAd('${doc.id}')">رفض ❌</button>
+                                <button type="button" class="btn-approve" onclick='approveAd("${doc.id}", ${escapedData})'>نشر ✅</button>
+                                <button type="button" class="btn-del" onclick="rejectAd('${doc.id}')">رفض ❌</button>
                             </div>
                         </div>`;
                 });
@@ -687,7 +711,7 @@
                                 <b>[${d.category}] ${d.title}</b>
                                 <div style="font-size:0.75rem; color:var(--text-secondary);">${d.price || ''} | ${d.phone}</div>
                             </div>
-                            <button class="btn-del" onclick="deleteAnyItem('market_ads', '${doc.id}')">حذف الإعلان 🗑️</button>
+                            <button type="button" class="btn-del" onclick="deleteAnyItem('market_ads', '${doc.id}')">حذف الإعلان 🗑️</button>
                         </div>`;
                 });
                 document.getElementById('admin-market-list').innerHTML = html || 'لا توجد إعلانات منشورة في السوق حالياً.';
@@ -699,7 +723,7 @@
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
-                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><div><button class="btn-edit" onclick="prepareEditItem('pharmacies', '${doc.id}', '${d.title}', '${d.subtitle}', '${d.val}', '')">تعديل ✏️</button><button class="btn-del" onclick="deleteAnyItem('pharmacies', '${doc.id}')">حذف 🗑️</button></div></div>`;
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><div><button type="button" class="btn-edit" onclick="prepareEditItem('pharmacies', '${doc.id}', '${d.title}', '${d.subtitle}', '${d.val}', '')">تعديل ✏️</button><button type="button" class="btn-del" onclick="deleteAnyItem('pharmacies', '${doc.id}')">حذف 🗑️</button></div></div>`;
                 });
                 document.getElementById('admin-pharmacies-list').innerHTML = html || 'لا توجد صيدليات مضافة.';
             });
@@ -708,7 +732,7 @@
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
-                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><div><button class="btn-edit" onclick="prepareEditItem('shops', '${doc.id}', '${d.title}', '${d.subtitle}', '${d.val}', '')">تعديل ✏️</button><button class="btn-del" onclick="deleteAnyItem('shops', '${doc.id}')">حذف 🗑️</button></div></div>`;
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><div><button type="button" class="btn-edit" onclick="prepareEditItem('shops', '${doc.id}', '${d.title}', '${d.subtitle}', '${d.val}', '')">تعديل ✏️</button><button type="button" class="btn-del" onclick="deleteAnyItem('shops', '${doc.id}')">حذف 🗑️</button></div></div>`;
                 });
                 document.getElementById('admin-shops-list').innerHTML = html || 'لا توجد محلات مضافة.';
             });
@@ -717,7 +741,7 @@
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
-                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><div><button class="btn-edit" onclick="prepareEditItem('docs', '${doc.id}', '${d.title}', '${d.subtitle}', '${d.val}', '')">تعديل ✏️</button><button class="btn-del" onclick="deleteAnyItem('docs', '${doc.id}')">حذف 🗑️</button></div></div>`;
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><div><button type="button" class="btn-edit" onclick="prepareEditItem('docs', '${doc.id}', '${d.title}', '${d.subtitle}', '${d.val}', '')">تعديل ✏️</button><button type="button" class="btn-del" onclick="deleteAnyItem('docs', '${doc.id}')">حذف 🗑️</button></div></div>`;
                 });
                 document.getElementById('admin-docs-list').innerHTML = html || 'لا توجد معاملات مضافة.';
             });
@@ -726,7 +750,7 @@
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
-                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.val}</div></div><div><button class="btn-edit" onclick="prepareEditItem('services', '${doc.id}', '${d.title}', '', '${d.val}', '')">تعديل ✏️</button><button class="btn-del" onclick="deleteAnyItem('services', '${doc.id}')">حذف 🗑️</button></div></div>`;
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.val}</div></div><div><button type="button" class="btn-edit" onclick="prepareEditItem('services', '${doc.id}', '${d.title}', '', '${d.val}', '')">تعديل ✏️</button><button type="button" class="btn-del" onclick="deleteAnyItem('services', '${doc.id}')">حذف 🗑️</button></div></div>`;
                 });
                 document.getElementById('admin-services-list').innerHTML = html || 'لا توجد خدمات مضافة.';
             });
@@ -735,7 +759,7 @@
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
-                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.val} ل.س</div></div><div><button class="btn-edit" onclick="prepareEditItem('prices', '${doc.id}', '${d.title}', '${d.subtitle}', '${d.val}', '${d.category}')">تعديل ✏️</button><button class="btn-del" onclick="deleteAnyItem('prices', '${doc.id}')">حذف 🗑️</button></div></div>`;
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.val} ل.س</div></div><div><button type="button" class="btn-edit" onclick="prepareEditItem('prices', '${doc.id}', '${d.title}', '${d.subtitle}', '${d.val}', '${d.category}')">تعديل ✏️</button><button type="button" class="btn-del" onclick="deleteAnyItem('prices', '${doc.id}')">حذف 🗑️</button></div></div>`;
                 });
                 document.getElementById('admin-prices-list').innerHTML = html || 'لا توجد أسعار مضافة.';
             });
@@ -757,8 +781,8 @@
                         <div class="slider-container" id="slider-${index}">
                             <div class="slider-track" id="track-${index}">${imgsTags}</div>
                             ${images.length > 1 ? `
-                                <button class="slider-btn prev" onclick="moveSlide(${index}, -1, ${images.length})">❮</button>
-                                <button class="slider-btn next" onclick="moveSlide(${index}, 1, ${images.length})">❯</button>
+                                <button type="button" class="slider-btn prev" onclick="moveSlide(${index}, -1, ${images.length})">❮</button>
+                                <button type="button" class="slider-btn next" onclick="moveSlide(${index}, 1, ${images.length})">❯</button>
                                 <div class="slider-indicators" id="dots-${index}">${dotsTags}</div>
                             ` : ''}
                         </div>`;

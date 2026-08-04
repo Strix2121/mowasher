@@ -269,11 +269,13 @@
                     <button class="btn-action btn-danger" style="padding:6px 12px; font-size:0.75rem;" onclick="logoutAdmin()">خروج 🚪</button>
                 </div>
                 <div class="admin-form">
+                    <input type="hidden" id="editCollection" value="">
                     <input type="hidden" id="editDocId" value="">
                     <div class="input-group">
                         <label>القسم المستهدف:</label>
                         <select id="itemSection" onchange="toggleFormFields()">
                             <option value="prices">📈 قسم الأسعار والعملات</option>
+                            <option value="market_ads">🏪 سوق الإعلانات والعقارات</option>
                             <option value="pharmacies">🏥 الصيدليات المناوبة</option>
                             <option value="shops">🏪 دليل المحلات والخدمات</option>
                             <option value="docs">📖 المعاملات والأوراق</option>
@@ -281,16 +283,20 @@
                         </select>
                     </div>
                     <div class="input-group">
-                        <label>العنوان:</label>
+                        <label id="labelTitle">العنوان:</label>
                         <input type="text" id="itemTitle">
                     </div>
                     <div class="input-group" id="groupSubtitle">
-                        <label>التفاصيل / العنوان الفرعي:</label>
+                        <label id="labelSubtitle">التفاصيل / العنوان الفرعي / السعر:</label>
                         <input type="text" id="itemSubtitle">
                     </div>
                     <div class="input-group" id="groupVal">
-                        <label>السعر / الرقم:</label>
+                        <label id="labelVal">السعر / رقم الهاتف:</label>
                         <input type="text" id="itemVal">
+                    </div>
+                    <div class="input-group" id="groupDesc">
+                        <label>وصف الإعلان (خاص بالسوق فقط):</label>
+                        <textarea id="itemDesc" rows="2" placeholder="تفاصيل الإعلان..."></textarea>
                     </div>
                     <div class="input-group" id="groupCategory">
                         <label>الفئة:</label>
@@ -299,6 +305,10 @@
                             <option value="gold">ذهب ومجوهرات</option>
                             <option value="fuel">محروقات وطاقة</option>
                             <option value="goods">سلع وغذائيات</option>
+                            <option value="عقارات">عقارات وشقق</option>
+                            <option value="سيارات">سيارات ومخالفات</option>
+                            <option value="أجهزة">أجهزة وإلكترونيات</option>
+                            <option value="أخرى">سلع أخرى</option>
                         </select>
                     </div>
                     <div style="display: flex; gap: 8px;">
@@ -309,7 +319,7 @@
             </div>
 
             <!-- أقسام الإدارة المستقلة -->
-            <div class="section-title">🏪 إدارة وحذف إعلانات السوق</div>
+            <div class="section-title">🏪 إدارة وحذف وتعديل إعلانات السوق</div>
             <div class="card" id="admin-market-list"><div>جاري تحميل إعلانات السوق...</div></div>
 
             <div class="section-title">📥 إعلانات الزوار بانتظار الاعتماد</div>
@@ -420,14 +430,51 @@
         function toggleFormFields() {
             const sec = document.getElementById('itemSection').value;
             const grpCat = document.getElementById('groupCategory');
-            if (sec === 'prices') grpCat.style.display = 'flex';
-            else grpCat.style.display = 'none';
+            const grpDesc = document.getElementById('groupDesc');
+            
+            if (sec === 'market_ads') {
+                grpDesc.style.display = 'flex';
+                grpCat.style.display = 'flex';
+                document.getElementById('labelTitle').innerText = "عنوان الإعلان:";
+                document.getElementById('labelSubtitle').innerText = "السعر المطلوب:";
+                document.getElementById('labelVal').innerText = "رقم الهاتف / التواصل:";
+            } else if (sec === 'prices') {
+                grpDesc.style.display = 'none';
+                grpCat.style.display = 'flex';
+                document.getElementById('labelTitle').innerText = "اسم العنصر (مثال: دولار دمشق):";
+                document.getElementById('labelSubtitle').innerText = "نسبة التغير (مثال: +0.5%):";
+                document.getElementById('labelVal').innerText = "السعر بالليرة:";
+            } else {
+                grpDesc.style.display = 'none';
+                grpCat.style.display = 'none';
+                document.getElementById('labelTitle').innerText = "العنوان:";
+                document.getElementById('labelSubtitle').innerText = "التفاصيل / العنوان الفرعي:";
+                document.getElementById('labelVal').innerText = "السعر / الرقم:";
+            }
         }
 
-        // دالة التعديل: تجلب البيانات إلى نموذج الإضافة بالأعلى لكي يتم تعديلها وحفظها
+        // تحضير تعديل إعلان سوق أو أي عنصر آخر
+        function prepareEditMarketAd(docId, title, price, phone, desc, category, imageUrl) {
+            document.getElementById('itemSection').value = 'market_ads';
+            toggleFormFields();
+            document.getElementById('editCollection').value = 'market_ads';
+            document.getElementById('editDocId').value = docId;
+            document.getElementById('itemTitle').value = title || '';
+            document.getElementById('itemSubtitle').value = price || '';
+            document.getElementById('itemVal').value = phone || '';
+            document.getElementById('itemDesc').value = desc || '';
+            if(category) document.getElementById('itemCategory').value = category;
+            window.currentEditImageUrl = imageUrl || '';
+            
+            document.getElementById('form-mode-title').innerText = "✏️ تعديل إعلان السوق المحدد";
+            document.getElementById('cancelEditBtn').style.display = 'block';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
         function prepareEditItem(secName, docId, title, subtitle, val, category) {
             document.getElementById('itemSection').value = secName;
             toggleFormFields();
+            document.getElementById('editCollection').value = '';
             document.getElementById('editDocId').value = docId;
             document.getElementById('itemTitle').value = title || '';
             document.getElementById('itemSubtitle').value = subtitle || '';
@@ -441,39 +488,66 @@
         }
 
         function cancelEditMode() {
+            document.getElementById('editCollection').value = '';
             document.getElementById('editDocId').value = '';
             document.getElementById('itemTitle').value = '';
             document.getElementById('itemSubtitle').value = '';
             document.getElementById('itemVal').value = '';
+            document.getElementById('itemDesc').value = '';
+            window.currentEditImageUrl = '';
             document.getElementById('form-mode-title').innerText = "➕ إضافة عناصر أساسية بالموقع";
             document.getElementById('cancelEditBtn').style.display = 'none';
         }
 
         function saveToFirebase() {
             const sec = document.getElementById('itemSection').value;
+            const editCol = document.getElementById('editCollection').value;
             const editId = document.getElementById('editDocId').value.trim();
             const title = document.getElementById('itemTitle').value.trim();
             const subtitle = document.getElementById('itemSubtitle').value.trim();
             const val = document.getElementById('itemVal').value.trim();
+            const desc = document.getElementById('itemDesc').value.trim();
             const category = document.getElementById('itemCategory').value;
 
-            if (!title) { alert("يرجى كتابة العنوان!"); return; }
+            if (!title) { alert("يرجى كتابة العنوان الأساسي!"); return; }
 
-            // إذا كان هناك معرف قديم للتعديل وتم تغيير العنوان، نحذف القديم وننشئ الجديد لتفادي تكرار المستندات
-            const docRef = db.collection(sec).doc(title);
-            
-            const dataToSave = {
-                title: title, subtitle: subtitle, val: val, category: category,
-                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
+            if (sec === 'market_ads') {
+                const adData = {
+                    title: title,
+                    price: subtitle,
+                    phone: val,
+                    desc: desc,
+                    category: category,
+                    imageUrl: window.currentEditImageUrl || '',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
 
-            docRef.set(dataToSave).then(() => {
-                if (editId && editId !== title) {
-                    db.collection(sec).doc(editId).delete();
+                if (editId) {
+                    db.collection("market_ads").doc(editId).update(adData).then(() => {
+                        alert("تم تحديث إعلان السوق بنجاح! 🚀");
+                        cancelEditMode();
+                    }).catch(e => alert("خطأ: " + e.message));
+                } else {
+                    db.collection("market_ads").add(adData).then(() => {
+                        alert("تم إضافة إعلان السوق بنجاح! 🚀");
+                        cancelEditMode();
+                    }).catch(e => alert("خطأ: " + e.message));
                 }
-                alert("تم الحفظ وتحديث البيانات بنجاح! 🚀");
-                cancelEditMode();
-            }).catch(e => alert("خطأ: " + e.message));
+            } else {
+                const docRef = db.collection(sec).doc(title);
+                const dataToSave = {
+                    title: title, subtitle: subtitle, val: val, category: category,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                docRef.set(dataToSave).then(() => {
+                    if (editId && editId !== title) {
+                        db.collection(sec).doc(editId).delete();
+                    }
+                    alert("تم الحفظ وتحديث البيانات بنجاح! 🚀");
+                    cancelEditMode();
+                }).catch(e => alert("خطأ: " + e.message));
+            }
         }
 
         function deleteAnyItem(collectionName, docId) {
@@ -562,6 +636,11 @@
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
+                    const safeTitle = (d.title || '').replace(/'/g, "\\'");
+                    const safePrice = (d.price || '').replace(/'/g, "\\'");
+                    const safePhone = (d.phone || '').replace(/'/g, "\\'");
+                    const safeDesc = (d.desc || '').replace(/'/g, "\\'");
+                    const safeImg = (d.imageUrl || '').replace(/'/g, "\\'");
                     html += `
                         <div class="list-item">
                             <div>
@@ -569,6 +648,7 @@
                                 <div style="font-size:0.75rem; color:var(--text-secondary);">${d.price || ''} | ${d.phone}</div>
                             </div>
                             <div>
+                                <button class="btn-edit" onclick="prepareEditMarketAd('${doc.id}', '${safeTitle}', '${safePrice}', '${safePhone}', '${safeDesc}', '${d.category}', '${safeImg}')">تعديل ✏️</button>
                                 <button class="btn-del" onclick="deleteAnyItem('market_ads', '${doc.id}')">حذف 🗑️</button>
                             </div>
                         </div>`;
@@ -577,7 +657,6 @@
             });
         }
 
-        // تحميل أقسام الداش بورد مع أزرار التعديل والحذف
         function loadAdminSectionLists() {
             // الصيدليات
             db.collection("pharmacies").onSnapshot((snapshot) => {
@@ -659,7 +738,7 @@
                 calculate();
             });
 
-            // 2. سوق الإعلانات (عرض عام للزوار)
+            // 2. سوق الإعلانات (عرض نظيف للزوار فقط بدون أزرار تعديل)
             db.collection("market_ads").onSnapshot((snapshot) => {
                 let html = '';
                 snapshot.forEach((doc) => {

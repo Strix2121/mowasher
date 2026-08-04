@@ -43,22 +43,10 @@
             line-height: 1.6;
         }
         
-        header { text-align: center; padding: 20px 0 15px; margin-bottom: 20px; position: relative; }
+        header { text-align: center; padding: 20px 0 10px; margin-bottom: 10px; position: relative; }
         .logo { font-size: 2rem; font-weight: 900; color: #ffffff; display: flex; align-items: center; justify-content: center; gap: 10px; letter-spacing: -0.5px; }
         .logo span { background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .tagline { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; font-weight: 600; }
-
-        .status-bar {
-            display: flex; align-items: center; justify-content: space-between;
-            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px);
-            border: 1px solid var(--card-border); padding: 8px 14px; border-radius: 12px;
-            margin-top: 14px; font-size: 0.78rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-        }
-        .live-dot {
-            width: 9px; height: 9px; background-color: var(--accent-green); border-radius: 50%;
-            display: inline-block; margin-left: 6px; box-shadow: 0 0 10px var(--accent-green); animation: pulse 1.8s infinite;
-        }
-        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
 
         .page-content { display: none; opacity: 0; transform: translateY(8px); transition: opacity 0.35s ease, transform 0.35s ease; }
         .page-content.active { display: block; opacity: 1; transform: translateY(0); }
@@ -114,7 +102,7 @@
         .btn-del { background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
         .btn-approve { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-left: 5px; }
 
-        /* الشريط السفلي العائم المحدث ليحتوي زر الأدمن ويزيد عدد الأقسام */
+        /* الشريط السفلي العائم */
         .bottom-nav {
             position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
             width: calc(100% - 24px); max-width: 576px; background: rgba(15, 23, 42, 0.85);
@@ -137,10 +125,6 @@
     <header>
         <div class="logo">📈 مُؤشّر <span>سوري</span></div>
         <div class="tagline">دليل الأسعار والخدمات والمعاملات لحظة بلحظة</div>
-        <div class="status-bar">
-            <div><span class="live-dot"></span> مباشر - تحديث تلقائي</div>
-            <div id="last-update">جاري التحميل...</div>
-        </div>
     </header>
 
     <!-- 1. صفحة الأسعار والحاسبة -->
@@ -249,7 +233,7 @@
         <div class="card" id="services-card"><div>جاري جلب الخدمات...</div></div>
     </div>
 
-    <!-- 7. لوحة تحكم الإدارة الشاملة (#admin) - تمت إضافة زر مباشر لها في الشريط السفلي -->
+    <!-- 7. لوحة تحكم الإدارة الشاملة (#admin) -->
     <div id="page-admin" class="page-content">
         <div class="section-title">🔒 لوحة التحكم وإدارة الإعلانات الواردة</div>
         
@@ -309,7 +293,6 @@
                 </div>
             </div>
 
-            <!-- قسم مراجعة إعلانات الزوار المعلقة -->
             <div class="section-title">📥 إعلانات الزوار بانتظار الموافقة والاعتماد</div>
             <div class="card" id="pending-ads-list"><div>جاري التحقق من الإعلانات الجديدة...</div></div>
 
@@ -322,7 +305,7 @@
         <div>جميع الحقوق محفوظة © 2026 - منصة <strong>مُؤشّر</strong></div>
     </footer>
 
-    <!-- شريط التنقل السفلي المحدث (تمت إضافة زر لوحة التحكم بشكل ظاهر وواضح) -->
+    <!-- شريط التنقل السفلي -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="showPage('prices', this)"><span class="icon">📈</span><span>الأسعار</span></div>
         <div class="nav-item" onclick="showPage('market', this)"><span class="icon">🏪</span><span>السوق</span></div>

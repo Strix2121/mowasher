@@ -43,262 +43,95 @@
             line-height: 1.6;
         }
         
-        header {
-            text-align: center;
-            padding: 20px 0 15px;
-            margin-bottom: 20px;
-            position: relative;
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: 900;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            letter-spacing: -0.5px;
-        }
-
-        .logo span {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .tagline {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            margin-top: 4px;
-            font-weight: 600;
-        }
+        header { text-align: center; padding: 20px 0 15px; margin-bottom: 20px; position: relative; }
+        .logo { font-size: 2rem; font-weight: 900; color: #ffffff; display: flex; align-items: center; justify-content: center; gap: 10px; letter-spacing: -0.5px; }
+        .logo span { background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .tagline { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; font-weight: 600; }
 
         .status-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--card-border);
-            padding: 8px 14px;
-            border-radius: 12px;
-            margin-top: 14px;
-            font-size: 0.78rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            display: flex; align-items: center; justify-content: space-between;
+            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px);
+            border: 1px solid var(--card-border); padding: 8px 14px; border-radius: 12px;
+            margin-top: 14px; font-size: 0.78rem; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
-
         .live-dot {
-            width: 9px;
-            height: 9px;
-            background-color: var(--accent-green);
-            border-radius: 50%;
-            display: inline-block;
-            margin-left: 6px;
-            box-shadow: 0 0 10px var(--accent-green);
-            animation: pulse 1.8s infinite;
+            width: 9px; height: 9px; background-color: var(--accent-green); border-radius: 50%;
+            display: inline-block; margin-left: 6px; box-shadow: 0 0 10px var(--accent-green); animation: pulse 1.8s infinite;
         }
+        @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1); } }
 
-        @keyframes pulse {
-            0% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1); }
-        }
+        .page-content { display: none; opacity: 0; transform: translateY(8px); transition: opacity 0.35s ease, transform 0.35s ease; }
+        .page-content.active { display: block; opacity: 1; transform: translateY(0); }
 
-        .page-content {
-            display: none;
-            opacity: 0;
-            transform: translateY(8px);
-            transition: opacity 0.35s ease, transform 0.35s ease;
-        }
-
-        .page-content.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .section-title {
-            font-size: 1.05rem;
-            font-weight: 800;
-            margin: 20px 0 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--text-primary);
-        }
-
+        .section-title { font-size: 1.05rem; font-weight: 800; margin: 20px 0 12px; display: flex; align-items: center; gap: 8px; color: var(--text-primary); }
         .card {
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 14px;
-            box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.3);
-            transition: transform 0.2s ease, border-color 0.2s ease;
+            background: var(--card-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 14px;
+            box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.3); transition: border-color 0.2s ease;
         }
-
         .card:hover { border-color: rgba(59, 130, 246, 0.3); }
 
-        .price-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
-        }
-
+        .price-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed rgba(255, 255, 255, 0.08); }
         .price-row:last-child { border-bottom: none; }
+        .item-info { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.95rem; }
+        .item-price { font-weight: 800; font-size: 1.05rem; color: #ffffff; }
 
-        .item-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 0.95rem;
-        }
-
-        .item-price {
-            font-weight: 800;
-            font-size: 1.05rem;
-            color: #ffffff;
-        }
-
-        .change-tag {
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 6px;
-            display: inline-block;
-        }
-
-        .up { color: #34d399; background: rgba(16, 185, 129, 0.15); }
-        .down { color: #fb7185; background: rgba(244, 63, 94, 0.15); }
+        .change-tag { font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; display: inline-block; }
         .neutral { color: var(--text-secondary); background: rgba(148, 163, 184, 0.12); }
 
         /* الحاسبة */
         .calc-box { display: flex; flex-direction: column; gap: 12px; }
         .input-group { display: flex; flex-direction: column; gap: 6px; }
         .input-group label { font-size: 0.8rem; color: var(--text-secondary); font-weight: 700; }
+        .input-group input, .input-group select, .input-group textarea {
+            background-color: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); color: var(--text-primary);
+            padding: 12px 14px; border-radius: 10px; font-size: 0.95rem; font-weight: 600; outline: none; transition: border-color 0.2s ease;
+        }
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px var(--accent-glow); }
         
-        .input-group input, .input-group select {
-            background-color: rgba(15, 23, 42, 0.8);
-            border: 1px solid var(--card-border);
-            color: var(--text-primary);
-            padding: 12px 14px;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            outline: none;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .input-group input:focus, .input-group select:focus {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 0 3px var(--accent-glow);
-        }
-
         .calc-result {
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.25));
-            border: 1px solid rgba(59, 130, 246, 0.4);
-            border-radius: 12px;
-            padding: 14px;
-            text-align: center;
-            font-weight: 800;
-            font-size: 1.2rem;
-            color: #60a5fa;
-            box-shadow: inset 0 0 12px rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 12px; padding: 14px; text-align: center;
+            font-weight: 800; font-size: 1.2rem; color: #60a5fa; box-shadow: inset 0 0 12px rgba(59, 130, 246, 0.1);
         }
 
         /* القوائم والخدمات */
-        .list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
         .list-item:last-child { border-bottom: none; }
 
         .btn-call {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
-            text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 0.82rem;
-            font-weight: 800;
+            background: linear-gradient(135deg, #10b981, #059669); color: white; text-decoration: none;
+            padding: 8px 16px; border-radius: 8px; font-size: 0.82rem; font-weight: 800;
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
-            transition: transform 0.15s ease, box-shadow 0.15s ease;
         }
-
-        .btn-call:active { transform: scale(0.96); }
 
         /* أزرار الإدارة */
         .admin-form { display: flex; flex-direction: column; gap: 12px; }
         .btn-action {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 800;
-            font-size: 0.95rem;
-            cursor: pointer;
+            background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none;
+            padding: 12px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; cursor: pointer;
             box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-            transition: transform 0.15s ease;
         }
-
-        .btn-action:active { transform: scale(0.98); }
-        .btn-danger { background: linear-gradient(135deg, #f43f5e, #e11d48); box-shadow: 0 4px 12px rgba(244, 63, 94, 0.3); }
+        .btn-danger { background: linear-gradient(135deg, #f43f5e, #e11d48); }
         .btn-del { background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
+        .btn-approve { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-left: 5px; }
 
         /* الشريط السفلي العائم */
         .bottom-nav {
-            position: fixed;
-            bottom: 12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 24px);
-            max-width: 576px;
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 4px;
-            z-index: 1000;
+            position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 24px); max-width: 576px; background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--card-border);
+            border-radius: 20px; display: flex; justify-content: space-around; padding: 8px 4px; z-index: 1000;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
-
         .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.72rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: color 0.2s ease, transform 0.2s ease;
-            padding: 4px 8px;
-            border-radius: 12px;
+            display: flex; flex-direction: column; align-items: center; color: var(--text-secondary);
+            text-decoration: none; font-size: 0.7rem; font-weight: 700; cursor: pointer; padding: 4px 6px; border-radius: 12px;
         }
-
-        .nav-item .icon { font-size: 1.3rem; margin-bottom: 2px; }
+        .nav-item .icon { font-size: 1.2rem; margin-bottom: 2px; }
         .nav-item.active { color: #60a5fa; transform: translateY(-2px); }
 
-        footer {
-            text-align: center;
-            padding: 20px 0 10px;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            font-weight: 600;
-        }
+        footer { text-align: center; padding: 20px 0 10px; font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; }
     </style>
 </head>
 <body>
@@ -332,7 +165,6 @@
                 <label>المبلغ المراد تحويله:</label>
                 <input type="number" id="amount" value="100" placeholder="أدخل المبلغ...">
             </div>
-            
             <div style="display: flex; gap: 10px;">
                 <div class="input-group" style="flex: 1;">
                     <label>من (العملة الأولى):</label>
@@ -344,7 +176,6 @@
                         <option value="GOLD21">جرام ذهب عيار 21 🧈</option>
                     </select>
                 </div>
-
                 <div class="input-group" style="flex: 1;">
                     <label>إلى (العملة الثانية):</label>
                     <select id="to-currency">
@@ -356,40 +187,74 @@
                     </select>
                 </div>
             </div>
-
             <div class="calc-result" id="calc-output">جاري الحساب...</div>
         </div>
     </div>
 
-    <!-- 2. صفحة الصيدليات المناوبة -->
-    <div id="page-pharmacies" class="page-content">
-        <div class="section-title">🏥 الصيدليات المناوبة اليوم</div>
-        <div class="card" id="pharmacies-card"><div>جاري جلب قائمة الصيدليات...</div></div>
+    <!-- 2. صفحة السوق والعقارات (الجديدة) -->
+    <div id="page-market" class="page-content">
+        <div class="section-title">🏪 سوق العقارات والبيع والشراء</div>
+        <div class="card" id="market-card"><div>جاري جلب الإعلانات النشطة...</div></div>
+
+        <div class="section-title">📢 أضف إعلانك أو عقارك مجاناً</div>
+        <div class="card admin-form">
+            <div class="input-group">
+                <label>عنوان الإعلان (مثال: شقة للبيع في دمشق):</label>
+                <input type="text" id="adTitle" placeholder="اكتب عنواناً واضحاً...">
+            </div>
+            <div class="input-group">
+                <label>القسم:</label>
+                <select id="adCategory">
+                    <option value="عقارات">🏡 عقارات وشقق</option>
+                    <option value="سيارات">🚗 سيارات ومخالفات</option>
+                    <option value="أجهزة">💻 أجهزة وإلكترونيات</option>
+                    <option value="أخرى">📦 أوعية وسلع أخرى</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>السعر المطلوب:</label>
+                <input type="text" id="adPrice" placeholder="مثال: 85 مليون ل.س">
+            </div>
+            <div class="input-group">
+                <label>رقم الواتساب أو الاتصال للتواصل:</label>
+                <input type="text" id="adPhone" placeholder="09xxxxxxxx">
+            </div>
+            <div class="input-group">
+                <label>تفاصيل إضافية:</label>
+                <textarea id="adDesc" rows="3" placeholder="مواصفات السلعة أو العقار..."></textarea>
+            </div>
+            <button class="btn-action" onclick="submitUserAd()">إرسال الإعلان للمراجعة 🚀</button>
+        </div>
     </div>
 
-    <!-- 3. صفحة دليل المحلات والخدمات -->
+    <!-- 3. صفحة الصيدليات المناوبة -->
+    <div id="page-pharmacies" class="page-content">
+        <div class="section-title">🏥 الصيدليات المناوبة اليوم</div>
+        <div class="card" id="pharmacies-card"><div>جاري جلب القائمة...</div></div>
+    </div>
+
+    <!-- 4. صفحة دليل المحلات والخدمات -->
     <div id="page-shops" class="page-content">
         <div class="section-title">🏪 دليل المحلات والخدمات</div>
         <div class="card" id="shops-card"><div>جاري جلب الدليل...</div></div>
     </div>
 
-    <!-- 4. صفحة المعاملات والأوراق الرسمية -->
+    <!-- 5. صفحة المعاملات والأوراق الرسمية -->
     <div id="page-docs" class="page-content">
         <div class="section-title">📖 دليل الأوراق والمعاملات الحكومية</div>
-        <div class="card" id="docs-card"><div>جاري جلب قائمة المعاملات...</div></div>
+        <div class="card" id="docs-card"><div>جاري جلب المعاملات...</div></div>
     </div>
 
-    <!-- 5. صفحة خدمات التقنين والطوارئ -->
+    <!-- 6. صفحة خدمات التقنين والطوارئ -->
     <div id="page-services" class="page-content">
         <div class="section-title">⚡ التقنين وأرقام الطوارئ</div>
-        <div class="card" id="services-card"><div>جاري جلب أرقام الخدمات...</div></div>
+        <div class="card" id="services-card"><div>جاري جلب الخدمات...</div></div>
     </div>
 
-    <!-- 6. لوحة تحكم الإدارة الشاملة لكل الفئات (#admin) -->
+    <!-- 7. لوحة تحكم الإدارة الشاملة (#admin) -->
     <div id="page-admin" class="page-content">
-        <div class="section-title">🔒 لوحة التحكم الشاملة لكل الأقسام</div>
+        <div class="section-title">🔒 لوحة التحكم وإدارة الإعلانات الواردة</div>
         
-        <!-- تسجيل الدخول -->
         <div class="card" id="login-box">
             <div class="admin-form">
                 <div class="input-group">
@@ -404,42 +269,37 @@
             </div>
         </div>
 
-        <!-- لوحة التحكم -->
         <div id="admin-panel" style="display: none;">
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-                    <h3 style="color: var(--accent-gold); margin:0; font-size:1.05rem;">➕ إضافة / تعديل عنصر</h3>
+                    <h3 style="color: var(--accent-gold); margin:0; font-size:1.05rem;">➕ إضافة عناصر أساسية بالموقع</h3>
                     <button class="btn-action btn-danger" style="padding:6px 12px; font-size:0.75rem;" onclick="logoutAdmin()">خروج 🚪</button>
                 </div>
                 <div class="admin-form">
                     <div class="input-group">
-                        <label>القسم المخصص:</label>
+                        <label>القسم المستهدف:</label>
                         <select id="itemSection" onchange="toggleFormFields()">
                             <option value="prices">📈 قسم الأسعار والعملات</option>
-                            <option value="pharmacies">🏥 قسم الصيدليات المناوبة</option>
-                            <option value="shops">🏪 قسم دليل المحلات والخدمات</option>
-                            <option value="docs">📖 قسم المعاملات والأوراق</option>
-                            <option value="services">⚡ قسم أرقام الطوارئ والخدمات</option>
+                            <option value="pharmacies">🏥 الصيدليات المناوبة</option>
+                            <option value="shops">🏪 دليل المحلات والخدمات</option>
+                            <option value="docs">📖 المعاملات والأوراق</option>
+                            <option value="services">⚡ أرقام الطوارئ</option>
                         </select>
                     </div>
-
                     <div class="input-group">
-                        <label id="lblTitle">اسم العنصر/العملة/الصيدلية:</label>
-                        <input type="text" id="itemTitle" placeholder="مثال: دولار دمشق / صيدلية الأمل">
+                        <label>العنوان:</label>
+                        <input type="text" id="itemTitle">
                     </div>
-
                     <div class="input-group" id="groupSubtitle">
-                        <label id="lblSubtitle">التفاصيل/العنوان/الأوراق:</label>
-                        <input type="text" id="itemSubtitle" placeholder="مثال: دمشق - الميدان">
+                        <label>التفاصيل / العنوان:</label>
+                        <input type="text" id="itemSubtitle">
                     </div>
-
                     <div class="input-group" id="groupVal">
-                        <label id="lblVal">السعر أو رقم الهاتف:</label>
-                        <input type="text" id="itemVal" placeholder="مثال: 13800 أو 0930000000">
+                        <label>السعر / الرقم:</label>
+                        <input type="text" id="itemVal">
                     </div>
-
                     <div class="input-group" id="groupCategory">
-                        <label>فئة السعر:</label>
+                        <label>الفئة:</label>
                         <select id="itemCategory">
                             <option value="currency">عملات وصرف</option>
                             <option value="gold">ذهب ومجوهرات</option>
@@ -447,12 +307,15 @@
                             <option value="goods">سلع وغذائيات</option>
                         </select>
                     </div>
-
-                    <button class="btn-action" onclick="saveToFirebase()">حفظ العنصر فوراً 🚀</button>
+                    <button class="btn-action" onclick="saveToFirebase()">حفظ مباشر 🚀</button>
                 </div>
             </div>
 
-            <div class="section-title">🗑️ العناصر الحالية بالقسم المختار (حذف / تعديل)</div>
+            <!-- قسم مراجعة إعلانات الزوار المعلقة -->
+            <div class="section-title">📥 إعلانات الزوار بانتظار الموافقة والاعتماد</div>
+            <div class="card" id="pending-ads-list"><div>جاري التحقق من الإعلانات الجديدة...</div></div>
+
+            <div class="section-title">🗑️ إدارة العناصر الحالية بالقسم المختار</div>
             <div class="card" id="admin-items-list"><div>جاري تحميل القائمة...</div></div>
         </div>
     </div>
@@ -461,11 +324,12 @@
         <div>جميع الحقوق محفوظة © 2026 - منصة <strong>مُؤشّر</strong></div>
     </footer>
 
-    <!-- شريط التنقل السفلي -->
+    <!-- شريط التنقل السفلي المحدث -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="showPage('prices', this)"><span class="icon">📈</span><span>الأسعار</span></div>
+        <div class="nav-item" onclick="showPage('market', this)"><span class="icon">🏪</span><span>السوق</span></div>
         <div class="nav-item" onclick="showPage('pharmacies', this)"><span class="icon">🏥</span><span>الصيدليات</span></div>
-        <div class="nav-item" onclick="showPage('shops', this)"><span class="icon">🏪</span><span>الدليل</span></div>
+        <div class="nav-item" onclick="showPage('shops', this)"><span class="icon">📁</span><span>الدليل</span></div>
         <div class="nav-item" onclick="showPage('docs', this)"><span class="icon">📖</span><span>المعاملات</span></div>
         <div class="nav-item" onclick="showPage('services', this)"><span class="icon">⚡</span><span>الخدمات</span></div>
     </div>
@@ -496,6 +360,7 @@
                 document.getElementById('login-box').style.display = 'none';
                 document.getElementById('admin-panel').style.display = 'block';
                 toggleFormFields();
+                loadPendingAds();
             } else {
                 document.getElementById('login-box').style.display = 'block';
                 document.getElementById('admin-panel').style.display = 'none';
@@ -517,7 +382,7 @@
             const pass = document.getElementById('adminPass').value;
             auth.signInWithEmailAndPassword(email, pass)
                 .then(() => alert("تم تسجيل الدخول بنجاح!"))
-                .catch(error => alert("خطأ في بيانات الدخول: " + error.message));
+                .catch(error => alert("خطأ في البيانات: " + error.message));
         }
 
         function logoutAdmin() {
@@ -529,7 +394,6 @@
             const grpCat = document.getElementById('groupCategory');
             if (sec === 'prices') grpCat.style.display = 'flex';
             else grpCat.style.display = 'none';
-
             loadAdminSectionList(sec);
         }
 
@@ -540,26 +404,83 @@
             const val = document.getElementById('itemVal').value.trim();
             const category = document.getElementById('itemCategory').value;
 
-            if (!title) { alert("يرجى كتابة عنوان العنصر!"); return; }
+            if (!title) { alert("يرجى كتابة العنوان!"); return; }
 
             db.collection(sec).doc(title).set({
-                title: title,
-                subtitle: subtitle,
-                val: val,
-                category: category,
+                title: title, subtitle: subtitle, val: val, category: category,
                 updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
                 alert("تم الحفظ بنجاح!");
                 document.getElementById('itemTitle').value = '';
                 document.getElementById('itemSubtitle').value = '';
                 document.getElementById('itemVal').value = '';
-            }).catch(e => alert("خطأ بالحفظ: " + e.message));
+            }).catch(e => alert("خطأ: " + e.message));
         }
 
         function deleteItem(sec, docId) {
             if (confirm(`هل أنت متأكد من الحذف؟`)) {
                 db.collection(sec).doc(docId).delete().then(() => alert("تم الحذف بنجاح!"));
             }
+        }
+
+        // إرسال إعلان جديد من الزائر
+        function submitUserAd() {
+            const title = document.getElementById('adTitle').value.trim();
+            const category = document.getElementById('adCategory').value;
+            const price = document.getElementById('adPrice').value.trim();
+            const phone = document.getElementById('adPhone').value.trim();
+            const desc = document.getElementById('adDesc').value.trim();
+
+            if (!title || !phone) {
+                alert("يرجى إتمام عنوان الإعلان ورقم التواصل على الأقل!");
+                return;
+            }
+
+            db.collection("pending_ads").add({
+                title: title, category: category, price: price, phone: phone, desc: desc,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                alert("تم إرسال إعلانك بنجاح! سيتم مراجعته ونشره قريباً.");
+                document.getElementById('adTitle').value = '';
+                document.getElementById('adPrice').value = '';
+                document.getElementById('adPhone').value = '';
+                document.getElementById('adDesc').value = '';
+            }).catch(e => alert("حدث خطأ: " + e.message));
+        }
+
+        // اعتماد الإعلان ونقله للسوق العام
+        function approveAd(docId, data) {
+            db.collection("market_ads").doc(docId).set(data).then(() => {
+                db.collection("pending_ads").doc(docId).delete();
+                alert("تم اعتماد ونشر الإعلان في السوق بنجاح!");
+            });
+        }
+
+        function rejectAd(docId) {
+            db.collection("pending_ads").doc(docId).delete().then(() => alert("تم رفض وحذف الإعلان."));
+        }
+
+        function loadPendingAds() {
+            db.collection("pending_ads").onSnapshot((snapshot) => {
+                let html = '';
+                snapshot.forEach((doc) => {
+                    const d = doc.data();
+                    const escapedData = JSON.stringify(d).replace(/"/g, '&quot;');
+                    html += `
+                        <div class="list-item">
+                            <div>
+                                <b>[${d.category}] ${d.title}</b>
+                                <div style="font-size:0.75rem; color:var(--text-secondary);">${d.price || ''} | تواصل: ${d.phone}</div>
+                                <div style="font-size:0.75rem;">${d.desc || ''}</div>
+                            </div>
+                            <div style="display:flex; gap:4px;">
+                                <button class="btn-approve" onclick='approveAd("${doc.id}", ${escapedData})'>نشر ✅</button>
+                                <button class="btn-del" onclick="rejectAd('${doc.id}')">رفض ❌</button>
+                            </div>
+                        </div>`;
+                });
+                document.getElementById('pending-ads-list').innerHTML = html || 'لا توجد إعلانات معلقة بانتظار المراجعة.';
+            });
         }
 
         function loadAdminSectionList(sec) {
@@ -574,8 +495,7 @@
                                 <div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle || ''} ${d.val ? '| ' + d.val : ''}</div>
                             </div>
                             <button class="btn-del" onclick="deleteItem('${sec}', '${doc.id}')">حذف 🗑️</button>
-                        </div>
-                    `;
+                        </div>`;
                 });
                 document.getElementById('admin-items-list').innerHTML = html || 'لا توجد عناصر مضافة بهذا القسم.';
             });
@@ -598,10 +518,7 @@
                         if (item.title.includes('يورو')) currentPrices.eur = priceNum;
                         if (item.title.includes('تركية') || item.title.includes('تركيا') || item.title.includes('TL')) currentPrices.tryLira = priceNum;
                     }
-                    else if (item.category === 'gold') { 
-                        goldHTML += rowHTML; 
-                        if (item.title.includes('21')) currentPrices.gold21 = priceNum; 
-                    }
+                    else if (item.category === 'gold') { goldHTML += rowHTML; if (item.title.includes('21')) currentPrices.gold21 = priceNum; }
                     else if (item.category === 'fuel') fuelHTML += rowHTML;
                     else goodsHTML += rowHTML;
                 });
@@ -610,6 +527,25 @@
                 document.getElementById('fuel-card').innerHTML = fuelHTML || 'لا توجد بيانات.';
                 document.getElementById('goods-card').innerHTML = goodsHTML || 'لا توجد بيانات.';
                 calculate();
+            });
+
+            // تحميل السوق العام المعروض للزوار
+            db.collection("market_ads").onSnapshot((snapshot) => {
+                let html = '';
+                snapshot.forEach((doc) => {
+                    const d = doc.data();
+                    html += `
+                        <div class="price-row">
+                            <div>
+                                <div style="font-size:0.75rem; color:var(--accent-gold); font-weight:700;">[${d.category}]</div>
+                                <b style="font-size:1rem;">${d.title}</b>
+                                <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:2px;">${d.desc || ''}</div>
+                                <div style="font-weight:800; color:var(--accent-green); margin-top:4px;">${d.price || 'السعر عند التواصل'}</div>
+                            </div>
+                            <a href="tel:${d.phone}" class="btn-call">اتصال 📞</a>
+                        </div>`;
+                });
+                document.getElementById('market-card').innerHTML = html || 'لا توجد إعلانات عقارية أو تجارية معروضة حالياً.';
             });
 
             db.collection("pharmacies").onSnapshot((snapshot) => {
@@ -662,7 +598,6 @@
             return '🛒';
         }
 
-        // عناصر الحاسبة الذكية
         const amountInput = document.getElementById('amount');
         const fromCurrency = document.getElementById('from-currency');
         const toCurrency = document.getElementById('to-currency');
@@ -672,11 +607,7 @@
             const amount = parseFloat(amountInput.value) || 0;
             const from = fromCurrency.value;
             const to = toCurrency.value;
-
-            if (amount <= 0) {
-                calcOutput.innerText = "0";
-                return;
-            }
+            if (amount <= 0) { calcOutput.innerText = "0"; return; }
 
             const ratesInSYP = {
                 'SYP': 1,
@@ -695,7 +626,6 @@
             } else {
                 formattedResult = `${finalResult.toFixed(2)} ${getCurrencySymbol(to)}`;
             }
-
             calcOutput.innerText = formattedResult;
         }
 

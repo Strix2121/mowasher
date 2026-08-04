@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>رادار | منصة بانياس الشاملة للأسعار والسوق</title>
+    <title>موجة بانياس | منصة البحر والساحل الشاملة</title>
     <link rel="manifest" href="./manifest.json">
-    <meta name="theme-color" content="#0f172a">
+    <meta name="theme-color" content="#0369a1">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -17,22 +17,21 @@
 
     <style>
         :root {
-            --bg-gradient: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
-            --card-bg: rgba(30, 41, 59, 0.7);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --accent-green: #10b981;
-            --accent-red: #f43f5e;
-            --accent-gold: #fbbf24;
-            --accent-blue: #3b82f6;
-            --accent-glow: rgba(59, 130, 246, 0.15);
+            --bg-gradient: radial-gradient(circle at top, #0c4a6e 0%, #082f49 50%, #030712 100%);
+            --card-bg: rgba(12, 74, 110, 0.45);
+            --card-border: rgba(56, 189, 248, 0.15);
+            --text-primary: #f0f9ff;
+            --text-secondary: #7dd3fc;
+            --accent-sea: #38bdf8;
+            --accent-sand: #fbbf24;
+            --accent-teal: #2dd4bf;
+            --accent-glow: rgba(56, 189, 248, 0.2);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
         
         body {
-            background: #0f172a;
+            background: #082f49;
             background-image: var(--bg-gradient);
             background-attachment: fixed;
             color: var(--text-primary);
@@ -43,57 +42,59 @@
             line-height: 1.6;
         }
         
-        header { text-align: center; padding: 20px 0 10px; margin-bottom: 10px; position: relative; }
-        .logo { font-size: 2.1rem; font-weight: 900; color: #ffffff; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: -0.5px; }
-        .logo span { background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .tagline { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; font-weight: 600; }
+        header { text-align: center; padding: 25px 0 15px; margin-bottom: 10px; position: relative; }
+        .logo { font-size: 2.2rem; font-weight: 900; color: #ffffff; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: -0.5px; text-shadow: 0 2px 10px rgba(56, 189, 248, 0.3); }
+        .logo span { background: linear-gradient(135deg, #38bdf8, #2dd4bf); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .tagline { font-size: 0.82rem; color: var(--text-secondary); margin-top: 6px; font-weight: 600; letter-spacing: 0.5px; }
 
         .page-content { display: none; opacity: 0; transform: translateY(8px); transition: opacity 0.35s ease, transform 0.35s ease; }
         .page-content.active { display: block; opacity: 1; transform: translateY(0); }
 
-        .section-title { font-size: 1.05rem; font-weight: 800; margin: 20px 0 12px; display: flex; align-items: center; gap: 8px; color: var(--text-primary); }
+        .section-title { font-size: 1.05rem; font-weight: 800; margin: 20px 0 12px; display: flex; align-items: center; gap: 8px; color: #bae6fd; }
         .card {
             background: var(--card-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--card-border); border-radius: 16px; padding: 16px; margin-bottom: 14px;
-            box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.3); transition: border-color 0.2s ease;
+            border: 1px solid var(--card-border); border-radius: 18px; padding: 16px; margin-bottom: 14px;
+            box-shadow: 0 10px 30px -5px rgba(3, 105, 161, 0.25); transition: border-color 0.2s ease;
         }
-        .card:hover { border-color: rgba(59, 130, 246, 0.3); }
+        .card:hover { border-color: rgba(56, 189, 248, 0.4); }
 
-        .price-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed rgba(255, 255, 255, 0.08); }
+        .price-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed rgba(56, 189, 248, 0.15); }
         .price-row:last-child { border-bottom: none; }
         .item-info { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.95rem; }
         .item-price { font-weight: 800; font-size: 1.05rem; color: #ffffff; }
 
         .change-tag { font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; display: inline-block; }
-        .neutral { color: var(--text-secondary); background: rgba(148, 163, 184, 0.12); }
+        .neutral { color: var(--text-secondary); background: rgba(56, 189, 248, 0.1); }
 
-        /* تصميم متجر السوق المطور والفلاتر */
+        /* فلاتر السوق البحري */
         .market-filters { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 12px; scrollbar-width: none; }
         .market-filters::-webkit-scrollbar { display: none; }
         .filter-chip {
-            background: rgba(30, 41, 59, 0.9); border: 1px solid var(--card-border); color: var(--text-secondary);
+            background: rgba(12, 74, 110, 0.8); border: 1px solid var(--card-border); color: var(--text-secondary);
             padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; cursor: pointer; white-space: nowrap; transition: all 0.2s;
         }
-        .filter-chip.active { background: var(--accent-blue); color: white; border-color: var(--accent-blue); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+        .filter-chip.active { background: linear-gradient(135deg, #0284c7, #0ea5e9); color: white; border-color: #38bdf8; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4); }
 
         .btn-open-modal {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b); color: #0f172a; border: none; width: 100%;
+            background: linear-gradient(135deg, #38bdf8, #0ea5e9); color: #082f49; border: none; width: 100%;
             padding: 14px; border-radius: 14px; font-weight: 900; font-size: 1rem; cursor: pointer;
-            box-shadow: 0 6px 20px rgba(251, 191, 36, 0.25); display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px;
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.3); display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 15px;
+            transition: transform 0.2s;
         }
+        .btn-open-modal:active { transform: scale(0.98); }
 
-        /* نافذة إضافة إعلان المنبثقة (Modal) */
+        /* نافذة إضافة إعلان منبثقة */
         .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(10px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 15px;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(8, 47, 73, 0.85);
+            backdrop-filter: blur(12px); z-index: 2000; display: none; align-items: center; justify-content: center; padding: 15px;
         }
         .modal-card {
-            background: #1e293b; border: 1px solid var(--card-border); border-radius: 20px; width: 100%; max-width: 500px;
-            max-height: 90vh; overflow-y: auto; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            background: #0c4a6e; border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; width: 100%; max-width: 500px;
+            max-height: 90vh; overflow-y: auto; padding: 20px; box-shadow: 0 25px 50px rgba(0,0,0,0.6);
         }
 
-        /* معرض الصور المتعددة وسلايدر السواب */
-        .market-ad-card { display: flex; flex-direction: column; gap: 10px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        /* معرض الصور متعدد الصور وسلايدر البحر */
+        .market-ad-card { display: flex; flex-direction: column; gap: 10px; padding: 14px 0; border-bottom: 1px solid rgba(56, 189, 248, 0.15); }
         .market-ad-card:last-child { border-bottom: none; }
         
         .slider-container { position: relative; width: 100%; height: 220px; border-radius: 12px; overflow: hidden; background: #000; border: 1px solid var(--card-border); margin-top: 6px; }
@@ -101,7 +102,7 @@
         .slider-img { min-width: 100%; height: 100%; object-fit: cover; }
         
         .slider-btn {
-            position: absolute; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.6); color: white;
+            position: absolute; top: 50%; transform: translateY(-50%); background: rgba(8, 47, 73, 0.7); color: white;
             border: none; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
             cursor: pointer; font-size: 1rem; z-index: 10;
         }
@@ -109,58 +110,58 @@
         .slider-btn.next { left: 8px; }
         .slider-indicators { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); display: flex; gap: 4px; z-index: 10; }
         .indicator-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.4); }
-        .indicator-dot.active { background: white; width: 16px; border-radius: 4px; }
+        .indicator-dot.active { background: #38bdf8; width: 16px; border-radius: 4px; }
 
         /* الحاسبة */
         .calc-box { display: flex; flex-direction: column; gap: 12px; }
         .input-group { display: flex; flex-direction: column; gap: 6px; }
         .input-group label { font-size: 0.8rem; color: var(--text-secondary); font-weight: 700; }
         .input-group input, .input-group select, .input-group textarea {
-            background-color: rgba(15, 23, 42, 0.8); border: 1px solid var(--card-border); color: var(--text-primary);
-            padding: 12px 14px; border-radius: 10px; font-size: 0.95rem; font-weight: 600; outline: none; transition: border-color 0.2s ease;
+            background-color: rgba(8, 47, 73, 0.9); border: 1px solid var(--card-border); color: var(--text-primary);
+            padding: 12px 14px; border-radius: 12px; font-size: 0.95rem; font-weight: 600; outline: none; transition: border-color 0.2s ease;
         }
-        .input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: var(--accent-blue); box-shadow: 0 0 0 3px var(--accent-glow); }
+        .input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: #38bdf8; box-shadow: 0 0 0 3px var(--accent-glow); }
         
         .calc-result {
-            background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(37, 99, 235, 0.25));
-            border: 1px solid rgba(59, 130, 246, 0.4); border-radius: 12px; padding: 14px; text-align: center;
-            font-weight: 800; font-size: 1.2rem; color: #60a5fa; box-shadow: inset 0 0 12px rgba(59, 130, 246, 0.1);
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.2), rgba(14, 165, 233, 0.3));
+            border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 14px; padding: 14px; text-align: center;
+            font-weight: 800; font-size: 1.25rem; color: #38bdf8; box-shadow: inset 0 0 15px rgba(56, 189, 248, 0.1);
         }
 
-        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(56, 189, 248, 0.1); }
         .list-item:last-child { border-bottom: none; }
 
         .btn-call {
-            background: linear-gradient(135deg, #10b981, #059669); color: white; text-decoration: none;
-            padding: 8px 16px; border-radius: 8px; font-size: 0.82rem; font-weight: 800; text-align: center;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25); display: inline-block;
+            background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; text-decoration: none;
+            padding: 8px 16px; border-radius: 10px; font-size: 0.82rem; font-weight: 800; text-align: center;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3); display: inline-block;
         }
 
         .admin-form { display: flex; flex-direction: column; gap: 12px; }
         .btn-action {
-            background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none;
-            padding: 12px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            background: linear-gradient(135deg, #0284c7, #0369a1); color: white; border: none;
+            padding: 12px; border-radius: 12px; font-weight: 800; font-size: 0.95rem; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
         }
-        .btn-danger { background: linear-gradient(135deg, #f43f5e, #e11d48); }
-        .btn-del { background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
-        .btn-edit { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-left: 5px; }
-        .btn-approve { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-left: 5px; }
+        .btn-danger { background: linear-gradient(135deg, #e11d48, #be123c); }
+        .btn-del { background: rgba(225, 29, 72, 0.2); color: #fda4af; border: 1px solid rgba(225, 29, 72, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
+        .btn-edit { background: rgba(2, 132, 199, 0.2); color: #7dd3fc; border: 1px solid rgba(2, 132, 199, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-left: 5px; }
+        .btn-approve { background: rgba(45, 212, 191, 0.2); color: #5eead4; border: 1px solid rgba(45, 212, 191, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-left: 5px; }
 
-        /* الشريط السفلي العائم للزوار */
+        /* الشريط السفلي العصري */
         .bottom-nav {
             position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
-            width: calc(100% - 24px); max-width: 576px; background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--card-border);
+            width: calc(100% - 24px); max-width: 576px; background: rgba(8, 47, 73, 0.9);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(56, 189, 248, 0.25);
             border-radius: 20px; display: flex; justify-content: space-around; padding: 8px 4px; z-index: 1000;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
         }
         .nav-item {
             display: flex; flex-direction: column; align-items: center; color: var(--text-secondary);
-            text-decoration: none; font-size: 0.65rem; font-weight: 700; cursor: pointer; padding: 4px 4px; border-radius: 12px;
+            text-decoration: none; font-size: 0.65rem; font-weight: 700; cursor: pointer; padding: 4px 4px; border-radius: 12px; transition: all 0.2s;
         }
         .nav-item .icon { font-size: 1.1rem; margin-bottom: 2px; }
-        .nav-item.active { color: #60a5fa; transform: translateY(-2px); }
+        .nav-item.active { color: #38bdf8; transform: translateY(-2px); text-shadow: 0 0 10px rgba(56, 189, 248, 0.5); }
 
         footer { text-align: center; padding: 20px 0 10px; font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; }
     </style>
@@ -168,8 +169,8 @@
 <body>
 
     <header>
-        <div class="logo">📡 رادار <span>بانياس</span></div>
-        <div class="tagline">دليل الأسعار والخدمات وسوق المدينة اللحظي</div>
+        <div class="logo">🌊 موجة <span>بانياس</span></div>
+        <div class="tagline">نبض الساحل السوري | الأسعار، السوق، والدليل اللحظي</div>
     </header>
 
     <!-- 1. صفحة الأسعار والحاسبة -->
@@ -186,7 +187,7 @@
         <div class="section-title">🛒 السلع والغذائيات</div>
         <div class="card" id="goods-card"><div>جاري تحميل البيانات...</div></div>
 
-        <div class="section-title">🧮 حاسبة التحويل المباشر والذكي</div>
+        <div class="section-title">🧮 حاسبة الأمواج والتحويل المباشر</div>
         <div class="card calc-box">
             <div class="input-group">
                 <label>المبلغ المراد تحويله:</label>
@@ -218,9 +219,9 @@
         </div>
     </div>
 
-    <!-- 2. صفحة السوق والعقارات المحدثة بفلاتر وزر إضافة احترافي -->
+    <!-- 2. صفحة السوق والعقارات البحرية -->
     <div id="page-market" class="page-content">
-        <button class="btn-open-modal" onclick="openAdModal()">➕ أضف إعلانك أو عقارك الآن</button>
+        <button class="btn-open-modal" onclick="openAdModal()">⚓ أضف إعلانك أو عقارك الساحلي</button>
         
         <div class="market-filters">
             <div class="filter-chip active" onclick="filterMarket('الكل', this)">الكل 🌟</div>
@@ -230,20 +231,20 @@
             <div class="filter-chip" onclick="filterMarket('أخرى', this)">📦 سلع أخرى</div>
         </div>
 
-        <div class="section-title">🏪 أحدث الإعلانات المعروضة في السوق</div>
+        <div class="section-title">🏪 أحدث إعلانات سوق بانياس الساحلي</div>
         <div class="card" id="market-card"><div>جاري جلب الإعلانات النشطة...</div></div>
     </div>
 
-    <!-- نافذة إضافة إعلان منبثقة (Modal) مع دعم متعدد الصور -->
+    <!-- نافذة إضافة إعلان منبثقة -->
     <div id="adModal" class="modal-overlay">
         <div class="modal-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                <h3 style="color: var(--accent-gold); font-size:1.1rem;">📢 إضافة إعلان جديد</h3>
+                <h3 style="color: #38bdf8; font-size:1.1rem;">📢 إضافة إعلان جديد للمتجر</h3>
                 <button onclick="closeAdModal()" style="background:none; border:none; color:var(--text-secondary); font-size:1.2rem; cursor:pointer;">✕</button>
             </div>
             <div class="admin-form">
                 <div class="input-group">
-                    <label>عنوان الإعلان (مثال: شقة للبيع في كورنيش بانياس):</label>
+                    <label>عنوان الإعلان (مثال: شقة إطلالة بحرية في بانياس):</label>
                     <input type="text" id="adTitle" placeholder="اكتب عنواناً واضحاً...">
                 </div>
                 <div class="input-group">
@@ -321,7 +322,7 @@
         <div id="admin-panel" style="display: none;">
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-                    <h3 id="form-mode-title" style="color: var(--accent-gold); margin:0; font-size:1.05rem;">➕ إضافة عناصر أساسية بالموقع</h3>
+                    <h3 id="form-mode-title" style="color: #38bdf8; margin:0; font-size:1.05rem;">➕ إضافة عناصر أساسية بالموقع</h3>
                     <button class="btn-action btn-danger" style="padding:6px 12px; font-size:0.75rem;" onclick="logoutAdmin()">خروج 🚪</button>
                 </div>
                 <div class="admin-form">
@@ -388,10 +389,10 @@
     </div>
 
     <footer>
-        <div>جميع الحقوق محفوظة © 2026 - منصة <strong>رادار بانياس</strong></div>
+        <div>جميع الحقوق محفوظة © 2026 - منصة <strong>موجة بانياس الساحلية</strong></div>
     </footer>
 
-    <!-- شريط التنقل السفلي للزوار -->
+    <!-- شريط التنقل السفلي -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="showPage('prices', this)"><span class="icon">📈</span><span>الأسعار</span></div>
         <div class="nav-item" onclick="showPage('market', this)"><span class="icon">🏪</span><span>السوق</span></div>
@@ -723,10 +724,10 @@
                     <div class="market-ad-card">
                         <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                             <div>
-                                <span style="font-size:0.7rem; color:var(--accent-gold); font-weight:700; background:rgba(251,191,36,0.1); padding:2px 6px; border-radius:4px;">[${d.category}]</span>
+                                <span style="font-size:0.7rem; color:#38bdf8; font-weight:700; background:rgba(56,189,248,0.1); padding:2px 6px; border-radius:4px;">[${d.category}]</span>
                                 <b style="font-size:1.05rem; display:block; margin-top:4px;">${d.title}</b>
                             </div>
-                            <div style="font-weight:800; color:var(--accent-green); font-size:1.05rem;">${d.price || ''}</div>
+                            <div style="font-weight:800; color:#5eead4; font-size:1.05rem;">${d.price || ''}</div>
                         </div>
                         <div style="font-size:0.85rem; color:var(--text-secondary);">${d.desc || ''}</div>
                         ${sliderHtml}
@@ -738,7 +739,6 @@
             document.getElementById('market-card').innerHTML = html || 'لا توجد إعلانات مطابقة لهذا القسم حالياً.';
         }
 
-        // دالة تحريك السلايدر بين الصور
         window.slideIndexes = {};
         function moveSlide(adIndex, direction, totalImages) {
             if (window.slideIndexes[adIndex] === undefined) window.slideIndexes[adIndex] = 0;
@@ -822,7 +822,7 @@
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
-                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle || ''}</div></div><a href="tel:${d.val}" class="btn-call" style="background:linear-gradient(135deg, #f43f5e, #e11d48);">${d.val} 🚑</a></div>`;
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle || ''}</div></div><a href="tel:${d.val}" class="btn-call" style="background:linear-gradient(135deg, #e11d48, #be123c);">${d.val} 🚑</a></div>`;
                 });
                 document.getElementById('services-card').innerHTML = html || 'لا توجد أرقام مضافة.';
             });

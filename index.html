@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مُؤشّر | دليل الأسعار والخدمات في سوريا</title>
+    <title>رادار | منصة بانياس الشاملة للأسعار والسوق</title>
     <link rel="manifest" href="./manifest.json">
     <meta name="theme-color" content="#0f172a">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,7 +44,7 @@
         }
         
         header { text-align: center; padding: 20px 0 10px; margin-bottom: 10px; position: relative; }
-        .logo { font-size: 2rem; font-weight: 900; color: #ffffff; display: flex; align-items: center; justify-content: center; gap: 10px; letter-spacing: -0.5px; }
+        .logo { font-size: 2.1rem; font-weight: 900; color: #ffffff; display: flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: -0.5px; }
         .logo span { background: linear-gradient(135deg, #fbbf24, #f59e0b); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .tagline { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; font-weight: 600; }
 
@@ -59,13 +59,18 @@
         }
         .card:hover { border-color: rgba(59, 130, 246, 0.3); }
 
-        .price-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px dashed rgba(255, 255, 255, 0.08); }
+        .price-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed rgba(255, 255, 255, 0.08); }
         .price-row:last-child { border-bottom: none; }
         .item-info { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.95rem; }
         .item-price { font-weight: 800; font-size: 1.05rem; color: #ffffff; }
 
         .change-tag { font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; display: inline-block; }
         .neutral { color: var(--text-secondary); background: rgba(148, 163, 184, 0.12); }
+
+        /* إعلانات السوق مع الصور */
+        .market-ad-card { display: flex; flex-direction: column; gap: 10px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        .market-ad-card:last-child { border-bottom: none; }
+        .ad-image { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; border: 1px solid var(--card-border); margin-top: 6px; }
 
         /* الحاسبة */
         .calc-box { display: flex; flex-direction: column; gap: 12px; }
@@ -88,8 +93,8 @@
 
         .btn-call {
             background: linear-gradient(135deg, #10b981, #059669); color: white; text-decoration: none;
-            padding: 8px 16px; border-radius: 8px; font-size: 0.82rem; font-weight: 800;
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+            padding: 8px 16px; border-radius: 8px; font-size: 0.82rem; font-weight: 800; text-align: center;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25); display: inline-block;
         }
 
         .admin-form { display: flex; flex-direction: column; gap: 12px; }
@@ -123,8 +128,8 @@
 <body>
 
     <header>
-        <div class="logo">📈 مُؤشّر <span>سوري</span></div>
-        <div class="tagline">دليل الأسعار والخدمات والمعاملات لحظة بلحظة</div>
+        <div class="logo">📡 رادار <span>بانياس</span></div>
+        <div class="tagline">دليل الأسعار والخدمات وسوق المدينة اللحظي</div>
     </header>
 
     <!-- 1. صفحة الأسعار والحاسبة -->
@@ -173,15 +178,15 @@
         </div>
     </div>
 
-    <!-- 2. صفحة السوق والعقارات -->
+    <!-- 2. صفحة السوق والعقارات (مع إضافة إرفاق الصور) -->
     <div id="page-market" class="page-content">
-        <div class="section-title">🏪 سوق العقارات والبيع والشراء</div>
+        <div class="section-title">🏪 سوق العقارات والبيع والشراء في بانياس</div>
         <div class="card" id="market-card"><div>جاري جلب الإعلانات النشطة...</div></div>
 
-        <div class="section-title">📢 أضف إعلانك أو عقارك مجاناً</div>
+        <div class="section-title">📢 أضف إعلانك أو عقارك مع صورة مرفقة</div>
         <div class="card admin-form">
             <div class="input-group">
-                <label>عنوان الإعلان (مثال: شقة للبيع في دمشق):</label>
+                <label>عنوان الإعلان (مثال: شقة للبيع في كورنيش بانياس):</label>
                 <input type="text" id="adTitle" placeholder="اكتب عنواناً واضحاً...">
             </div>
             <div class="input-group">
@@ -198,20 +203,24 @@
                 <input type="text" id="adPrice" placeholder="مثال: 85 مليون ل.س">
             </div>
             <div class="input-group">
-                <label>رقم الواتساب أو الاتصال للتواصل:</label>
+                <label>رقم الواتساب أو الاتصال:</label>
                 <input type="text" id="adPhone" placeholder="09xxxxxxxx">
+            </div>
+            <div class="input-group">
+                <label>صورة السلعة أو العقار (اختر صورة من جهازك):</label>
+                <input type="file" id="adImageFile" accept="image/*" style="padding: 8px;">
             </div>
             <div class="input-group">
                 <label>تفاصيل إضافية:</label>
                 <textarea id="adDesc" rows="3" placeholder="مواصفات السلعة أو العقار..."></textarea>
             </div>
-            <button class="btn-action" onclick="submitUserAd()">إرسال الإعلان للمراجعة 🚀</button>
+            <button class="btn-action" onclick="submitUserAdWithImage()">إرسال الإعلان للمراجعة 🚀</button>
         </div>
     </div>
 
     <!-- 3. صفحة الصيدليات المناوبة -->
     <div id="page-pharmacies" class="page-content">
-        <div class="section-title">🏥 الصيدليات المناوبة اليوم</div>
+        <div class="section-title">🏥 الصيدليات المناوبة اليوم في بانياس</div>
         <div class="card" id="pharmacies-card"><div>جاري جلب القائمة...</div></div>
     </div>
 
@@ -302,7 +311,7 @@
     </div>
 
     <footer>
-        <div>جميع الحقوق محفوظة © 2026 - منصة <strong>مُؤشّر</strong></div>
+        <div>جميع الحقوق محفوظة © 2026 - منصة <strong>رادار بانياس</strong></div>
     </footer>
 
     <!-- شريط التنقل السفلي -->
@@ -407,20 +416,34 @@
             }
         }
 
-        function submitUserAd() {
+        // إرسال الإعلان مع تحويل الصورة المرفوعة إلى Base64 لتعرض بسلاسة دون الحاجة لـ Storage مدفوع
+        function submitUserAdWithImage() {
             const title = document.getElementById('adTitle').value.trim();
             const category = document.getElementById('adCategory').value;
             const price = document.getElementById('adPrice').value.trim();
             const phone = document.getElementById('adPhone').value.trim();
             const desc = document.getElementById('adDesc').value.trim();
+            const imageFile = document.getElementById('adImageFile').files[0];
 
             if (!title || !phone) {
                 alert("يرجى إتمام عنوان الإعلان ورقم التواصل على الأقل!");
                 return;
             }
 
+            if (imageFile) {
+                const reader = new FileReader();
+                reader.onload = function(uploadEvent) {
+                    saveAdDataToFirestore(title, category, price, phone, desc, uploadEvent.target.result);
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                saveAdDataToFirestore(title, category, price, phone, desc, "");
+            }
+        }
+
+        function saveAdDataToFirestore(title, category, price, phone, desc, imageUrl) {
             db.collection("pending_ads").add({
-                title: title, category: category, price: price, phone: phone, desc: desc,
+                title: title, category: category, price: price, phone: phone, desc: desc, imageUrl: imageUrl,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             }).then(() => {
                 alert("تم إرسال إعلانك بنجاح! سيتم مراجعته ونشره قريباً.");
@@ -428,6 +451,7 @@
                 document.getElementById('adPrice').value = '';
                 document.getElementById('adPhone').value = '';
                 document.getElementById('adDesc').value = '';
+                document.getElementById('adImageFile').value = '';
             }).catch(e => alert("حدث خطأ: " + e.message));
         }
 
@@ -449,13 +473,14 @@
                     const d = doc.data();
                     const escapedData = JSON.stringify(d).replace(/"/g, '&quot;');
                     html += `
-                        <div class="list-item">
-                            <div>
+                        <div class="list-item" style="flex-direction:column; align-items:flex-start; gap:8px;">
+                            <div style="width:100%;">
                                 <b>[${d.category}] ${d.title}</b>
                                 <div style="font-size:0.75rem; color:var(--text-secondary);">${d.price || ''} | تواصل: ${d.phone}</div>
-                                <div style="font-size:0.75rem;">${d.desc || ''}</div>
+                                <div style="font-size:0.75rem; margin-top:2px;">${d.desc || ''}</div>
+                                ${d.imageUrl ? `<img src="${d.imageUrl}" class="ad-image">` : ''}
                             </div>
-                            <div style="display:flex; gap:4px;">
+                            <div style="display:flex; gap:6px; align-self:flex-end;">
                                 <button class="btn-approve" onclick='approveAd("${doc.id}", ${escapedData})'>نشر ✅</button>
                                 <button class="btn-del" onclick="rejectAd('${doc.id}')">رفض ❌</button>
                             </div>
@@ -516,17 +541,22 @@
                 snapshot.forEach((doc) => {
                     const d = doc.data();
                     html += `
-                        <div class="price-row">
-                            <div>
-                                <div style="font-size:0.75rem; color:var(--accent-gold); font-weight:700;">[${d.category}]</div>
-                                <b style="font-size:1rem;">${d.title}</b>
-                                <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:2px;">${d.desc || ''}</div>
-                                <div style="font-weight:800; color:var(--accent-green); margin-top:4px;">${d.price || 'السعر عند التواصل'}</div>
+                        <div class="market-ad-card">
+                            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                                <div>
+                                    <span style="font-size:0.7rem; color:var(--accent-gold); font-weight:700; background:rgba(251,191,36,0.1); padding:2px 6px; border-radius:4px;">[${d.category}]</span>
+                                    <b style="font-size:1.05rem; display:block; margin-top:4px;">${d.title}</b>
+                                </div>
+                                <div style="font-weight:800; color:var(--accent-green); font-size:1.05rem;">${d.price || ''}</div>
                             </div>
-                            <a href="tel:${d.phone}" class="btn-call">اتصال 📞</a>
+                            <div style="font-size:0.85rem; color:var(--text-secondary);">${d.desc || ''}</div>
+                            ${d.imageUrl ? `<img src="${d.imageUrl}" class="ad-image" alt="صورة الإعلان">` : ''}
+                            <div style="display:flex; justify-content:flex-end; margin-top:4px;">
+                                <a href="tel:${d.phone}" class="btn-call">اتصال بالمعلن 📞 (${d.phone})</a>
+                            </div>
                         </div>`;
                 });
-                document.getElementById('market-card').innerHTML = html || 'لا توجد إعلانات عقارية أو تجارية معروضة حالياً.';
+                document.getElementById('market-card').innerHTML = html || 'لا توجد إعلانات معروضة في سوق بانياس حالياً.';
             });
 
             db.collection("pharmacies").onSnapshot((snapshot) => {

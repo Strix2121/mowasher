@@ -67,7 +67,7 @@
         .change-tag { font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; display: inline-block; }
         .neutral { color: var(--text-secondary); background: rgba(148, 163, 184, 0.12); }
 
-        /* إعلانات السوق العامة (نظيفة وخالية تماماً من أي أزرار للأدمن) */
+        /* إعلانات السوق العامة (نظيفة للزوار) */
         .market-ad-card { display: flex; flex-direction: column; gap: 10px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
         .market-ad-card:last-child { border-bottom: none; }
         .ad-image { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; border: 1px solid var(--card-border); margin-top: 6px; }
@@ -242,7 +242,7 @@
         <div class="card" id="services-card"><div>جاري جلب الخدمات...</div></div>
     </div>
 
-    <!-- 7. لوحة تحكم الإدارة السريّة (#admin) - هنا فقط التحكم والحذف الكامل -->
+    <!-- 7. لوحة تحكم الإدارة السريّة (#admin) منظمة حسب الأقسام -->
     <div id="page-admin" class="page-content">
         <div class="section-title">🔒 لوحة التحكم وإدارة الموقع والإعلانات</div>
         
@@ -261,6 +261,7 @@
         </div>
 
         <div id="admin-panel" style="display: none;">
+            <!-- نموذج الإضافة العام -->
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
                     <h3 style="color: var(--accent-gold); margin:0; font-size:1.05rem;">➕ إضافة عناصر أساسية بالموقع</h3>
@@ -282,7 +283,7 @@
                         <input type="text" id="itemTitle">
                     </div>
                     <div class="input-group" id="groupSubtitle">
-                        <label>التفاصيل / العنوان:</label>
+                        <label>التفاصيل / العنوان الفرعي:</label>
                         <input type="text" id="itemSubtitle">
                     </div>
                     <div class="input-group" id="groupVal">
@@ -302,17 +303,33 @@
                 </div>
             </div>
 
-            <!-- إدارة وحذف إعلانات السوق النشطة من داخل الداش بورد فقط -->
-            <div class="section-title">🏪 إدارة وحذف إعلانات السوق المنشورة</div>
+            <!-- 1. قسم إدارة إعلانات السوق المنشورة -->
+            <div class="section-title">🏪 إدارة وحذف إعلانات السوق</div>
             <div class="card" id="admin-market-list"><div>جاري تحميل إعلانات السوق...</div></div>
 
-            <!-- إعلانات الزوار المعلقة -->
-            <div class="section-title">📥 إعلانات الزوار بانتظار الموافقة والاعتماد</div>
+            <!-- 2. قسم إدارة إعلانات الزوار المعلقة -->
+            <div class="section-title">📥 إعلانات الزوار بانتظار الاعتماد</div>
             <div class="card" id="pending-ads-list"><div>جاري التحقق من الإعلانات الجديدة...</div></div>
 
-            <!-- إدارة باقي أقسام الموقع -->
-            <div class="section-title">🗑️ إدارة العناصر الحالية بالقسم المختار</div>
-            <div class="card" id="admin-items-list"><div>جاري تحميل القائمة...</div></div>
+            <!-- 3. قسم إدارة الصيدليات -->
+            <div class="section-title">🏥 إدارة الصيدليات المناوبة</div>
+            <div class="card" id="admin-pharmacies-list"><div>جاري التحميل...</div></div>
+
+            <!-- 4. قسم إدارة الدليل -->
+            <div class="section-title">🏪 إدارة دليل المحلات والخدمات</div>
+            <div class="card" id="admin-shops-list"><div>جاري التحميل...</div></div>
+
+            <!-- 5. قسم إدارة المعاملات -->
+            <div class="section-title">📖 إدارة المعاملات والأوراق</div>
+            <div class="card" id="admin-docs-list"><div>جاري التحميل...</div></div>
+
+            <!-- 6. قسم إدارة الطوارئ والخدمات -->
+            <div class="section-title">⚡ إدارة أرقام الطوارئ والتقنين</div>
+            <div class="card" id="admin-services-list"><div>جاري التحميل...</div></div>
+
+            <!-- 7. قسم إدارة الأسعار والعملات -->
+            <div class="section-title">📈 إدارة الأسعار والصرف والذهب</div>
+            <div class="card" id="admin-prices-list"><div>جاري التحميل...</div></div>
         </div>
     </div>
 
@@ -366,6 +383,7 @@
                 toggleFormFields();
                 loadPendingAds();
                 loadAdminMarketAds();
+                loadAdminSectionLists();
             } else {
                 document.getElementById('login-box').style.display = 'block';
                 document.getElementById('admin-panel').style.display = 'none';
@@ -405,7 +423,6 @@
             const grpCat = document.getElementById('groupCategory');
             if (sec === 'prices') grpCat.style.display = 'flex';
             else grpCat.style.display = 'none';
-            loadAdminSectionList(sec);
         }
 
         function saveToFirebase() {
@@ -520,33 +537,68 @@
                                 <b>[${d.category}] ${d.title}</b>
                                 <div style="font-size:0.75rem; color:var(--text-secondary);">${d.price || ''} | ${d.phone}</div>
                             </div>
-                            <button class="btn-del" onclick="deleteAnyItem('market_ads', '${doc.id}')">حذف الإعلان 🗑️</button>
+                            <button class="btn-del" onclick="deleteAnyItem('market_ads', '${doc.id}')">حذف 🗑️</button>
                         </div>`;
                 });
                 document.getElementById('admin-market-list').innerHTML = html || 'لا توجد إعلانات منشورة في السوق حالياً.';
             });
         }
 
-        function loadAdminSectionList(sec) {
-            db.collection(sec).onSnapshot((snapshot) => {
+        // تحميل أقسام الداش بورد المستقلة لكل قسم
+        function loadAdminSectionLists() {
+            // الصيدليات
+            db.collection("pharmacies").onSnapshot((snapshot) => {
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
-                    html += `
-                        <div class="list-item">
-                            <div>
-                                <b>${d.title}</b>
-                                <div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle || ''} ${d.val ? '| ' + d.val : ''}</div>
-                            </div>
-                            <button class="btn-del" onclick="deleteAnyItem('${sec}', '${doc.id}')">حذف 🗑️</button>
-                        </div>`;
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><button class="btn-del" onclick="deleteAnyItem('pharmacies', '${doc.id}')">حذف 🗑️</button></div>`;
                 });
-                document.getElementById('admin-items-list').innerHTML = html || 'لا توجد عناصر مضافة بهذا القسم.';
+                document.getElementById('admin-pharmacies-list').innerHTML = html || 'لا توجد صيدليات مضافة.';
+            });
+
+            // الدليل
+            db.collection("shops").onSnapshot((snapshot) => {
+                let html = '';
+                snapshot.forEach((doc) => {
+                    const d = doc.data();
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><button class="btn-del" onclick="deleteAnyItem('shops', '${doc.id}')">حذف 🗑️</button></div>`;
+                });
+                document.getElementById('admin-shops-list').innerHTML = html || 'لا توجد محلات مضافة.';
+            });
+
+            // المعاملات
+            db.collection("docs").onSnapshot((snapshot) => {
+                let html = '';
+                snapshot.forEach((doc) => {
+                    const d = doc.data();
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><button class="btn-del" onclick="deleteAnyItem('docs', '${doc.id}')">حذف 🗑️</button></div>`;
+                });
+                document.getElementById('admin-docs-list').innerHTML = html || 'لا توجد معاملات مضافة.';
+            });
+
+            // الطوارئ
+            db.collection("services").onSnapshot((snapshot) => {
+                let html = '';
+                snapshot.forEach((doc) => {
+                    const d = doc.data();
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.val}</div></div><button class="btn-del" onclick="deleteAnyItem('services', '${doc.id}')">حذف 🗑️</button></div>`;
+                });
+                document.getElementById('admin-services-list').innerHTML = html || 'لا توجد أخدمات مضافة.';
+            });
+
+            // الأسعار
+            db.collection("prices").onSnapshot((snapshot) => {
+                let html = '';
+                snapshot.forEach((doc) => {
+                    const d = doc.data();
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.val} ل.س</div></div><button class="btn-del" onclick="deleteAnyItem('prices', '${doc.id}')">حذف 🗑️</button></div>`;
+                });
+                document.getElementById('admin-prices-list').innerHTML = html || 'لا توجد أسعار مضافة.';
             });
         }
 
         function listenAllSections() {
-            // 1. الأسعار (عرض نظيف للزوار فقط)
+            // 1. الأسعار (عرض عام للزوار)
             db.collection("prices").onSnapshot((snapshot) => {
                 let currencyHTML = '', goldHTML = '', fuelHTML = '', goodsHTML = '';
                 snapshot.forEach((doc) => {
@@ -574,7 +626,7 @@
                 calculate();
             });
 
-            // 2. سوق الإعلانات (عرض نظيف للزوار فقط بدون أي أزرار حذف)
+            // 2. سوق الإعلانات (عرض عام للزوار)
             db.collection("market_ads").onSnapshot((snapshot) => {
                 let html = '';
                 snapshot.forEach((doc) => {
@@ -598,7 +650,7 @@
                 document.getElementById('market-card').innerHTML = html || 'لا توجد إعلانات معروضة في سوق بانياس حالياً.';
             });
 
-            // 3. الصيدليات المناوبة
+            // 3. الصيدليات المناوبة (عرض عام)
             db.collection("pharmacies").onSnapshot((snapshot) => {
                 let html = '';
                 snapshot.forEach((doc) => {
@@ -608,7 +660,7 @@
                 document.getElementById('pharmacies-card').innerHTML = html || 'لا توجد صيدليات مضافة.';
             });
 
-            // 4. الدليل
+            // 4. الدليل (عرض عام)
             db.collection("shops").onSnapshot((snapshot) => {
                 let html = '';
                 snapshot.forEach((doc) => {
@@ -618,7 +670,7 @@
                 document.getElementById('shops-card').innerHTML = html || 'لا توجد محلات مضافة.';
             });
 
-            // 5. المعاملات
+            // 5. المعاملات (عرض عام)
             db.collection("docs").onSnapshot((snapshot) => {
                 let html = '';
                 snapshot.forEach((doc) => {
@@ -628,7 +680,7 @@
                 document.getElementById('docs-card').innerHTML = html || 'لا توجد معاملات مضافة.';
             });
 
-            // 6. الخدمات والطوارئ
+            // 6. الخدمات والطوارئ (عرض عام)
             db.collection("services").onSnapshot((snapshot) => {
                 let html = '';
                 snapshot.forEach((doc) => {

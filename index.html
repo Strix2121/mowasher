@@ -67,8 +67,8 @@
         .change-tag { font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; display: inline-block; }
         .neutral { color: var(--text-secondary); background: rgba(148, 163, 184, 0.12); }
 
-        /* إعلانات السوق مع الصور والتحكم الكامل للأدمن */
-        .market-ad-card { display: flex; flex-direction: column; gap: 10px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); position: relative; }
+        /* إعلانات السوق العامة (نظيفة وخالية من أزرار الحذف للزوار) */
+        .market-ad-card { display: flex; flex-direction: column; gap: 10px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
         .market-ad-card:last-child { border-bottom: none; }
         .ad-image { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; border: 1px solid var(--card-border); margin-top: 6px; }
 
@@ -242,9 +242,9 @@
         <div class="card" id="services-card"><div>جاري جلب الخدمات...</div></div>
     </div>
 
-    <!-- 7. لوحة تحكم الإدارة السرية (#admin) -->
+    <!-- 7. لوحة تحكم الإدارة السرية (#admin) - هنا فقط تظهر أدوات التحكم والحذف الكاملة -->
     <div id="page-admin" class="page-content">
-        <div class="section-title">🔒 لوحة التحكم وإدارة الإعلانات الواردة</div>
+        <div class="section-title">🔒 لوحة التحكم وإدارة الموقع والإعلانات</div>
         
         <div class="card" id="login-box">
             <div class="admin-form">
@@ -302,9 +302,15 @@
                 </div>
             </div>
 
+            <!-- إدارة وحذف إعلانات السوق النشطة مباشرة من لوحة الأدمن -->
+            <div class="section-title">🏪 إدارة وحذف إعلانات السوق المنشورة</div>
+            <div class="card" id="admin-market-list"><div>جاري تحميل إعلانات السوق...</div></div>
+
+            <!-- إدارة إعلانات الزوار المعلقة -->
             <div class="section-title">📥 إعلانات الزوار بانتظار الموافقة والاعتماد</div>
             <div class="card" id="pending-ads-list"><div>جاري التحقق من الإعلانات الجديدة...</div></div>
 
+            <!-- إدارة باقي أقسام الموقع -->
             <div class="section-title">🗑️ إدارة العناصر الحالية بالقسم المختار</div>
             <div class="card" id="admin-items-list"><div>جاري تحميل القائمة...</div></div>
         </div>
@@ -339,7 +345,6 @@
         const auth = firebase.auth();
 
         let currentPrices = { usd: 13800, eur: 16100, tryLira: 420, gold21: 980000 };
-        let isAdminLoggedIn = false;
 
         function checkSecretRoute() {
             if (window.location.hash === '#admin') {
@@ -356,17 +361,15 @@
 
         auth.onAuthStateChanged((user) => {
             if (user) {
-                isAdminLoggedIn = true;
                 document.getElementById('login-box').style.display = 'none';
                 document.getElementById('admin-panel').style.display = 'block';
                 toggleFormFields();
                 loadPendingAds();
+                loadAdminMarketAds();
             } else {
-                isAdminLoggedIn = false;
                 document.getElementById('login-box').style.display = 'block';
                 document.getElementById('admin-panel').style.display = 'none';
             }
-            listenAllSections();
         });
 
         function showPage(pageId, element) {
@@ -506,6 +509,25 @@
             });
         }
 
+        // تحميل إعلانات السوق داخل لوحة تحكم الأدمن للتحكم بها وحذفها براحتك
+        function loadAdminMarketAds() {
+            db.collection("market_ads").onSnapshot((snapshot) => {
+                let html = '';
+                snapshot.forEach((doc) => {
+                    const d = doc.data();
+                    html += `
+                        <div class="list-item">
+                            <div>
+                                <b>[${d.category}] ${d.title}</b>
+                                <div style="font-size:0.75rem; color:var(--text-secondary);">${d.price || ''} | ${d.phone}</div>
+                            </div>
+                            <button class="btn-del" onclick="deleteAnyItem('market_ads', '${doc.id}')">حذف الإعلان 🗑️</button>
+                        </div>`;
+                });
+                document.getElementById('admin-market-list').innerHTML = html || 'لا توجد إعلانات منشورة في السوق حالياً.';
+            });
+        }
+
         function loadAdminSectionList(sec) {
             db.collection(sec).onSnapshot((snapshot) => {
                 let html = '';
@@ -525,20 +547,16 @@
         }
 
         function listenAllSections() {
-            // 1. الأسعار والذهب والمحروقات
+            // 1. الأسعار (بدون أزرار مزعجة للزوار)
             db.collection("prices").onSnapshot((snapshot) => {
                 let currencyHTML = '', goldHTML = '', fuelHTML = '', goodsHTML = '';
                 snapshot.forEach((doc) => {
                     const item = doc.data();
                     const priceNum = parseFloat(item.val) || 0;
-                    const deleteBtn = isAdminLoggedIn ? `<button class="btn-del" onclick="deleteAnyItem('prices', '${doc.id}')" style="margin-right:8px;">حذف 🗑️</button>` : '';
                     const rowHTML = `
                         <div class="price-row">
                             <div class="item-info"><span>${getItemIcon(item.title)}</span><b>${item.title}</b></div>
-                            <div style="text-align:left; display:flex; align-items:center;">
-                                <div><div class="item-price">${priceNum.toLocaleString('ar-SY')} ل.س</div><span class="change-tag neutral">${item.subtitle || '0'}</span></div>
-                                ${deleteBtn}
-                            </div>
+                            <div style="text-align:left;"><div class="item-price">${priceNum.toLocaleString('ar-SY')} ل.س</div><span class="change-tag neutral">${item.subtitle || '0'}</span></div>
                         </div>`;
                     if (item.category === 'currency') { 
                         currencyHTML += rowHTML; 
@@ -557,12 +575,11 @@
                 calculate();
             });
 
-            // 2. إعلانات السوق النشطة (مع تفعيل زر الحذف الكامل للأدمن)
+            // 2. سوق الإعلانات العامة (عرض نظيف للزوار فقط)
             db.collection("market_ads").onSnapshot((snapshot) => {
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
-                    const deleteBtn = isAdminLoggedIn ? `<button class="btn-del" onclick="deleteAnyItem('market_ads', '${doc.id}')">حذف الإعلان 🗑️</button>` : '';
                     html += `
                         <div class="market-ad-card">
                             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
@@ -574,9 +591,8 @@
                             </div>
                             <div style="font-size:0.85rem; color:var(--text-secondary);">${d.desc || ''}</div>
                             ${d.imageUrl ? `<img src="${d.imageUrl}" class="ad-image" alt="صورة الإعلان">` : ''}
-                            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:6px;">
+                            <div style="display:flex; justify-content:flex-end; margin-top:6px;">
                                 <a href="tel:${d.phone}" class="btn-call">اتصال بالمعلن 📞 (${d.phone})</a>
-                                ${deleteBtn}
                             </div>
                         </div>`;
                 });
@@ -588,8 +604,7 @@
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
-                    const deleteBtn = isAdminLoggedIn ? `<button class="btn-del" onclick="deleteAnyItem('pharmacies', '${doc.id}')" style="margin-right:8px;">حذف 🗑️</button>` : '';
-                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><div style="display:flex; align-items:center;"><a href="tel:${d.val}" class="btn-call">اتصال 📞</a>${deleteBtn}</div></div>`;
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><a href="tel:${d.val}" class="btn-call">اتصال 📞</a></div>`;
                 });
                 document.getElementById('pharmacies-card').innerHTML = html || 'لا توجد صيدليات مضافة.';
             });
@@ -599,8 +614,7 @@
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
-                    const deleteBtn = isAdminLoggedIn ? `<button class="btn-del" onclick="deleteAnyItem('shops', '${doc.id}')" style="margin-right:8px;">حذف 🗑️</button>` : '';
-                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><div style="display:flex; align-items:center;"><span class="change-tag neutral">${d.val || 'معتمد'}</span>${deleteBtn}</div></div>`;
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div><span class="change-tag neutral">${d.val || 'معتمد'}</span></div>`;
                 });
                 document.getElementById('shops-card').innerHTML = html || 'لا توجد محلات مضافة.';
             });
@@ -610,8 +624,7 @@
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
-                    const deleteBtn = isAdminLoggedIn ? `<button class="btn-del" onclick="deleteAnyItem('docs', '${doc.id}')" style="margin-right:8px;">حذف 🗑️</button>` : '';
-                    html += `<div class="price-row"><div><b>📄 ${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div>${deleteBtn}</div>`;
+                    html += `<div class="price-row"><div><b>📄 ${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle}</div></div></div>`;
                 });
                 document.getElementById('docs-card').innerHTML = html || 'لا توجد معاملات مضافة.';
             });
@@ -621,8 +634,7 @@
                 let html = '';
                 snapshot.forEach((doc) => {
                     const d = doc.data();
-                    const deleteBtn = isAdminLoggedIn ? `<button class="btn-del" onclick="deleteAnyItem('services', '${doc.id}')" style="margin-right:8px;">حذف 🗑️</button>` : '';
-                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle || ''}</div></div><div style="display:flex; align-items:center;"><a href="tel:${d.val}" class="btn-call" style="background:linear-gradient(135deg, #f43f5e, #e11d48);">${d.val} 🚑</a>${deleteBtn}</div></div>`;
+                    html += `<div class="list-item"><div><b>${d.title}</b><div style="font-size:0.75rem; color:var(--text-secondary);">${d.subtitle || ''}</div></div><a href="tel:${d.val}" class="btn-call" style="background:linear-gradient(135deg, #f43f5e, #e11d48);">${d.val} 🚑</a></div>`;
                 });
                 document.getElementById('services-card').innerHTML = html || 'لا توجد أرقام مضافة.';
             });

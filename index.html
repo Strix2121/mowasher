@@ -95,7 +95,6 @@
             font-weight: 800; font-size: 1.2rem; color: #60a5fa; box-shadow: inset 0 0 12px rgba(59, 130, 246, 0.1);
         }
 
-        /* القوائم والخدمات */
         .list-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
         .list-item:last-child { border-bottom: none; }
 
@@ -105,7 +104,6 @@
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
         }
 
-        /* أزرار الإدارة */
         .admin-form { display: flex; flex-direction: column; gap: 12px; }
         .btn-action {
             background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none;
@@ -116,7 +114,7 @@
         .btn-del { background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
         .btn-approve { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-left: 5px; }
 
-        /* الشريط السفلي العائم */
+        /* الشريط السفلي العائم المحدث ليحتوي زر الأدمن ويزيد عدد الأقسام */
         .bottom-nav {
             position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
             width: calc(100% - 24px); max-width: 576px; background: rgba(15, 23, 42, 0.85);
@@ -126,9 +124,9 @@
         }
         .nav-item {
             display: flex; flex-direction: column; align-items: center; color: var(--text-secondary);
-            text-decoration: none; font-size: 0.7rem; font-weight: 700; cursor: pointer; padding: 4px 6px; border-radius: 12px;
+            text-decoration: none; font-size: 0.65rem; font-weight: 700; cursor: pointer; padding: 4px 4px; border-radius: 12px;
         }
-        .nav-item .icon { font-size: 1.2rem; margin-bottom: 2px; }
+        .nav-item .icon { font-size: 1.1rem; margin-bottom: 2px; }
         .nav-item.active { color: #60a5fa; transform: translateY(-2px); }
 
         footer { text-align: center; padding: 20px 0 10px; font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; }
@@ -191,7 +189,7 @@
         </div>
     </div>
 
-    <!-- 2. صفحة السوق والعقارات (الجديدة) -->
+    <!-- 2. صفحة السوق والعقارات -->
     <div id="page-market" class="page-content">
         <div class="section-title">🏪 سوق العقارات والبيع والشراء</div>
         <div class="card" id="market-card"><div>جاري جلب الإعلانات النشطة...</div></div>
@@ -251,7 +249,7 @@
         <div class="card" id="services-card"><div>جاري جلب الخدمات...</div></div>
     </div>
 
-    <!-- 7. لوحة تحكم الإدارة الشاملة (#admin) -->
+    <!-- 7. لوحة تحكم الإدارة الشاملة (#admin) - تمت إضافة زر مباشر لها في الشريط السفلي -->
     <div id="page-admin" class="page-content">
         <div class="section-title">🔒 لوحة التحكم وإدارة الإعلانات الواردة</div>
         
@@ -324,7 +322,7 @@
         <div>جميع الحقوق محفوظة © 2026 - منصة <strong>مُؤشّر</strong></div>
     </footer>
 
-    <!-- شريط التنقل السفلي المحدث -->
+    <!-- شريط التنقل السفلي المحدث (تمت إضافة زر لوحة التحكم بشكل ظاهر وواضح) -->
     <div class="bottom-nav">
         <div class="nav-item active" onclick="showPage('prices', this)"><span class="icon">📈</span><span>الأسعار</span></div>
         <div class="nav-item" onclick="showPage('market', this)"><span class="icon">🏪</span><span>السوق</span></div>
@@ -332,6 +330,7 @@
         <div class="nav-item" onclick="showPage('shops', this)"><span class="icon">📁</span><span>الدليل</span></div>
         <div class="nav-item" onclick="showPage('docs', this)"><span class="icon">📖</span><span>المعاملات</span></div>
         <div class="nav-item" onclick="showPage('services', this)"><span class="icon">⚡</span><span>الخدمات</span></div>
+        <div class="nav-item" onclick="showPage('admin', this)" style="color: var(--accent-gold);"><span class="icon">🔒</span><span>الأدمن</span></div>
     </div>
 
     <script>
@@ -351,7 +350,9 @@
         let currentPrices = { usd: 13800, eur: 16100, tryLira: 420, gold21: 980000 };
 
         function checkSecretRoute() {
-            if (window.location.hash === '#admin') showPage('admin');
+            if (window.location.hash === '#admin') {
+                showPage('admin', document.querySelector('.bottom-nav .nav-item:last-child'));
+            }
         }
         window.addEventListener('hashchange', checkSecretRoute);
 
@@ -423,7 +424,6 @@
             }
         }
 
-        // إرسال إعلان جديد من الزائر
         function submitUserAd() {
             const title = document.getElementById('adTitle').value.trim();
             const category = document.getElementById('adCategory').value;
@@ -448,7 +448,6 @@
             }).catch(e => alert("حدث خطأ: " + e.message));
         }
 
-        // اعتماد الإعلان ونقله للسوق العام
         function approveAd(docId, data) {
             db.collection("market_ads").doc(docId).set(data).then(() => {
                 db.collection("pending_ads").doc(docId).delete();
@@ -529,7 +528,6 @@
                 calculate();
             });
 
-            // تحميل السوق العام المعروض للزوار
             db.collection("market_ads").onSnapshot((snapshot) => {
                 let html = '';
                 snapshot.forEach((doc) => {

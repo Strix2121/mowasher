@@ -102,7 +102,7 @@
         }
         .filter-chip.active { background: linear-gradient(135deg, #0284c7, #0ea5e9); color: white; border-color: #38bdf8; box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4); }
 
-        /* زر إضافة إعلان معدل بضمانات التفاعل التام */
+        /* زر إضافة إعلان مضمون التفاعل بالكمبيوتر والموبايل */
         .btn-open-modal {
             background: linear-gradient(135deg, #38bdf8, #0ea5e9); 
             color: #082f49; 
@@ -121,7 +121,7 @@
             margin-bottom: 15px;
             transition: transform 0.2s;
             position: relative;
-            z-index: 50;
+            z-index: 100;
         }
         .btn-open-modal:hover { opacity: 0.95; transform: translateY(-1px); }
         .btn-open-modal:active { transform: scale(0.98); }
@@ -274,7 +274,8 @@
     <!-- 2. صفحة السوق والعقارات -->
     <div id="page-market" class="page-content">
         <div class="section-title">🏪 سوق العقارات والبيع والشراء في بانياس</div>
-        <button type="button" class="btn-open-modal" id="openAdModalBtn">📢 أضف إعلانك أو عقارك مع صورة مرفقة</button>
+        <!-- ربط مباشر وفوري لدالة الفتح عبر onclick لضمان عدم تأثر الزر بأي قيود للأجهزة -->
+        <button type="button" class="btn-open-modal" onclick="openAdModal()">📢 أضف إعلانك أو عقارك مع صورة مرفقة</button>
         
         <div class="market-filters">
             <div class="filter-chip active" onclick="filterMarket('الكل', this)">الكل 🌟</div>
@@ -292,7 +293,7 @@
         <div class="modal-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
                 <h3 style="color: #38bdf8; font-size:1.1rem;">📢 إضافة إعلان جديد</h3>
-                <button type="button" id="closeAdModalBtn" style="background:none; border:none; color:var(--text-secondary); font-size:1.2rem; cursor:pointer;">✕</button>
+                <button type="button" onclick="closeAdModal()" style="background:none; border:none; color:var(--text-secondary); font-size:1.2rem; cursor:pointer;">✕</button>
             </div>
             <div class="admin-form">
                 <div class="input-group">
@@ -324,7 +325,7 @@
                     <label>تفاصيل إضافية:</label>
                     <textarea id="adDesc" rows="3" placeholder="مواصفات السلعة أو العقار..."></textarea>
                 </div>
-                <button type="button" class="btn-action" id="submitAdBtn">إرسال الإعلان للمراجعة 🚀</button>
+                <button type="button" class="btn-action" onclick="submitUserAdWithImages()">إرسال الإعلان للمراجعة 🚀</button>
             </div>
         </div>
     </div>
@@ -480,34 +481,20 @@
             }, 800);
         });
 
-        // ربط تفاعلات الأزرار بضمان العمل على الكمبيوتر والموبايل بشكل تام
-        document.addEventListener('DOMContentLoaded', () => {
-            const openBtn = document.getElementById('openAdModalBtn');
-            const closeBtn = document.getElementById('closeAdModalBtn');
-            const submitBtn = document.getElementById('submitAdBtn');
+        // دوال التحكم بالنافذة المنبثقة مباشرة
+        function openAdModal() {
             const modal = document.getElementById('adModal');
-
-            if (openBtn) {
-                openBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    modal.style.display = 'flex';
-                });
+            if (modal) {
+                modal.style.display = 'flex';
             }
+        }
 
-            if (closeBtn) {
-                closeBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    modal.style.display = 'none';
-                });
+        function closeAdModal() {
+            const modal = document.getElementById('adModal');
+            if (modal) {
+                modal.style.display = 'none';
             }
-
-            if (submitBtn) {
-                submitBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    submitUserAdWithImages();
-                });
-            }
-        });
+        }
 
         function filterMarket(category, element) {
             currentFilter = category;
@@ -678,7 +665,7 @@
                 document.getElementById('adPhone').value = '';
                 document.getElementById('adDesc').value = '';
                 document.getElementById('adImagesFile').value = '';
-                document.getElementById('adModal').style.display = 'none';
+                closeAdModal();
             }).catch(e => alert("خطأ في إرسال الإعلان: " + e.message));
         }
 

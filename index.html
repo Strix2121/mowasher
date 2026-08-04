@@ -67,7 +67,7 @@
         .change-tag { font-size: 0.7rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; display: inline-block; }
         .neutral { color: var(--text-secondary); background: rgba(148, 163, 184, 0.12); }
 
-        /* إعلانات السوق العامة (نظيفة وخالية من أزرار الحذف للزوار) */
+        /* إعلانات السوق العامة (نظيفة وخالية تماماً من أي أزرار للأدمن) */
         .market-ad-card { display: flex; flex-direction: column; gap: 10px; padding: 14px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
         .market-ad-card:last-child { border-bottom: none; }
         .ad-image { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; border: 1px solid var(--card-border); margin-top: 6px; }
@@ -107,7 +107,7 @@
         .btn-del { background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; }
         .btn-approve { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); padding: 5px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700; cursor: pointer; margin-left: 5px; }
 
-        /* الشريط السفلي العائم */
+        /* الشريط السفلي العائم للزوار */
         .bottom-nav {
             position: fixed; bottom: 12px; left: 50%; transform: translateX(-50%);
             width: calc(100% - 24px); max-width: 576px; background: rgba(15, 23, 42, 0.85);
@@ -242,7 +242,7 @@
         <div class="card" id="services-card"><div>جاري جلب الخدمات...</div></div>
     </div>
 
-    <!-- 7. لوحة تحكم الإدارة السرية (#admin) - هنا فقط تظهر أدوات التحكم والحذف الكاملة -->
+    <!-- 7. لوحة تحكم الإدارة السريّة (#admin) - هنا فقط التحكم والحذف الكامل -->
     <div id="page-admin" class="page-content">
         <div class="section-title">🔒 لوحة التحكم وإدارة الموقع والإعلانات</div>
         
@@ -302,11 +302,11 @@
                 </div>
             </div>
 
-            <!-- إدارة وحذف إعلانات السوق النشطة مباشرة من لوحة الأدمن -->
+            <!-- إدارة وحذف إعلانات السوق النشطة من داخل الداش بورد فقط -->
             <div class="section-title">🏪 إدارة وحذف إعلانات السوق المنشورة</div>
             <div class="card" id="admin-market-list"><div>جاري تحميل إعلانات السوق...</div></div>
 
-            <!-- إدارة إعلانات الزوار المعلقة -->
+            <!-- إعلانات الزوار المعلقة -->
             <div class="section-title">📥 إعلانات الزوار بانتظار الموافقة والاعتماد</div>
             <div class="card" id="pending-ads-list"><div>جاري التحقق من الإعلانات الجديدة...</div></div>
 
@@ -509,7 +509,6 @@
             });
         }
 
-        // تحميل إعلانات السوق داخل لوحة تحكم الأدمن للتحكم بها وحذفها براحتك
         function loadAdminMarketAds() {
             db.collection("market_ads").onSnapshot((snapshot) => {
                 let html = '';
@@ -547,7 +546,7 @@
         }
 
         function listenAllSections() {
-            // 1. الأسعار (بدون أزرار مزعجة للزوار)
+            // 1. الأسعار (عرض نظيف للزوار فقط)
             db.collection("prices").onSnapshot((snapshot) => {
                 let currencyHTML = '', goldHTML = '', fuelHTML = '', goodsHTML = '';
                 snapshot.forEach((doc) => {
@@ -575,7 +574,7 @@
                 calculate();
             });
 
-            // 2. سوق الإعلانات العامة (عرض نظيف للزوار فقط)
+            // 2. سوق الإعلانات (عرض نظيف للزوار فقط بدون أي أزرار حذف)
             db.collection("market_ads").onSnapshot((snapshot) => {
                 let html = '';
                 snapshot.forEach((doc) => {
